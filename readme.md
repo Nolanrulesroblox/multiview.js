@@ -1,5 +1,5 @@
 # Multiview.js
-json data from CDN:
+json data from API:
 <hr>
 
 ```php
