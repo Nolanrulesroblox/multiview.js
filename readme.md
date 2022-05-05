@@ -28,3 +28,9 @@ json data from API:
 [{"type":"total","count":2}]
 
 ```
+
+end result expected:
+<br>
+<i>this is upcoming project Dino Portal</i>
+<br>
+![image](https://user-images.githubusercontent.com/54533608/167019049-33898489-7997-49ec-9bce-b04cf02c1115.png)
