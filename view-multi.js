@@ -586,7 +586,7 @@ function showpost(e,post_id,post_type,json) {
                 document.querySelector('._CmxRiim30CrxSPL > article').style.cssText  = ""   
             }
         }, false);
-        document.querySelector('[data-postalert]').style.width  = (document.querySelector('[load-post-id="humelake"] > header').offsetWidth + 8) + "px"
+        document.querySelector('[data-postalert]').style.width  = (document.querySelector(`[load-post-id="${pjson.post_id}"] > header`).offsetWidth + 8) + "px"
         document.removeEventListener('click',checktarg)
         setTimeout(() => {
         //wait for doc to load, 50ms
