@@ -200,12 +200,12 @@ function buildvideo(poster,m3u8) {
 function showpost(e,post_id,post_type,json) {
     if (e === '0') {
         showpost = function() {};
+        //disables showpost
         return;
     }
     if (document.querySelector('._1VP69d9lk-Wk9zokOaylL').getAttribute("open")) {
         document.querySelector('._1VP69d9lk-Wk9zokOaylL').removeAttribute("open")
         document.getElementById("post_viewer").removeEventListener("click",clear_menus)
-  //      document.querySelector('._1VP69d9lk-Wk9zokOaylL').style.display = 'block';
         if (document.getElementById('post_viewer')) {
             document.getElementById('post_viewer').remove();   
         }
@@ -247,10 +247,10 @@ function showpost(e,post_id,post_type,json) {
             var pv = document.getElementById('post_viewer');
            document.querySelector('._1VP69d9lk-Wk9zokOaylL').setAttribute("open","true")
            window.history.pushState(pjson.title + ' - Dino Portal', pjson.title + ' - Dino Portal', `/p/${pjson.post_id}`);
-            if (pjson.liked === 'true') {
-                var likemod = '<div style="display: flex; -ms-flex-align: center; align-items: center; display: -ms-flexbox; cursor: pointer;" btn="like"><span elike-id="'+pjson.post_id+'" like-id="'+pjson.post_id+'" class="fa-thumbs-up JrpAzXnCHrDk" style="-ms-flex-align: center; align-items: center; display: -ms-flexbox; line-height: 20px;display: flex;"><i class="fa-thumbs-up like-btn JrpAzXnCHrDk" data-id="'+pjson.server_pid+'" style=""><i class="site-icon-s JrpAzXnCHrDk" style="font-size: 20px;line-height: 20px;color:#1696e1;line-height: 16px; margin-right: 6px;margin-left: 4px;"></i></i> <span class="likes JrpAzXnCHrDk" style="margin-left: 4px;">'+pjson.likes+'</span></span></div>'
+            if (pjson.liked === true) {
+                var likemod = '<div style="display: flex; -ms-flex-align: center; align-items: center; display: -ms-flexbox; cursor: pointer;margin-right:4px" btn="like"><span elike-id="'+pjson.post_id+'" like-id="'+pjson.post_id+'" data-like="unlike" class="JrpAzXnCHrDk" style="-ms-flex-align: center; align-items: center; display: -ms-flexbox; line-height: 20px;display: flex;"><i class="like-btn JrpAzXnCHrDk" data-id="'+pjson.server_pid+'" style=""><i class="site-icon-s JrpAzXnCHrDk" style="font-size: 20px;line-height: 20px;color:#1696e1;line-height: 16px; margin-right: 6px;margin-left: 4px;"></i></i> <span class="likes JrpAzXnCHrDk" style="margin-left: 2px; display: inline-block; line-height: 1; text-transform: capitalize; vertical-align: middle; color: #878A8C; font-weight: 700; font-size: 12px;">'+pjson.likes+'</span></span></div>'
             } else {
-                var likemod = '<div style="display: flex; -ms-flex-align: center; align-items: center; display: -ms-flexbox; cursor: pointer;" btn="like"><span elike-id="'+pjson.post_id+'" like-id="'+pjson.post_id+'" class="fa-thumbs-o-up JrpAzXnCHrDk" style="-ms-flex-align: center; align-items: center; display: -ms-flexbox; line-height: 20px;display: flex;"><i class="fa-thumbs-o-up like-btn JrpAzXnCHrDk" data-id="'+pjson.server_pid+'" style=""><i class="site-icon-s JrpAzXnCHrDk" style="font-size: 20px;line-height: 20px;color:unset;line-height: 16px; margin-right: 6px;margin-left: 4px;color:#878A8C;"></i></i> <span class="likes JrpAzXnCHrDk" style="margin-left: 4px;">'+pjson.likes+'</span></span></div>'
+                var likemod = '<div style="display: flex; -ms-flex-align: center; align-items: center; display: -ms-flexbox; cursor: pointer;margin-right:4px" btn="like"><span elike-id="'+pjson.post_id+'" like-id="'+pjson.post_id+'"  data-like="like" class="JrpAzXnCHrDk" style="-ms-flex-align: center; align-items: center; display: -ms-flexbox; line-height: 20px;display: flex;"><i class="like-btn JrpAzXnCHrDk" data-id="'+pjson.server_pid+'" style=""><i class="site-icon-s JrpAzXnCHrDk" style="font-size: 20px;line-height: 20px;color:unset;line-height: 16px; margin-right: 6px;margin-left: 4px;color:#878A8C;"></i></i> <span class="likes JrpAzXnCHrDk" style="margin-left: 2px; display: inline-block; line-height: 1; text-transform: capitalize; vertical-align: middle; color: #878A8C; font-weight: 700; font-size: 12px;">'+pjson.likes+'</span></span></div>'
             }
             if (pjson.metadata) {
                 var metadata = JSON.parse(pjson.metadata)
@@ -290,11 +290,13 @@ function showpost(e,post_id,post_type,json) {
                 ._2l1d6HSQ764u0JcvRSEJXD:focus:not(:focus-visible) {outline: none;}
                 .icon:before {-webkit-font-smoothing: antialiased;-moz-osx-font-smoothing: grayscale;font-family: 'fontello';}
                 .icon-award:before {content: "\\e85d";}
-                .icon-edit:before {content: "\\e835";color: #0089eb;}
+                .icon-edit:before {content: "\\e835";}
                 .icon-comment:before {content: "\\e83a";color: #878A8C;}
                 .icon-save:before {content: "\\e869";}
                 .icon-share:before {content: "\\e855";}
                 .icon-3dot:before {content: "\\e80f";}
+                .icon-trash:before { content: '\\e845'; }
+                .icon-report:before { content: '\\e83d'; }
                 ._1UoeAeSRhOKSNdY_h3iS1O {font-size: 12px;font-weight: 700;line-height: 16px;padding: 4px;box-sizing: border-box;}
                 ._1UoeAeSRhOKSNdY_h3iS1O ._3DVrpDrMM9NLT6TlsTUMxC {margin-right: 6px;}
                 ._3m17ICJgx45k_z-t82iVuO {cursor: default;}
@@ -326,6 +328,8 @@ function showpost(e,post_id,post_type,json) {
                 ._2pFdCpgBihIaYh9DSMWBIu.uMPgOFYlCc5uvpa2Lbteu:focus,._2pFdCpgBihIaYh9DSMWBIu.uMPgOFYlCc5uvpa2Lbteu:hover {outline: none;}
                 ._10K5i7NW6qcm-UoCtpB3aK,.kU8ebCMnbXfjCWfqn0WPb {outline: none;background: transparent;border: none;color: inherit;cursor: pointer;padding: initial;color: #878A8C;}
                 #myDropdown > a {background-color: transparent;border: 0;font-size: 14px;line-height: 16px;display: flex;margin: 8px;}
+                .flex{display: flex;display: -ms-flexbox;}
+                .icon:before {-webkit-font-smoothing: antialiased;-moz-osx-font-smoothing: grayscale;font-family: 'fontello';} .icon {font-size: 20px;font-weight: 400;height: 20px;line-height: 20px;vertical-align: middle;width: 20px;font-style: normal;} .dropbtn{background-color: transparent;border: 0;font-size: 14px;line-height: 16px;display: flex;margin: 8px;} .dropdown { position: relative; display: inline-block; margin-left: auto; } #myDropdown > button{background-color: transparent;border: 0;font-size: 14px;line-height: 16px;display: flex;margin: 8px;} .dropdown-content { display: none; position: absolute; background-color: #f1f1f1; min-width: 160px; overflow: auto; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1; } .dropdown-content a { color: black; padding: 12px 16px; text-decoration: none; display: block; } .show {display: block;} #myDropdown{ right: 0; }
                 </style>
                 `
             var template = `
@@ -395,6 +399,7 @@ function showpost(e,post_id,post_type,json) {
                                 class="_1UoeAeSRhOKSNdY_h3iS1O _3m17ICJgx45k_z-t82iVuO _3U_7i38RDPV5eBv7m4M-9J _2qww3J5KKzsD7e5DO0BvvU">
                                 <i class="icon icon-comment _3DVrpDrMM9NLT6TlsTUMxC" role="presentation"></i><span
                                     class="FHCV02u6Cp2zYL0fhQPsO" id="numComments">0 Comments</span></div>
+
                             <div style="display: flex;">
                                 <div class="icontop vmshare" style="display: flex;">
                                     <div class="_JRBNstMcGxbZUxrrIKXe _3U_7i38RDPV5eBv7m4M-9J _3yh2bniLq7bYr4BaiXowdO _1pShbCnOaF7EGWTq6IvZux _28vEaVlLWeas1CDiLuTCap vmshare"
@@ -405,6 +410,14 @@ function showpost(e,post_id,post_type,json) {
                                 </div>
                             </div>
                         </div>
+                        <div class="dropdown">
+                            <button id="pop" class="dropbtn icon icon-3dot" style="cursor: pointer;"></button>
+                            <div id="myDropdown" class="dropdown-content">
+                            <button class="kU8ebCMnbXfjCWfqn0WPb"> <i class="icon icon-report _1GQDWqbF-wkYWbrpmOvjqJ" style="/*color:#ff8d00*/"></i><span class="_6_44iTtZoeY6_XChKt5b0">Report</span></button>
+                            <button class="kU8ebCMnbXfjCWfqn0WPb" id="edit_post"> <i class="icon icon-edit _1GQDWqbF-wkYWbrpmOvjqJ" style="/*color:#ff8d00*/"></i><span class="_6_44iTtZoeY6_XChKt5b0">Edit</span></button>
+                            <button class="kU8ebCMnbXfjCWfqn0WPb" id="delete_post"> <i class="icon icon-trash _1GQDWqbF-wkYWbrpmOvjqJ" style="/*color:#ff8d00*/"></i><span class="_6_44iTtZoeY6_XChKt5b0">Delete</span></button>
+                            </div>
+                      </div>
                     </div>
                 </div>
             </div>
@@ -427,8 +440,8 @@ function showpost(e,post_id,post_type,json) {
                   <input class="input-field" type="text" name="name" id="name" placeholder="e" hidden value="bacon">
                 </div>
                 <div style="padding-top: 5px;display: flex;justify-content: flex-end;"> 
+                <div id="comment-message" style="margin-right: auto;" class=""></div>
                   <input type="submit" class="btn-submit btn-primary btn" value="Submit" style="float:right;" id="addComment_d">
-                  <div id="comment-message" style="display: none;"></div>
                 </div>
               </form>
             </div>
@@ -562,6 +575,34 @@ function showpost(e,post_id,post_type,json) {
                 } 
             } 
         }
+        //popup
+        if (pjson.auth === true) {
+            document.getElementById("edit_post").addEventListener('click',function(e) {
+                var url = new URL(window.location.href);
+                url.searchParams.set('edit', true);
+                location.href = url;
+            })
+            document.getElementById("delete_post").addEventListener("click",function(e) {
+                if (confirm("Are you sure you want to DELETE this post?")) {
+                  var q = new XMLHttpRequest();
+                  q.open("GET",'/api/v1/?k=editpost&pid='+pjson.post_id+'&do=delete')
+                  q.send();
+                  q.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                      var a = JSON.parse(this.responseText)
+                      notify(a.message,"#3c763d","#dff0d8","#d6e9c6", 10000)
+                    } 
+                  }
+                }
+            })
+        }else{
+            document.getElementById("delete_post").remove()
+            document.getElementById("edit_post").remove();
+        }
+        document.getElementById('pop').addEventListener('click',function(e) {
+            document.getElementById("myDropdown").classList.toggle("show")
+        })                              
+        //end popup
         disablehrefs()
         document.querySelector('.vmshare').addEventListener('click',async function() {
             const shareData = {
@@ -572,20 +613,9 @@ function showpost(e,post_id,post_type,json) {
             await navigator.share(shareData)
         })
         pv.style.display = "flex";
-        if (window.localStorage.getItem("betafeatures") === "true") {
-            if (!window.innerWidth < 559) {
-                document.querySelector('._CmxRiim30CrxSPL > article').style.cssText  = "width:"+(document.querySelector('._1tvThPWQpORoc2taKebHxs ').offsetWidth + document.querySelector('._1OVBBWLtHoSPfGCRaPzpTf ').offsetWidth) + "px !important;"   
-            }
+        if (!window.innerWidth < 559) {
+            document.querySelector('._CmxRiim30CrxSPL > article').style.cssText  = "width:"+(document.querySelector('._1tvThPWQpORoc2taKebHxs ').offsetWidth + document.querySelector('._1OVBBWLtHoSPfGCRaPzpTf ').offsetWidth) + "px !important;"   
         }
-        window.addEventListener("storage", function () {
-            if (window.localStorage.getItem("betafeatures") === "true") {
-                if (!window.innerWidth < 559) {
-                    document.querySelector('._CmxRiim30CrxSPL > article').style.cssText  = "width:"+(document.querySelector('._1tvThPWQpORoc2taKebHxs ').offsetWidth + document.querySelector('._1OVBBWLtHoSPfGCRaPzpTf ').offsetWidth) + "px !important;"   
-                }
-            }else{
-                document.querySelector('._CmxRiim30CrxSPL > article').style.cssText  = ""   
-            }
-        }, false);
         document.querySelector('[data-postalert]').style.width  = (document.querySelector(`[load-post-id="${pjson.post_id}"] > header`).offsetWidth + 8) + "px"
         document.removeEventListener('click',checktarg)
         setTimeout(() => {
@@ -613,8 +643,11 @@ function clear_menus(event) {
           if (openDropdown.style.display === "inline-block") {
             openDropdown.style.display = "none";
           }
+          if (openDropdown.classList.contains('show')) {
+            openDropdown.classList.remove('show');
+          }
         }
-      }
+      }                       
 }
 function deletecomment(e) {
     ethis = this;
@@ -626,6 +659,7 @@ function deletecomment(e) {
             if (this.readyState == 4 && this.status == 200) {
                 ethis.parentElement.parentElement.querySelector('.comment-info > .posted-by').innerHTML = "<i>deleted</i>"
                 ethis.parentElement.parentElement.querySelector('.comment-text').innerHTML = "<i>deleted</i>"
+                notify('Comment Deleted',"#3c763d","#dff0d8","#d6e9c6",3000)
             }}
         a.send()
     }
@@ -672,7 +706,7 @@ function comments(post_id) {
         const lang = {
             'reply': 'Reply',
             'sending': 'Sending…',
-            'added': 'Comment was successfuly added!',
+            'added': 'Comment was submitted!',
             'error': 'Error while adding comment!'
         };
         const $form = el('#frm-comment').node();
@@ -855,10 +889,12 @@ function comments(post_id) {
 function vmlike() {
     var post_id = this.getAttribute("like-id");
     var clicked_btn = this;
-    if (clicked_btn.classList.contains('fa-thumbs-o-up')) {
+    if (clicked_btn.getAttribute("data-like") === 'like') {
         action = 'like';
-    } else if (clicked_btn.classList.contains('fa-thumbs-up')) {
+    } else if (clicked_btn.getAttribute("data-like") === 'unlike') {
         action = 'unlike';
+    }else{
+      return;
     }
     var request = new XMLHttpRequest();
     request.open('POST', '/api/v1/?k=like&time'+Date.now(), true);
@@ -869,15 +905,13 @@ function vmlike() {
         if (this.status >= 200 && this.status < 400) {
             var res = JSON.parse(this.response); 
             if (action == "like") {
-                clicked_btn.classList.remove('fa-thumbs-o-up');
-                clicked_btn.classList.add('fa-thumbs-up');
                 document.querySelector(`[elike-id='${post_id}'] > i > i`).style.color = "#1696e1"
                 document.querySelector(`[like-id='${post_id}'] > i > i`).style.color = "#1696e1"
+                clicked_btn.setAttribute('data-like','unlike')
             } else if (action == "unlike") {
-                clicked_btn.classList.remove('fa-thumbs-up');
-                clicked_btn.classList.add('fa-thumbs-o-up');
                 document.querySelector(`[elike-id='${post_id}'] > i > i`).style.color = "#878A8C"
                 document.querySelector(`[like-id='${post_id}'] > i > i`).style.color = "#878A8C"
+                clicked_btn.setAttribute('data-like','like')
             }
             var allSiblingsLike = clicked_btn.parentElement.querySelectorAll('span.likes');
             for (let i = 0; i < allSiblingsLike.length; i++) {
@@ -887,20 +921,9 @@ function vmlike() {
             for (let i = 0; i < allSiblingsLikem.length; i++) {
                 allSiblingsLikem[i].innerText = res.likes;
             }
-            var allSiblingsDislike = clicked_btn.parentElement.querySelectorAll('span.dislikes');
-            for (let i = 0; i < allSiblingsDislike.length; i++) {
-                allSiblingsDislike[i].innerText = res.dislikes;
-            }
-            var allSiblingsThumb = clicked_btn.parentElement.querySelectorAll('i.fa-thumbs-down');
-            for (let i = 0; i < allSiblingsThumb.length; i++) {
-                allSiblingsThumb[i].classList.remove('fa-thumbs-down');
-                allSiblingsThumb[i].classList.add('fa-thumbs-o-down');
-            }
-            var allSiblingsThumbm = document.querySelector(`[like-id='${post_id}']`).parentElement.querySelectorAll('i.fa-thumbs-down');
-            for (let i = 0; i < allSiblingsThumbm.length; i++) {
-                allSiblingsThumbm[i].classList.remove('fa-thumbs-down');
-                allSiblingsThumbm[i].classList.add('fa-thumbs-o-down');
-            }
+        }
+        if (this.status >= 200 && this.status === 400) {
+            notify('Log in to leave a rating.',"#a94442","#f2dede","#ebccd1",7500)
         }
     };
     request.send(formData);
