@@ -2,6 +2,10 @@
     window.showpost = showpost;
     var h = location.protocol + '//' + location.host + location.pathname
 var t = document.title
+function showpostver() {
+    return "7.0a";
+}
+window.showpostver = showpostver;
 function removeJS(filename){var tags = document.getElementsByTagName('script');for (var i = tags.length; i >= 0; i--){ if (tags[i] && tags[i].getAttribute('src') != null && tags[i].getAttribute('src').indexOf(filename) != -1);tags[i].parentNode.removeChild(tags[i]);}}
 function loadsplide() {
             if (document.getElementById("splidejsid"),document.getElementById("splidecss")) {
@@ -277,8 +281,6 @@ function showpost(e,post_id,post_type,json) {
                 .fs1>p {font-size: 14px;line-height: 21px;margin-bottom: 0 !important;}
                 .cZPZhMe-UCZ8htPodMyJ5 {-ms-flex-align: center;align-items: center;display: -ms-flexbox;display: flex;-ms-flex-wrap: wrap;flex-wrap: wrap;-ms-flex: 1 1 auto;flex: 1 1 auto;overflow: hidden;}
                 ._2mHuuvyV9doV3zwbZPtIPG {display: inline-block;-ms-flex: 0 0 auto;flex: 0 0 auto}
-                ._2mHuuvyV9doV3zwbZPtIPG {display: inline-block;-ms-flex: 0 0 auto;flex: 0 0 auto}
-                ._2l1d6HSQ764u0JcvRSEJXD:focus:not(:focus-visible) {outline: none}
                 ._3LS4zudUBagjFS7HjWJYxo {color: var(--newCommunityTheme-metaText);font-size: 6px;line-height: 20px;margin: 0 4px;vertical-align: middle;}
                 .icon {font-size: 20px;font-weight: 400;height: 20px;line-height: 20px;vertical-align: middle;width: 20px;font-style: normal;}
                 ._2pFdCpgBihIaYh9DSMWBIu {height: 24px;}
@@ -286,8 +288,6 @@ function showpost(e,post_id,post_type,json) {
                 ._2pFdCpgBihIaYh9DSMWBIu.uMPgOFYlCc5uvpa2Lbteu:focus,._2pFdCpgBihIaYh9DSMWBIu.uMPgOFYlCc5uvpa2Lbteu:hover {outline: none;}
                 ._10K5i7NW6qcm-UoCtpB3aK {-ms-flex-align: center;align-items: center;display: -ms-flexbox;display: flex;-ms-flex-direction: row;flex-direction: row;text-align: left;width: 100%;}
                 .pthKOcceozMuXLYrLlbL1 {margin-right: 6px;}
-                ._2-cXnP74241WI7fpcpfPmg {display: inline-block;}
-                ._2l1d6HSQ764u0JcvRSEJXD:focus:not(:focus-visible) {outline: none;}
                 .icon:before {-webkit-font-smoothing: antialiased;-moz-osx-font-smoothing: grayscale;font-family: 'fontello';}
                 .icon-award:before {content: "\\e85d";}
                 .icon-edit:before {content: "\\e835";}
@@ -301,31 +301,20 @@ function showpost(e,post_id,post_type,json) {
                 ._1UoeAeSRhOKSNdY_h3iS1O ._3DVrpDrMM9NLT6TlsTUMxC {margin-right: 6px;}
                 ._3m17ICJgx45k_z-t82iVuO {cursor: default;}
                 .FHCV02u6Cp2zYL0fhQPsO {display: inline-block;line-height: 1;text-transform: capitalize;vertical-align: middle;color: #878A8C;font-weight: 700;font-size: 12px;}
-                .OccjSdFd6HkHhShRg6DOl {font-size: 12px;font-weight: 700;line-height: 16px;display: -ms-flexbox;display: flex;position: relative;}
                 @media (max-width: 459px) {
-                    ._2sAFaB0tx4Hd5KxVkdUcAx {display: none;}._21pmAV9gWG6F_UKVe7YIE0 {display: none;}
-                }._1EbinKu2t3KjaT2gR156Qp {border-radius: 4px;cursor: pointer;height: 24px;line-height: 0;padding: 0 4px;width: 100%;}
-                ._1EbinKu2t3KjaT2gR156Qp {vertical-align: middle;}
-                ._1EbinKu2t3KjaT2gR156Qp,._1EbinKu2t3KjaT2gR156Qp i {display: inline-block;}
+                    ._2sAFaB0tx4Hd5KxVkdUcAx {display: none;}
+                }
                 ._3-miAEojrCvx_4FQ8x3P-s {font-size: 12px;font-weight: 700;line-height: 16px;-ms-flex-align: stretch;align-items: stretch;display: -ms-flexbox;display: flex;-ms-flex-direction: row;flex-direction: row;overflow: hidden;padding: 0 8px 0 4px;-ms-flex-positive: 1;flex-grow: 1;}
                 ._3-miAEojrCvx_4FQ8x3P-s .YszYBnnIoNY8pZ6UwCivd {border-radius: 2px;margin-right: 4px;padding: 8px;text-transform: capitalize;white-space: nowrap;width: auto;word-break: normal;word-wrap: normal;height: 100%;}
                 ._3-miAEojrCvx_4FQ8x3P-s .YszYBnnIoNY8pZ6UwCivd:focus,._3-miAEojrCvx_4FQ8x3P-s .YszYBnnIoNY8pZ6UwCivd:hover {outline: none;}
                 ._3U_7i38RDPV5eBv7m4M-9J {-ms-flex-align: center;align-items: center;display: -ms-flexbox;display: flex;}
-                ._70940WUuFmpHbhKlj8EjZ {overflow: hidden;text-overflow: ellipsis;line-height: 12px;max-height: 36px;display: -webkit-inline-box;-webkit-line-clamp: 3;white-space: normal;-webkit-box-orient: vertical;font-weight: 700;font-size: 12px;}
-                ._21pmAV9gWG6F_UKVe7YIE0 {-ms-flex: 1 1 auto;flex: 1 1 auto;}
                 ._6_44iTtZoeY6_XChKt5b0 {display: inline-block;line-height: 1;text-align: left;overflow: hidden;text-overflow: ellipsis;line-height: 12px;max-height: 36px;display: -webkit-inline-box;-webkit-line-clamp: 3;white-space: normal;-webkit-box-orient: vertical;font-weight: 700;font-size: 12px;vertical-align: middle;}
                 ._2qww3J5KKzsD7e5DO0BvvU {padding: 8px;word-break: normal;margin-right: 4px;}
                 .kU8ebCMnbXfjCWfqn0WPb {border-radius: 2px;padding: 8px;display: -ms-flexbox;display: flex;-ms-flex-align: center;align-items: center;text-transform: capitalize;height: 100%;outline: none;}
                 .kU8ebCMnbXfjCWfqn0WPb ._1GQDWqbF-wkYWbrpmOvjqJ {line-height: 16px;margin-right: 6px;}
                 ._JRBNstMcGxbZUxrrIKXe {margin: 0 4px 0 0;width: auto;word-break: normal;}
                 ._3MmwvEEt6fv5kQPFCVJizH {display: -ms-flexbox;display: flex;-ms-flex-direction: column;flex-direction: column;-ms-flex-pack: center;justify-content: center;}
-                .icon._3yNNYT3e1avhAAWVHd0-92 {display: inline-block;line-height: 18px;}
-                .icon._1Xe01txJfRB9udUU85DNeR {display: inline-block;margin-right: -2px;}
-                ._3KTYozwt91D81Yub-OQ4S3:focus:not(:focus-visible) {outline: none;}
                 ._1hwEKkB_38tIoal6fcdrt9 {-ms-flex-align: center;align-items: center;-ms-flex-wrap: wrap-reverse;flex-wrap: wrap-reverse;-ms-flex-pack: justify;justify-content: space-between;padding-right: 0;padding-top: 4px;display: -ms-flexbox;display: flex;}
-                ._2pFdCpgBihIaYh9DSMWBIu {height: 24px;}
-                ._2pFdCpgBihIaYh9DSMWBIu.uMPgOFYlCc5uvpa2Lbteu {border-radius: 2px;}
-                ._2pFdCpgBihIaYh9DSMWBIu.uMPgOFYlCc5uvpa2Lbteu:focus,._2pFdCpgBihIaYh9DSMWBIu.uMPgOFYlCc5uvpa2Lbteu:hover {outline: none;}
                 ._10K5i7NW6qcm-UoCtpB3aK,.kU8ebCMnbXfjCWfqn0WPb {outline: none;background: transparent;border: none;color: inherit;cursor: pointer;padding: initial;color: #878A8C;}
                 #myDropdown > a {background-color: transparent;border: 0;font-size: 14px;line-height: 16px;display: flex;margin: 8px;}
                 .flex{display: flex;display: -ms-flexbox;}
@@ -406,7 +395,6 @@ function showpost(e,post_id,post_type,json) {
                                         id="share_native"><button data-click-id="share" class="kU8ebCMnbXfjCWfqn0WPb vmshare"><i
                                                 class="icon icon-share _1GQDWqbF-wkYWbrpmOvjqJ vmshare"></i><span
                                                 class="_6_44iTtZoeY6_XChKt5b0 vmshare">share</span></button></div>
-                                    <div class="_21pmAV9gWG6F_UKVe7YIE0"></div>
                                 </div>
                             </div>
                         </div>
@@ -670,44 +658,21 @@ function comments(post_id) {
         let self = {};
         self.selector = selector;
         self.element = document.querySelector(self.selector);
-        self.new = attr => {
-            self.element = document.createElement(self.selector);
-            if(attr) {
-                for (var key in attr) {
-                    if(attr.hasOwnProperty(key)) {
-                        self.element.setAttribute(key, attr[key]);
-                    }
-                }
-            }
-            return self;
-        }
-        self.node = () => {
-            return self.element;
-        }
-        self.all = () => {
-            return document.querySelectorAll(self.selector);
-        }
-        self.css = () => {
-            return self.node().classList;
-        }
-        self.html = content => {
-            if(content === null) return self.element;
-            self.element.innerHTML = content;
-            return self;
-        }
-        self.append = element => {
-            element.appendChild(self.element);
-            return self;
-        }
+        self.new = attr => {self.element = document.createElement(self.selector);if(attr) {for (var key in attr) {if(attr.hasOwnProperty(key)) {self.element.setAttribute(key, attr[key]);}}}return self;}
+        self.node = () => {return self.element;}
+        self.all = () => {return document.querySelectorAll(self.selector);}
+        self.css = () => {return self.node().classList;}
+        self.html = content => {if(content === null) return self.element;self.element.innerHTML = content;return self;}
+        self.append = element => {element.appendChild(self.element);return self;}
         return self;
     }
     ;((document, window) => {
         "use strict";
         const lang = {
-            'reply': 'Reply',
-            'sending': 'Sending…',
-            'added': 'Comment was submitted!',
-            'error': 'Error while adding comment!'
+            'r': 'Reply',
+            's': 'Sending…',
+            'a': 'Comment was submitted!',
+            'e': 'Error while adding comment. Try again in a few seconds'
         };
         const $form = el('#frm-comment').node();
         const $output = el('#output').node();
@@ -723,7 +688,7 @@ function comments(post_id) {
                                 <div class='comment-info' style="display: flex; align-items: center;"><span class='posted-by' style="display:flex;">${name}</span> <span style="margin-left:4px;margin-right:4px;display:flex;">&middot;</span> <span class='posted-at' style="display:flex;">${formatDatetime(date)}</span><span class="icon icon-3dot _3DVrpDrMM9NLT6TlsTUMxC" style="display: flex;margin-left: 8px;" comment-nav-id="${id}"></span></div>
                                 <div comment-nav-id-drop="${id}" class="dropdown-content" style="display: none; position: absolute; background-color: #f1f1f1; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1;"><a del-id="${id}">Delete</a> </div>
                                 <div class='comment-text'>${reply}${text}</div>
-                                <div><a class='btn-reply' data-id="${id}">${lang.reply}</a></div>
+                                <div><a class='btn-reply' data-id="${id}">${lang.r}</a></div>
                             </div>`;
             return template;
         }
@@ -814,15 +779,11 @@ function comments(post_id) {
             e.stopPropagation();
             let $comment = el("#comment").node();
             let $name = el("#name").node();
-    
             if($comment.value == "") { $comment.focus(); return; }
             if($name.value == "") { $name.focus(); return; }
-            
             let origContent = $submit.value;
-    
             $submit.setAttribute("disabled", true);
-            $submit.value = lang.sending;
-    
+            $submit.value = lang.s;
             $message.css().remove('msg-success');
             $message.css().remove('msg-error');
             $message.html("");
@@ -834,7 +795,7 @@ function comments(post_id) {
                 if (response.ok) {
             
                     $message.css().add('msg-success');
-                    $message.html(lang.added);
+                    $message.html(lang.a);
                     
                     el("#name").node().value = "";
                     el("#comment").node().value = "";
@@ -843,7 +804,7 @@ function comments(post_id) {
                     listComment();
                 } else {
                     $message.css().add('msg-error');
-                    $message.html(lang.error);
+                    $message.html(lang.e);
                     return false;
                 }
              }).catch(error => {
@@ -929,4 +890,3 @@ function vmlike() {
     request.send(formData);
   }
 })(document, window);
-//
