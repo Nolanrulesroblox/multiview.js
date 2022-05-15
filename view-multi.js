@@ -2,7 +2,7 @@
     window.showpost = showpost;
     var h = location.protocol + '//' + location.host + location.pathname
 var t = document.title
-window.showpostver = "7.0a";
+window.showpostver = "7.3a";
 function removeJS(filename){var tags = document.getElementsByTagName('script');for (var i = tags.length; i >= 0; i--){ if (tags[i] && tags[i].getAttribute('src') != null && tags[i].getAttribute('src').indexOf(filename) != -1);tags[i].parentNode.removeChild(tags[i]);}}
 function loadsplide() {
             if (document.getElementById("splidejsid"),document.getElementById("splidecss")) {
@@ -221,7 +221,19 @@ function showpost(e,post_id,post_type,json) {
     if (window.innerWidth < 559 || urlq[3] == "p") {
         return;
     }
-    function checktarg(evt) {const f = document.querySelector(`[load-post-id='${post_id}']`);const gg = document.querySelector('.MEAGs');let e = evt.target;do {if(e == f) {return;}e = e.parentNode;} while (e);showpost();document.removeEventListener('click',checktarg)}
+    function checktarg(evt) {
+        const f = document.querySelector(`[load-post-id='${post_id}']`);
+        const g = document.querySelector('[data-alert]');
+        let e = evt.target;
+            do {
+                if(e == f) {
+                    return;
+                }else if(e == g){
+                    return
+                }e = e.parentNode;
+            } while (e);
+        showpost();
+        document.removeEventListener('click',checktarg)}
     function disablehrefs() {
         var dom = document.querySelector('._1VP69d9lk-Wk9zokOaylL');
         var elems = dom.getElementsByTagName('a');
@@ -236,8 +248,6 @@ function showpost(e,post_id,post_type,json) {
     try {
         e.preventDefault()
     } catch (error) {
-        var error;
-        //does nothing.
     }
     const postjson = new XMLHttpRequest();
     postjson.onreadystatechange = function () {
@@ -257,16 +267,16 @@ function showpost(e,post_id,post_type,json) {
                 var metadata = JSON.parse(pjson.metadata)
             }
             var css = `
-            <style>
-            .sp-aw {
-                text-align: center !important;
-                list-style: none;
-              }
-            @media all and (min-width:729px) {
-                    [load-post-id]{
-                        width: 640px !important;
-                    }
+                <style>
+                .sp-aw {
+                    text-align: center !important;
+                    list-style: none;
                 }
+                @media all and (min-width:729px) {
+                        [load-post-id]{
+                            width: 640px !important;
+                        }
+                    }
                 .fs1{
                     max-width: 96vw;
                 }
@@ -316,6 +326,10 @@ function showpost(e,post_id,post_type,json) {
                 #myDropdown > a {background-color: transparent;border: 0;font-size: 14px;line-height: 16px;display: flex;margin: 8px;}
                 .flex{display: flex;display: -ms-flexbox;}
                 .icon:before {-webkit-font-smoothing: antialiased;-moz-osx-font-smoothing: grayscale;font-family: 'fontello';} .icon {font-size: 20px;font-weight: 400;height: 20px;line-height: 20px;vertical-align: middle;width: 20px;font-style: normal;} .dropbtn{background-color: transparent;border: 0;font-size: 14px;line-height: 16px;display: flex;margin: 8px;} .dropdown { position: relative; display: inline-block; margin-left: auto; } #myDropdown > button{background-color: transparent;border: 0;font-size: 14px;line-height: 16px;display: flex;margin: 8px;} .dropdown-content { display: none; position: absolute; background-color: #f1f1f1; min-width: 160px; overflow: auto; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1; } .dropdown-content a { color: black; padding: 12px 16px; text-decoration: none; display: block; } .show {display: block;} #myDropdown{ right: 0; }
+                .dropdown-content div[interact] {
+                    color: black; padding: 12px 16px; text-decoration: none; display: block;
+                    cursor:pointer; 
+                }
                 </style>
                 `
             var template = `
@@ -560,7 +574,6 @@ function showpost(e,post_id,post_type,json) {
                 } 
             } 
         }
-        //popup
         if (pjson.auth === true) {
             document.getElementById("edit_post").addEventListener('click',function(e) {
                 var url = new URL(window.location.href);
@@ -568,17 +581,20 @@ function showpost(e,post_id,post_type,json) {
                 location.href = url;
             })
             document.getElementById("delete_post").addEventListener("click",function(e) {
-                if (confirm("Are you sure you want to DELETE this post?")) {
-                  var q = new XMLHttpRequest();
-                  q.open("GET",'/api/v1/?k=editpost&pid='+pjson.post_id+'&do=delete')
-                  q.send();
-                  q.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status == 200) {
-                      var a = JSON.parse(this.responseText)
-                      notify(a.message,"#3c763d","#dff0d8","#d6e9c6", 10000)
-                    } 
-                  }
-                }
+                confirmnotify("Are you sure you want to delete this post?",function(f) {
+                    if (f) {
+                        var q = new XMLHttpRequest();
+                        q.open("GET",'/api/v1/?k=editpost&pid='+pjson.post_id+'&do=delete')
+                        q.send();
+                        q.onreadystatechange = function() {
+                          if (this.readyState == 4 && this.status == 200) {
+                            var a = JSON.parse(this.responseText)
+                            notify(a.message,"#3c763d","#dff0d8","#d6e9c6", 10000)
+                          } 
+                        }
+                    }
+                })
+
             })
         }else{
             document.getElementById("delete_post").remove()
@@ -587,7 +603,6 @@ function showpost(e,post_id,post_type,json) {
         document.getElementById('pop').addEventListener('click',function(e) {
             document.getElementById("myDropdown").classList.toggle("show")
         })                              
-        //end popup
         disablehrefs()
         document.querySelector('.vmshare').addEventListener('click',async function() {
             const shareData = {
@@ -634,21 +649,57 @@ function clear_menus(event) {
         }
       }                       
 }
-function deletecomment(e) {
-    ethis = this;
-    e.preventDefault();
-    if (confirm("are you sure you want to DELETE this comment?")) {
-        var a = new XMLHttpRequest();
-        a.open('GET','/api/v1/?k=editpost&do=delete_com&cid='+this.getAttribute("del-id"))
-        a.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                ethis.parentElement.parentElement.querySelector('.comment-info > .posted-by').innerHTML = "<i>deleted</i>"
-                ethis.parentElement.parentElement.querySelector('.comment-text').innerHTML = "<i>deleted</i>"
-                notify('Comment Deleted',"#3c763d","#dff0d8","#d6e9c6",3000)
-            }}
-        a.send()
+function buildcnd(commentid,auth,hasparent,access) {
+    //commenter navigation dropdown
+    //'access' is reserved for future testing. giving all access to the original json object. (not only id, auth, and parent id)
+    var id = commentid;
+    var home = document.querySelector(`[comment-nav-id-drop='${id}']`);
+    var del = `<div interact del-id="${id}">Delete</div>`;
+    var hide = `<div interact hide-id="${id}">Hide replies</div>`;
+    var report = `<div interact report-id="${id}">Report comment</div>`;
+    if (auth === true) {
+        home.insertAdjacentHTML('beforeend',del)
+        var delquery = document.querySelector(`[del-id='${id}']`);
+        delquery.addEventListener('click',function() {
+            confirmnotify('Are you sure you want to delete this comment?',function(f) {
+                if (f) {
+                    var a = new XMLHttpRequest();
+                    a.open('GET','/api/v1/?k=editpost&do=delete_com&cid='+id)
+                    a.onreadystatechange = function() {
+                        if (this.readyState == 4 && this.status == 200) {
+                            var b = document.querySelector(`[del-id='${id}']`);
+                            b.parentElement.parentElement.querySelector('.comment-info > .posted-by').innerHTML = "<i>deleted</i>"
+                            b.parentElement.parentElement.querySelector('.comment-text').innerHTML = "<i>deleted</i>"
+                            notify('Comment Deleted',"#3c763d","#dff0d8","#d6e9c6",4000)
+                        }}
+                    a.send()
+                }
+            })
+        })
     }
-    return false;
+    if (hasparent === '0') {
+        home.insertAdjacentHTML('beforeend',hide)
+        var hidequery = document.querySelector(`[hide-id='${id}']`);
+        hidequery.addEventListener('click',function(e) {
+            var xml = new XMLHttpRequest();
+            xml.open('POST','/fake200.php')
+            q = new FormData();
+            if (home.parentElement.parentElement.querySelector('ul').style.display === 'none') {
+                home.parentElement.parentElement.querySelector('ul').style.display = 'block'
+                hidequery.innerText = "Hide replies"
+                q.append('show',id)
+            } else {
+                home.parentElement.parentElement.querySelector('ul').style.display = 'none'
+                hidequery.innerText = "Show replies"
+                q.append('hide',id)
+            }
+            xml.send(q)
+        })
+    }
+    document.querySelector(`[comment-nav-id='${id}']`).addEventListener("click",function(e) {
+        document.querySelector(`[comment-nav-id-drop='${id}']`).style.display = "inline-block";
+        this.parentElement.style.position = "relative";
+    })
 }
 function comments(post_id) {
     const el = selector => {
@@ -682,8 +733,10 @@ function comments(post_id) {
         function replaceTemplate(id, name, date, text, parent, parentName = "") {
             let reply = (parent > 0) ? `<a href="#comment-${parent}" class="reply" data-id="${parent}">↳ ${parentName}</a> ` : "";
             let template = `<div class='comment-row' id="comment-${id}">							
-                                <div class='comment-info' style="display: flex; align-items: center;"><span class='posted-by' style="display:flex;">${name}</span> <span style="margin-left:4px;margin-right:4px;display:flex;">&middot;</span> <span class='posted-at' style="display:flex;">${formatDatetime(date)}</span><span class="icon icon-3dot _3DVrpDrMM9NLT6TlsTUMxC" style="display: flex;margin-left: 8px;" comment-nav-id="${id}"></span></div>
-                                <div comment-nav-id-drop="${id}" class="dropdown-content" style="display: none; position: absolute; background-color: #f1f1f1; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1;"><a del-id="${id}">Delete</a> </div>
+                                <div class='comment-info' style="display: flex; align-items: center;"><span class='posted-by' style="display:flex;">${name}</span> <span style="margin-left:4px;margin-right:4px;display:flex;">&middot;</span> <span class='posted-at' style="display:flex;">${formatDatetime(date)}</span><span class="icon icon-3dot _3DVrpDrMM9NLT6TlsTUMxC" style="display: flex;margin-left: auto;" comment-nav-id="${id}"></span></div>
+                                <div comment-nav-id-drop="${id}" class="dropdown-content" style="display: none; position: absolute; background-color: #f1f1f1; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1;right:0;">
+                                
+                                </div>
                                 <div class='comment-text'>${reply}${text}</div>
                                 <div><a class='btn-reply' data-id="${id}">${lang.r}</a></div>
                             </div>`;
@@ -693,19 +746,9 @@ function comments(post_id) {
             let template = replaceTemplate(item.id, item.name, item.date, item.comment, item.parent_id);
             const $item = el("li").new().html(template).append( $list.node() );
             const $reply = el('ul').new().append( $item.node() );
-    
             listReplies(item, data, $reply);
-            document.querySelector(`[comment-nav-id='${item.id}']`).addEventListener("click",function(e) {
-                if (item.auth === true) {
-                    document.querySelector(`[del-id='${item.id}']`).addEventListener("click",deletecomment)
-                }else{
-                    if (document.querySelector(`[del-id='${item.id}']`)) {
-                        document.querySelector(`[del-id='${item.id}']`).remove();
-                    }      
-                }
-                document.querySelector(`[comment-nav-id-drop='${item.id}']`).style.display = "inline-block";
-                this.parentElement.style.position = "relative";
-        })}
+            buildcnd(item.id,item.auth,item.parent_id,item)
+        }
         function listComment() {
             fetch('/api/v1/?k=postcomments&pid='+post_id)
              .then(response => {
@@ -740,17 +783,7 @@ function comments(post_id) {
                     const $reply = el('ul').new().append( $item.node() );
     
                     listReplies(comment, data, $reply);
-                    document.querySelector(`[comment-nav-id='${comment.id}']`).addEventListener("click",function(e) {
-                        if (comment.auth) {
-                            document.querySelector(`[del-id='${comment.id}']`).addEventListener("click",deletecomment)
-                        }else{
-                            if (document.querySelector(`[del-id='${comment.id}']`)) {
-                                document.querySelector(`[del-id='${comment.id}']`).remove();   
-                            }
-                        }
-                        document.querySelector(`[comment-nav-id-drop='${comment.id}']`).style.display = "inline-block";
-                        this.parentElement.style.position = "relative";
-                    })
+                    buildcnd(comment.id,comment.auth,comment.parent_id,comment)
                 }
             });
         }
