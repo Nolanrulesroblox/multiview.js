@@ -1,6 +1,17 @@
 (function (){
-    window.showpost = showpost;
-    var h = location.protocol + '//' + location.host + location.pathname
+window.showpost = showpost;
+var h = location.protocol + '//' + location.host + location.pathname
+function geturlparam(name, url = window.location.href) {
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+if (geturlparam('p')) {
+    showpost('loader',geturlparam('p'))
+}
 var t = document.title
 window.showpostver = "7.3a";
 function removeJS(filename){var tags = document.getElementsByTagName('script');for (var i = tags.length; i >= 0; i--){ if (tags[i] && tags[i].getAttribute('src') != null && tags[i].getAttribute('src').indexOf(filename) != -1);tags[i].parentNode.removeChild(tags[i]);}}
@@ -218,7 +229,7 @@ function showpost(e,post_id,post_type,json) {
         return;
     }
     var urlq = window.location.href.split('/')
-    if (window.innerWidth < 559 || urlq[3] == "p") {
+    if (urlq[3] == "p") {
         return;
     }
     function checktarg(evt) {
@@ -249,6 +260,10 @@ function showpost(e,post_id,post_type,json) {
         e.preventDefault()
     } catch (error) {
     }
+    if (window['pcache'+post_id]) {
+        //console.log("post cache HIT - PID"+post_id)
+        //TO BE USED IN THE FUTURE. how to handle like count handleing and post deletion via cache? maybe verify the like/comment/post deletion via simple query? nothing crazy.
+    }
     const postjson = new XMLHttpRequest();
     postjson.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
@@ -257,7 +272,11 @@ function showpost(e,post_id,post_type,json) {
             document.querySelector('._1VP69d9lk-Wk9zokOaylL').insertAdjacentHTML('afterend','<div id="post_viewer" style="background-color: rgba(0, 0, 0, .5) !important;"></div>')
             var pv = document.getElementById('post_viewer');
            document.querySelector('._1VP69d9lk-Wk9zokOaylL').setAttribute("open","true")
-           window.history.pushState(pjson.title + ' - Dino Portal', pjson.title + ' - Dino Portal', `/p/${pjson.post_id}`);
+           if (window.localStorage.getItem('betafeatures') === 'true') {
+            window.history.pushState(pjson.title + ' - Dino Portal', pjson.title + ' - Dino Portal', `/?p=${pjson.post_id}`); 
+           } else {
+            window.history.pushState(pjson.title + ' - Dino Portal', pjson.title + ' - Dino Portal', `/p/${pjson.post_id}`);     
+           }
             if (pjson.liked === true) {
                 var likemod = '<div style="display: flex; -ms-flex-align: center; align-items: center; display: -ms-flexbox; cursor: pointer;margin-right:4px" btn="like"><span elike-id="'+pjson.post_id+'" like-id="'+pjson.post_id+'" data-like="unlike" class="JrpAzXnCHrDk" style="-ms-flex-align: center; align-items: center; display: -ms-flexbox; line-height: 20px;display: flex;"><i class="like-btn JrpAzXnCHrDk" data-id="'+pjson.server_pid+'" style=""><i class="site-icon-s JrpAzXnCHrDk" style="font-size: 20px;line-height: 20px;color:#1696e1;line-height: 16px; margin-right: 6px;margin-left: 4px;"></i></i> <span class="likes JrpAzXnCHrDk" style="margin-left: 2px; display: inline-block; line-height: 1; text-transform: capitalize; vertical-align: middle; color: #878A8C; font-weight: 700; font-size: 12px;">'+pjson.likes+'</span></span></div>'
             } else {
@@ -272,11 +291,21 @@ function showpost(e,post_id,post_type,json) {
                     text-align: center !important;
                     list-style: none;
                 }
-                @media all and (min-width:729px) {
-                        [load-post-id]{
-                            width: 640px !important;
-                        }
+                @media all and (min-width:940px) {
+                    [load-post-id]{
+                        width: 937px!important;
                     }
+            }  
+                @media all and (min-width:729px) and (max-width:939px){
+                        [load-post-id]{
+                            width: 640px;
+                        }
+                }
+                @media all and (max-width:559px) {
+                        [load-post-id]{
+                            width: 100% ;
+                        }
+                } 
                 .fs1{
                     max-width: 96vw;
                 }
@@ -308,9 +337,6 @@ function showpost(e,post_id,post_type,json) {
                 ._1UoeAeSRhOKSNdY_h3iS1O ._3DVrpDrMM9NLT6TlsTUMxC {margin-right: 6px;}
                 ._3m17ICJgx45k_z-t82iVuO {cursor: default;}
                 .FHCV02u6Cp2zYL0fhQPsO {display: inline-block;line-height: 1;text-transform: capitalize;vertical-align: middle;color: #878A8C;font-weight: 700;font-size: 12px;}
-                @media (max-width: 459px) {
-                    ._2sAFaB0tx4Hd5KxVkdUcAx {display: none;}
-                }
                 ._3-miAEojrCvx_4FQ8x3P-s {font-size: 12px;font-weight: 700;line-height: 16px;-ms-flex-align: stretch;align-items: stretch;display: -ms-flexbox;display: flex;-ms-flex-direction: row;flex-direction: row;overflow: hidden;padding: 0 8px 0 4px;-ms-flex-positive: 1;flex-grow: 1;}
                 ._3-miAEojrCvx_4FQ8x3P-s .YszYBnnIoNY8pZ6UwCivd {border-radius: 2px;margin-right: 4px;padding: 8px;text-transform: capitalize;white-space: nowrap;width: auto;word-break: normal;word-wrap: normal;height: 100%;}
                 ._3-miAEojrCvx_4FQ8x3P-s .YszYBnnIoNY8pZ6UwCivd:focus,._3-miAEojrCvx_4FQ8x3P-s .YszYBnnIoNY8pZ6UwCivd:hover {outline: none;}
@@ -367,14 +393,13 @@ function showpost(e,post_id,post_type,json) {
                                 </div>
                                 <div class="_2wFk1qX4e1cxk8Pkw1rAHk"></div>
                                 <div class="_3XoW0oYd5806XiOr24gGdb"></div>
-                                <div style="margin-left: auto; font-weight: 400; font-size: 20px; color: #c1c1c1; margin-right: 4px;cursor:pointer;" onclick="showpost()">X</div>
+                                <div style="margin-left: auto; font-weight: 900; font-size: 20px; color: #c1c1c1; margin-right: 4px;cursor:pointer;" onclick="showpost()">X</div>
                             </div>
                             </div>
+                            <h1 class="fw-bolder" style="margin-top:0.5rem">${pjson.title}</h1>
                         </div>
                     </div>
                 </div>
-                <h1 class="fw-bolder" style=""0px 10px 8px 10px>${pjson.title}</h1>
-                <!-- Post categories-->
             </header>
             <div class="splide">
                 <div class="splide__track">
@@ -552,7 +577,6 @@ function showpost(e,post_id,post_type,json) {
         if (metadata && metadata.hasOwnProperty('m3u8')) { 
             var imgjson = pjson.images.split(',');
             buildvideo(imgjson[0],metadata.m3u8)
-
         }else{
             if (pjson.type === 'image') {
                 var imgjson = pjson.images.split(',');
@@ -576,9 +600,7 @@ function showpost(e,post_id,post_type,json) {
         }
         if (pjson.auth === true) {
             document.getElementById("edit_post").addEventListener('click',function(e) {
-                var url = new URL(window.location.href);
-                url.searchParams.set('edit', true);
-                location.href = url;
+                location.href = `/p/${pjson.post_id}?edit=true`;
             })
             document.getElementById("delete_post").addEventListener("click",function(e) {
                 confirmnotify("Are you sure you want to delete this post?",function(f) {
@@ -594,7 +616,6 @@ function showpost(e,post_id,post_type,json) {
                         }
                     }
                 })
-
             })
         }else{
             document.getElementById("delete_post").remove()
@@ -613,9 +634,6 @@ function showpost(e,post_id,post_type,json) {
             await navigator.share(shareData)
         })
         pv.style.display = "flex";
-        if (!window.innerWidth < 559) {
-            document.querySelector('._CmxRiim30CrxSPL > article').style.cssText  = "width:"+(document.querySelector('._1tvThPWQpORoc2taKebHxs ').offsetWidth + document.querySelector('._1OVBBWLtHoSPfGCRaPzpTf ').offsetWidth) + "px !important;"   
-        }
         document.querySelector('[data-postalert]').style.width  = (document.querySelector(`[load-post-id="${pjson.post_id}"] > header`).offsetWidth + 8) + "px"
         document.removeEventListener('click',checktarg)
         setTimeout(() => {
@@ -655,7 +673,7 @@ function buildcnd(commentid,auth,hasparent,access) {
     var id = commentid;
     var home = document.querySelector(`[comment-nav-id-drop='${id}']`);
     var del = `<div interact del-id="${id}">Delete</div>`;
-    var hide = `<div interact hide-id="${id}">Hide replies</div>`;
+    var hide = `<div interact hide-id="${id}">Collapse thread</div>`;
     var report = `<div interact report-id="${id}">Report comment</div>`;
     if (auth === true) {
         home.insertAdjacentHTML('beforeend',del)
@@ -686,11 +704,11 @@ function buildcnd(commentid,auth,hasparent,access) {
             q = new FormData();
             if (home.parentElement.parentElement.querySelector('ul').style.display === 'none') {
                 home.parentElement.parentElement.querySelector('ul').style.display = 'block'
-                hidequery.innerText = "Hide replies"
+                hidequery.innerText = "Collapse thread"
                 q.append('show',id)
             } else {
                 home.parentElement.parentElement.querySelector('ul').style.display = 'none'
-                hidequery.innerText = "Show replies"
+                hidequery.innerText = "Expand thread"
                 q.append('hide',id)
             }
             xml.send(q)
@@ -920,3 +938,4 @@ function vmlike() {
     request.send(formData);
   }
 })(document, window);
+//life is hard, but God is good.
