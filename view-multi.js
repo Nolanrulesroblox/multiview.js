@@ -931,7 +931,7 @@ function vmlike() {
                 allSiblingsLikem[i].innerText = res.likes;
             }
         }
-        if (this.status >= 200 && this.status === 400) {
+        if (this.status === 400) {
             notify('Log in to leave a rating.',"#a94442","#f2dede","#ebccd1",7500)
         }
     };
