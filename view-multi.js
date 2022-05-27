@@ -263,6 +263,7 @@ function showpost(e,post_id,post_type,json) {
     if (window['pcache'+post_id]) {
         //console.log("post cache HIT - PID"+post_id)
         //TO BE USED IN THE FUTURE. how to handle like count handleing and post deletion via cache? maybe verify the like/comment/post deletion via simple query? nothing crazy.
+        //EDIT: Friday, May 27, 2022 @ 03:31:19 AM (GMT): still need to make a web request, useless to make a complex request when its just a waste..... maybe keep for a "offline" PWA fallback?
     }
     const postjson = new XMLHttpRequest();
     postjson.onreadystatechange = function () {
@@ -277,6 +278,8 @@ function showpost(e,post_id,post_type,json) {
            } else {
             window.history.pushState(pjson.title + ' - Dino Portal', pjson.title + ' - Dino Portal', `/p/${pjson.post_id}`);     
            }
+           //override because dont feel like enabling beta on every single testing device. sorry, but lazy.
+           window.history.pushState(pjson.title + ' - Dino Portal', pjson.title + ' - Dino Portal', `/?p=${pjson.post_id}`); 
             if (pjson.liked === true) {
                 var likemod = '<div style="display: flex; -ms-flex-align: center; align-items: center; display: -ms-flexbox; cursor: pointer;margin-right:4px" btn="like"><span elike-id="'+pjson.post_id+'" like-id="'+pjson.post_id+'" data-like="unlike" class="JrpAzXnCHrDk" style="-ms-flex-align: center; align-items: center; display: -ms-flexbox; line-height: 20px;display: flex;"><i class="like-btn JrpAzXnCHrDk" data-id="'+pjson.server_pid+'" style=""><i class="site-icon-s JrpAzXnCHrDk" style="font-size: 20px;line-height: 20px;color:#1696e1;line-height: 16px; margin-right: 6px;margin-left: 4px;"></i></i> <span class="likes JrpAzXnCHrDk" style="margin-left: 2px; display: inline-block; line-height: 1; text-transform: capitalize; vertical-align: middle; color: #878A8C; font-weight: 700; font-size: 12px;">'+pjson.likes+'</span></span></div>'
             } else {
@@ -453,10 +456,11 @@ function showpost(e,post_id,post_type,json) {
         <div>
         <div class="col-md-12" style="background-color: #fbfbfb; border-radius:  0px 0px 25px 25px;padding-bottom: 2%;">
           <div class="col-md-12">
+          <div class="minid2">
             <div class="comment-form-container">
               <form id="frm-comment">
                 <div class="input-row">
-                  <textarea class="input-field input-area form-control" type="text" name="comment" id="comment" placeholder="Add Public Comment" style="height: 20%;resize: none;"></textarea>
+                  <textarea class="input-field input-area form-control" type="text" name="comment" id="comment" placeholder="Add Public Comment" style="min-height:110px;resize: vertical;"></textarea>
                 </div>
                 <div class="input-row">
                   <input type="hidden" name="token" value="">
@@ -465,14 +469,39 @@ function showpost(e,post_id,post_type,json) {
                 </div>
                 <div style="padding-top: 5px;display: flex;justify-content: flex-end;"> 
                 <div id="comment-message" style="margin-right: auto;" class=""></div>
-                  <input type="submit" class="btn-submit btn-primary btn" value="Submit" style="float:right;" id="addComment_d">
+                  <input type="submit" class="submit_com" value="Submit" style="float:right;" id="addComment_d">
                 </div>
               </form>
             </div>
+            <!--<div></div>-->
+            </div>
+
             <div id="commentloader" style="border: 1px solid #f3f3f3; border-radius: 50%; border-top: 1px solid #1696e1; width: 52px; height: 52px; animation: spin 0.75s linear infinite; animation-timing-function: linear; display: flex; margin-left: auto; margin-right: auto;"></div>
           </div>
           <div class="userComments"></div>
           <style>
+            .submit_com{
+                font-size: 12px;
+                font-weight: 700;
+                letter-spacing: unset;
+                line-height: 16px;
+                white-space: pre;
+                word-break: keep-all;
+                padding:0.375rem 0.75rem;
+                margin: 4px 8px;
+                -ms-flex-order: 2;
+                order: 2;
+                text-transform: unset;
+                min-height: 24px;
+                min-width: 24px;
+                float: right;
+                color: #fff;
+                background-color: #007bff;
+                border-color: #007bff;
+                border:1px solid transparent;
+                border-radius:0.25rem;
+                transition:color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+            }
             #output > ul > li::marker{
               content: "";
             }
@@ -492,11 +521,24 @@ function showpost(e,post_id,post_type,json) {
             #output ul {
             list-style-type: none;
             }
-
+            #frm-comment{
+                flex-direction: column;
+                display: flex;
+            }
+            #frm-comment .input-row{
+                display:flex;
+            }
+            @media all and (min-width:600px) {
+                #frm-comment{
+                    margin:8px 40px 24px 48px;
+                }
+                } 
             .comment-row {
-            border-bottom: #e0dfdf 1px solid;
-            margin-bottom: 15px;
-            padding: 5px 10px 5px 10px;
+                border-bottom: #e0dfdf 1px solid;
+                margin-bottom: 8px;
+                border-top: #e0dfdf 1px solid;
+                padding: 0px 10px 0px 10px;
+                border-right: #e0dfdf 1px solid;
             }
             .comment-active {
             background-color: hsl(60, 100%, 95%);
@@ -510,6 +552,7 @@ function showpost(e,post_id,post_type,json) {
             }
 
             .outer-comment {
+            margin-top:8px;
             padding-inline-start: 0;
             }
             .outer-comment ul {
@@ -519,16 +562,18 @@ function showpost(e,post_id,post_type,json) {
             padding-inline-start: 0;
             }
             .outer-comment > li > div {
-            border-left: 3px solid hsl(220, 100%, 60%);
+            border-left: 2px solid hsl(220, 100%, 60%);
             }
             .outer-comment > li li > div {
-            border-left: 3px solid hsl(40, 100%, 60%);
+            border-left: 2px solid hsl(40, 100%, 60%);
             }
 
             span.commet-row-label {
             font-style: italic;
             }
-
+            .outer-comment ul{
+                margin-bottom:0 !important
+            }
             .posted-by {
             color: hsl(220, 100%, 40%);
             font-weight: 700;
@@ -548,6 +593,7 @@ function showpost(e,post_id,post_type,json) {
             text-decoration: underline;
             color: #888787;
             cursor:pointer;
+            font-weight:900;
             }
 
             #comment-message {
@@ -563,6 +609,7 @@ function showpost(e,post_id,post_type,json) {
             0%, 50% {opacity:1;}
             100% {opacity:0;}
             }
+            @
           </style>
           <div id="output"></div>
         </div>
@@ -667,59 +714,59 @@ function clear_menus(event) {
         }
       }                       
 }
-function buildcnd(commentid,auth,hasparent,access) {
-    //commenter navigation dropdown
-    //'access' is reserved for future testing. giving all access to the original json object. (not only id, auth, and parent id)
-    var id = commentid;
-    var home = document.querySelector(`[comment-nav-id-drop='${id}']`);
-    var del = `<div interact del-id="${id}">Delete</div>`;
-    var hide = `<div interact hide-id="${id}">Collapse thread</div>`;
-    var report = `<div interact report-id="${id}">Report comment</div>`;
-    if (auth === true) {
-        home.insertAdjacentHTML('beforeend',del)
-        var delquery = document.querySelector(`[del-id='${id}']`);
-        delquery.addEventListener('click',function() {
-            confirmnotify('Are you sure you want to delete this comment?',function(f) {
-                if (f) {
-                    var a = new XMLHttpRequest();
-                    a.open('GET','/api/v1/?k=editpost&do=delete_com&cid='+id)
-                    a.onreadystatechange = function() {
-                        if (this.readyState == 4 && this.status == 200) {
-                            var b = document.querySelector(`[del-id='${id}']`);
-                            b.parentElement.parentElement.querySelector('.comment-info > .posted-by').innerHTML = "<i>deleted</i>"
-                            b.parentElement.parentElement.querySelector('.comment-text').innerHTML = "<i>deleted</i>"
-                            notify('Comment Deleted',"#3c763d","#dff0d8","#d6e9c6",4000)
-                        }}
-                    a.send()
-                }
-            })
-        })
-    }
-    if (hasparent === '0') {
-        home.insertAdjacentHTML('beforeend',hide)
-        var hidequery = document.querySelector(`[hide-id='${id}']`);
-        hidequery.addEventListener('click',function(e) {
-            var xml = new XMLHttpRequest();
-            xml.open('POST','/fake200.php')
-            q = new FormData();
-            if (home.parentElement.parentElement.querySelector('ul').style.display === 'none') {
-                home.parentElement.parentElement.querySelector('ul').style.display = 'block'
-                hidequery.innerText = "Collapse thread"
-                q.append('show',id)
-            } else {
-                home.parentElement.parentElement.querySelector('ul').style.display = 'none'
-                hidequery.innerText = "Expand thread"
-                q.append('hide',id)
-            }
-            xml.send(q)
-        })
-    }
-    document.querySelector(`[comment-nav-id='${id}']`).addEventListener("click",function(e) {
-        document.querySelector(`[comment-nav-id-drop='${id}']`).style.display = "inline-block";
-        this.parentElement.style.position = "relative";
-    })
-}
 function comments(post_id) {
+    function buildcnd(commentid,auth,hasparent,access) {
+        //commenter navigation dropdown
+        //'access' is reserved for future testing. giving all access to the original json object. (not only id, auth, and parent id)
+        var id = commentid;
+        var home = document.querySelector(`[comment-nav-id-drop='${id}']`);
+        var del = `<div interact del-id="${id}">Delete</div>`;
+        var hide = `<div interact hide-id="${id}">Collapse thread</div>`;
+        var report = `<div interact report-id="${id}">Report comment</div>`;
+        if (auth === true) {
+            home.insertAdjacentHTML('beforeend',del)
+            var delquery = document.querySelector(`[del-id='${id}']`);
+            delquery.addEventListener('click',function() {
+                confirmnotify('Are you sure you want to delete this comment?',function(f) {
+                    if (f) {
+                        var a = new XMLHttpRequest();
+                        a.open('GET','/api/v1/?k=editpost&do=delete_com&cid='+id)
+                        a.onreadystatechange = function() {
+                            if (this.readyState == 4 && this.status == 200) {
+                                var b = document.querySelector(`[del-id='${id}']`);
+                                b.parentElement.parentElement.querySelector('.comment-info > .posted-by').innerHTML = "<i>deleted</i>"
+                                b.parentElement.parentElement.querySelector('.comment-text').innerHTML = "<i>deleted</i>"
+                                notify('Comment Deleted',"#3c763d","#dff0d8","#d6e9c6",4000)
+                            }}
+                        a.send()
+                    }
+                })
+            })
+        }
+        if (hasparent === '0') {
+            home.insertAdjacentHTML('beforeend',hide)
+            var hidequery = document.querySelector(`[hide-id='${id}']`);
+            hidequery.addEventListener('click',function(e) {
+                var xml = new XMLHttpRequest();
+                xml.open('POST','/fake200.php')
+                q = new FormData();
+                if (home.parentElement.parentElement.querySelector('ul').style.display === 'none') {
+                    home.parentElement.parentElement.querySelector('ul').style.display = 'block'
+                    hidequery.innerText = "Collapse thread"
+                    q.append('show',id)
+                } else {
+                    home.parentElement.parentElement.querySelector('ul').style.display = 'none'
+                    hidequery.innerText = "Expand thread"
+                    q.append('hide',id)
+                }
+                xml.send(q)
+            })
+        }
+        document.querySelector(`[comment-nav-id='${id}']`).addEventListener("click",function(e) {
+            document.querySelector(`[comment-nav-id-drop='${id}']`).style.display = "inline-block";
+            this.parentElement.style.position = "relative";
+        })
+    }
     const el = selector => {
         let self = {};
         self.selector = selector;
@@ -731,8 +778,8 @@ function comments(post_id) {
         self.html = content => {if(content === null) return self.element;self.element.innerHTML = content;return self;}
         self.append = element => {element.appendChild(self.element);return self;}
         return self;
-    }
-    ;((document, window) => {
+    };
+    ((document, window) => {
         "use strict";
         const lang = {
             'r': 'Reply',
@@ -748,10 +795,11 @@ function comments(post_id) {
         function formatDatetime(datetime) {
             return datetime.replace(/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/, '$3. $2. $1 $4:$5');
         }
-        function replaceTemplate(id, name, date, text, parent, parentName = "") {
+        function replaceTemplate(id, name, date, text, parent, parentName = "",isOP) {
+            let OPa = (isOP === true) ? ` <span style="margin-left:4px;margin-right:4px;display:flex;color:blue;">OP</span> <span style="margin-left:4px;margin-right:4px;display:flex;">&middot;</span> `: ''
             let reply = (parent > 0) ? `<a href="#comment-${parent}" class="reply" data-id="${parent}">↳ ${parentName}</a> ` : "";
             let template = `<div class='comment-row' id="comment-${id}">							
-                                <div class='comment-info' style="display: flex; align-items: center;"><span class='posted-by' style="display:flex;">${name}</span> <span style="margin-left:4px;margin-right:4px;display:flex;">&middot;</span> <span class='posted-at' style="display:flex;">${formatDatetime(date)}</span><span class="icon icon-3dot _3DVrpDrMM9NLT6TlsTUMxC" style="display: flex;margin-left: auto;" comment-nav-id="${id}"></span></div>
+                                <div class='comment-info' style="display: flex; align-items: center;"><span class='posted-by' style="display:flex;">${name}</span> <span style="margin-left:4px;margin-right:4px;display:flex;">&middot;</span> ${OPa}<span class='posted-at' style="display:flex;">${formatDatetime(date)}</span><span class="icon icon-3dot _3DVrpDrMM9NLT6TlsTUMxC" style="display: flex;margin-left: auto;" comment-nav-id="${id}"></span></div>
                                 <div comment-nav-id-drop="${id}" class="dropdown-content" style="display: none; position: absolute; background-color: #f1f1f1; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1;right:0;">
                                 
                                 </div>
@@ -761,7 +809,7 @@ function comments(post_id) {
             return template;
         }
         function newComment(item, data) {
-            let template = replaceTemplate(item.id, item.name, item.date, item.comment, item.parent_id);
+            let template = replaceTemplate(item.id, item.name, item.date, item.comment, item.parent_id,'',item.isOP);
             const $item = el("li").new().html(template).append( $list.node() );
             const $reply = el('ul').new().append( $item.node() );
             listReplies(item, data, $reply);
@@ -795,7 +843,7 @@ function comments(post_id) {
             data.forEach(comment => {
                 if (parent.id == comment.parent_id) {
     
-                    let template = replaceTemplate(comment.id, comment.name, comment.date, comment.comment, comment.parent_id, parent.name);
+                    let template = replaceTemplate(comment.id, comment.name, comment.date, comment.comment, comment.parent_id, parent.name, comment.isOP);
     
                     const $item = el("li").new().html(template).append( list.node() );
                     const $reply = el('ul').new().append( $item.node() );
