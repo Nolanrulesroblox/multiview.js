@@ -15,7 +15,7 @@ if (geturlparam('p')) {
 var t = document.title
 function removeJS(filename){var tags = document.getElementsByTagName('script');for (var i = tags.length; i >= 0; i--){ if (tags[i] && tags[i].getAttribute('src') != null && tags[i].getAttribute('src').indexOf(filename) != -1);tags[i].parentNode.removeChild(tags[i]);}}
 function loadsplide() {
-            if (document.getElementById("splidejsid"),document.getElementById("splidecss")) {
+            if (document.getElementById("splidejsid")) {
                 new Splide('.splide', {
                     autoHeight: true,
                     trimSpace: false,
@@ -37,7 +37,6 @@ function loadsplide() {
                     perPage: 1,
                 }).mount();
             }
-        //allow time to load
 }
 var images = [];
 function preload() {
@@ -289,6 +288,11 @@ function showpost(e,post_id,post_type,json) {
             }
                 var editmod = `
                 <section class="mb-5" style=" width:100%;overflow-wrap: break-word;overflow:hidden;padding-top:0%" postcontent>
+                    <style>
+                    #post_body_1 > * {
+                        font-size:16px
+                    }
+                    </style>
                     <div class="fs1">
                         <div id="post_body_1">
                             ${pjson.post_body}
@@ -412,7 +416,7 @@ function showpost(e,post_id,post_type,json) {
                     </div>
                 </div>
             </header>
-            <div class="splide">
+            <div class="splide" id="splidetracker">
                 <div class="splide__track">
                 <ul class="splide__list" id="splidelist">
                 </ul>
@@ -420,9 +424,9 @@ function showpost(e,post_id,post_type,json) {
             </div>
             <!-- Post content-->
             ${editmod}
-            <div class="interactive_0" class="interactive_0" style="margin-left: 8px;margin-right: 8px;">
-                <div>
-                    <div class="_1hwEKkB_38tIoal6fcdrt9">
+            <div class="interactive_0" class="interactive_0" style="margin-left: 8px;margin-right: 8px;margin-top:8px;">
+                <div style="/*border-radius: 5px 5px 0px 0px;*/ border: 1px solid #00000024;">
+                    <div class="_1hwEKkB_38tIoal6fcdrt9" style="margin-left: 8px;margin-right: 8px;">
                         <div class="_3-miAEojrCvx_4FQ8x3P-s">
                         <div style="display:flex" btn="like">${likemod}</div>
                             <div
@@ -633,19 +637,21 @@ function showpost(e,post_id,post_type,json) {
                     if (imgjson[1]) {
                         function eaf(item, index) {
                             if (item) {
-                                splidelist.insertAdjacentHTML('beforeend',`<li style="margin: 24px 0;" class="splide__slide sp-aw"><img class="img-fluid rounded sp-image" style="max-height: 1024px;" src="${item}" alt="..."></li>`)
+                                splidelist.insertAdjacentHTML('beforeend',`<li style="margin: 12px 0;" class="splide__slide sp-aw"><img class="img-fluid rounded sp-image" style="max-height: 1024px;" src="${item}" alt="..."></li>`)
                             }
                         }
                         imgjson.forEach(eaf)
                         loadsplide()
                     } else {
                         if (imgjson.length = 1) {
-                            splidelist.insertAdjacentHTML('beforebegin',` <div style="margin: 24px 0;"> <img class="img-fluid rounded sp-imag" style="max-height: 1024px; margin-left: auto; margin-right: auto; display: flex; text-align: center;" src="${imgjson[0]}" draggable="false" oncontextmenu="return false;"> </div> `)
-                            splidelist.remove()
+                            splidelist.insertAdjacentHTML('beforebegin',` <div style="margin: 12px 0;"> <img class="img-fluid rounded sp-imag" style="max-height: 1024px; margin-left: auto; margin-right: auto; display: flex; text-align: center;" src="${imgjson[0]}" draggable="false" oncontextmenu="return false;"> </div> `)
+                            //splidelist.remove()
                         }
                     }
-                } 
-            } 
+                }
+            } else{
+              //  document.querySelector('#splidetracker').remove()
+            }
         }
         if (pjson.auth === true) {
             if (geturlparam('edit')) {
@@ -792,6 +798,10 @@ function build_edit(pjson) {
                     document.getElementById('post_viewer').appendChild(a);
                     document.getElementById('post_viewer').insertAdjacentHTML('beforeend','<link rel="stylesheet" href="//cdn.quilljs.com/1.3.6/quill.snow.css" type="text/css"/ id="ffe">');
                     a.onload = function() {
+                        const Block = Quill.import('blots/block');
+                        class MyBlock extends Block {} 
+                        MyBlock.tagName = 'DIV';
+                        Quill.register('blots/block', MyBlock, true); 
                         var quill = new Quill('#post_body_1', {
                             modules: {
                               toolbar: [
@@ -812,7 +822,7 @@ function build_edit(pjson) {
                             url.searchParams.delete('edit');
                             location.href = url;
                           })
-                          document.querySelector('.ql-editor').addEventListener('keyup',function() {
+                          document.querySelector('.ql-editor').addEventListener('click',function() {
                               document.querySelector('[nosave]').setAttribute('nosave','false')
                               document.querySelector('[nosave]').disabled = false;
                               document.querySelector('[nosave]').removeAttribute('disabled')
@@ -823,7 +833,49 @@ function build_edit(pjson) {
                             var http = new XMLHttpRequest();
                             http.onreadystatechange = function () {
                                 if (this.readyState == 4 && this.status == 200) {
-
+                                    var json = JSON.parse(this.responseText)
+                                    document.querySelector('[nosave]').setAttribute('nosave','true')
+                                    document.querySelector('[nosave]').disabled = true;
+                                    document.querySelector('[nosave]').setAttribute('disabled',true)
+                                    notify(json.msg,"#3c763d","#dff0d8","#d6e9c6", 2500)
+                                    document.getElementById('cancel').remove()
+                                    document.querySelector('[nosave]').style.cssText = 'margin-left: 8px; border: 2px solid #28a745; background-color: #28a745; color: #ffffff;'
+                                    document.querySelector('[nosave]').innerHTML = 'Saved'
+                                    setTimeout(() => {
+                                        var url = new URL(window.location.href);
+                                        url.searchParams.delete('edit');
+                                        location.href = url;
+                                    }, 2500);
+                                }
+                                if (this.readyState == 4 && this.status == 201) {
+                                    var json = JSON.parse(this.responseText)
+                                    document.querySelector('[nosave]').setAttribute('nosave','true')
+                                    document.querySelector('[nosave]').disabled = true;
+                                    document.querySelector('[nosave]').setAttribute('disabled',true)
+                                    notify(json.msg,"#3c763d","#dff0d8","#d6e9c6", 2500)
+                                    document.getElementById('cancel').remove()
+                                    document.querySelector('[nosave]').style.cssText = 'margin-left: 8px; border: 2px solid #28a745; background-color: #28a745; color: #ffffff;'
+                                    document.querySelector('[nosave]').innerHTML = 'Saved'
+                                    setTimeout(() => {
+                                        var url = new URL(window.location.href);
+                                        url.searchParams.delete('edit');
+                                        location.href = url;
+                                    }, 2750);
+                                }
+                                if (this.readyState == 4 && this.status == 202) {
+                                    var json = JSON.parse(this.responseText)
+                                    document.querySelector('[nosave]').setAttribute('nosave','true')
+                                    document.querySelector('[nosave]').disabled = true;
+                                    document.querySelector('[nosave]').setAttribute('disabled',true)
+                                    notify(json.msg,"#3c763d","#dff0d8","#d6e9c6", 2500)
+                                    document.getElementById('cancel').remove()
+                                    document.querySelector('[nosave]').style.cssText = 'margin-left: 8px; border: 2px solid #28a745; background-color: #28a745; color: #ffffff;'
+                                    document.querySelector('[nosave]').innerHTML = 'Saved'
+                                    setTimeout(() => {
+                                        var url = new URL(window.location.href);
+                                        url.searchParams.delete('edit');
+                                        location.href = url;
+                                    }, 2500);
                                 }
                             }
                             http.open('POST','/api/v1/?k=editpost&do=edit&pid='+pjson.post_id)
