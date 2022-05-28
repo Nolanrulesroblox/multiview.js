@@ -13,7 +13,6 @@ if (geturlparam('p')) {
     showpost('loader',geturlparam('p'))
 }
 var t = document.title
-window.showpostver = "7.3a";
 function removeJS(filename){var tags = document.getElementsByTagName('script');for (var i = tags.length; i >= 0; i--){ if (tags[i] && tags[i].getAttribute('src') != null && tags[i].getAttribute('src').indexOf(filename) != -1);tags[i].parentNode.removeChild(tags[i]);}}
 function loadsplide() {
             if (document.getElementById("splidejsid"),document.getElementById("splidecss")) {
@@ -273,13 +272,13 @@ function showpost(e,post_id,post_type,json) {
             document.querySelector('._1VP69d9lk-Wk9zokOaylL').insertAdjacentHTML('afterend','<div id="post_viewer" style="background-color: rgba(0, 0, 0, .5) !important;"></div>')
             var pv = document.getElementById('post_viewer');
            document.querySelector('._1VP69d9lk-Wk9zokOaylL').setAttribute("open","true")
-           if (window.localStorage.getItem('betafeatures') === 'true') {
+           if (geturlparam('edit')) {
+            window.history.pushState(pjson.title + ' - Dino Portal', pjson.title + ' - Dino Portal', `/?p=${pjson.post_id}&edit=1`); 
+           }else{
             window.history.pushState(pjson.title + ' - Dino Portal', pjson.title + ' - Dino Portal', `/?p=${pjson.post_id}`); 
-           } else {
-            window.history.pushState(pjson.title + ' - Dino Portal', pjson.title + ' - Dino Portal', `/p/${pjson.post_id}`);     
            }
            //override because dont feel like enabling beta on every single testing device. sorry, but lazy.
-           window.history.pushState(pjson.title + ' - Dino Portal', pjson.title + ' - Dino Portal', `/?p=${pjson.post_id}`); 
+
             if (pjson.liked === true) {
                 var likemod = '<div style="display: flex; -ms-flex-align: center; align-items: center; display: -ms-flexbox; cursor: pointer;margin-right:4px" btn="like"><span elike-id="'+pjson.post_id+'" like-id="'+pjson.post_id+'" data-like="unlike" class="JrpAzXnCHrDk" style="-ms-flex-align: center; align-items: center; display: -ms-flexbox; line-height: 20px;display: flex;"><i class="like-btn JrpAzXnCHrDk" data-id="'+pjson.server_pid+'" style=""><i class="site-icon-s JrpAzXnCHrDk" style="font-size: 20px;line-height: 20px;color:#1696e1;line-height: 16px; margin-right: 6px;margin-left: 4px;"></i></i> <span class="likes JrpAzXnCHrDk" style="margin-left: 2px; display: inline-block; line-height: 1; text-transform: capitalize; vertical-align: middle; color: #878A8C; font-weight: 700; font-size: 12px;">'+pjson.likes+'</span></span></div>'
             } else {
@@ -288,6 +287,15 @@ function showpost(e,post_id,post_type,json) {
             if (pjson.metadata) {
                 var metadata = JSON.parse(pjson.metadata)
             }
+                var editmod = `
+                <section class="mb-5" style=" width:100%;overflow-wrap: break-word;overflow:hidden;padding-top:0%" postcontent>
+                    <div class="fs1">
+                        <div id="post_body_1">
+                            ${pjson.post_body}
+                        </div>
+                    </div>
+                </section>
+                `;
             var css = `
                 <style>
                 .sp-aw {
@@ -411,13 +419,7 @@ function showpost(e,post_id,post_type,json) {
                 </div>
             </div>
             <!-- Post content-->
-            <section class="mb-5" style=" width:100%;overflow-wrap: break-word;overflow:hidden;padding-top:0%">
-                <div class="interactive_0">
-                </div>
-                <div class="fs1">
-                ${pjson.post_body}
-                </div>
-            </section>
+            ${editmod}
             <div class="interactive_0" class="interactive_0" style="margin-left: 8px;margin-right: 8px;">
                 <div>
                     <div class="_1hwEKkB_38tIoal6fcdrt9">
@@ -646,8 +648,13 @@ function showpost(e,post_id,post_type,json) {
             } 
         }
         if (pjson.auth === true) {
-            document.getElementById("edit_post").addEventListener('click',function(e) {
-                location.href = `/p/${pjson.post_id}?edit=true`;
+            if (geturlparam('edit')) {
+                build_edit(pjson)     
+            }
+        }
+        if (pjson.auth === true) {
+            document.getElementById("edit_post").addEventListener('click',function() {
+                build_edit(pjson)
             })
             document.getElementById("delete_post").addEventListener("click",function(e) {
                 confirmnotify("Are you sure you want to delete this post?",function(f) {
@@ -713,6 +720,116 @@ function clear_menus(event) {
           }
         }
       }                       
+}
+function build_edit(pjson) {
+                    window.history.pushState(pjson.title + ' - Dino Portal', pjson.title + ' - Dino Portal', `/?p=${pjson.post_id}&edit=1`); 
+                    document.querySelector('[postcontent]').innerHTML = `
+                    <style>
+                    .fs1>p {
+                      font-size: 14px;
+                      line-height: 21px;
+                      margin-bottom: 0 !important;
+                    }
+                    .ql-editor > *{
+                      font-size: 14px;
+                    }
+                    #submit_btns > div > div {
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: flex-end;
+                        margin-left: 15px;
+                        margin-right: 15px;
+                      }
+                      .subbuton{
+                        padding: 4px 15px;
+                        background-color: transparent;
+                        border: 0;
+                        font-size: 16px;
+                        font-weight: 700;
+                        border-radius: 4px;
+                        cursor: pointer;
+                      }
+                      .subbuton:first-of-type{
+                        margin-left:16px;
+                        border:1px solid #007bff;
+                        color: #007bff;
+                        transition: all 0.2s;
+                      }
+                      .subbuton:first-of-type:hover{
+                        margin-left:16px;
+                        border:1px solid #ff2300;
+                        color: #ff2300;
+                        transition: all 0.2s;
+                      }
+                      .subbuton:last-of-type{
+                        margin-left:16px;
+                        border:2px solid #007bff;
+                        background-color:#007bff;
+                        color: white;
+                      }
+                      .subbuton:last-of-type[nosave=true]{
+                        margin-left:8px;
+                        border:2px solid #818181;
+                        background-color:#818181;
+                        color: white;
+                      }
+                      .subbutton{ 
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: flex-end;
+                      }
+                  </style>
+                  <div class="fs1">
+                      <div id="post_body_1" class="fs-5 mb-3" name="post_body_1" style="min-height: 20vh;">${pjson.post_body}</div>
+                      <div class="subbutton">
+                        <button class="subbuton" id="cancel">Cancel</button>
+                        <button class="subbuton" nosave="true" disabled="true">Save</button>
+                        </div>
+                  </div>`
+                    var a = document.createElement('script');
+                    a.setAttribute('src','/api/v1/cdn/quill.js');
+                    a.setAttribute('id',"ffe")
+                    document.getElementById('post_viewer').appendChild(a);
+                    document.getElementById('post_viewer').insertAdjacentHTML('beforeend','<link rel="stylesheet" href="//cdn.quilljs.com/1.3.6/quill.snow.css" type="text/css"/ id="ffe">');
+                    a.onload = function() {
+                        var quill = new Quill('#post_body_1', {
+                            modules: {
+                              toolbar: [
+                                ['bold', 'italic', 'underline', 'strike'], // toggled buttons
+                                ['blockquote'],
+                                [{'header': 1}, {'header': 2}],
+                                [{'list': 'ordered'}, {'list': 'bullet'}],
+                                [{'script': 'sub'}, {'script': 'super'}], // superscript/subscript
+                                [{'header': [1, 2, 3, 4, 5, 6, false]}], // dropdown with defaults from theme
+                                [{'align': []}],
+                                ['clean']
+                              ]},
+                            theme: 'snow'
+                          });
+                          var cancel = document.getElementById('cancel')
+                          cancel.addEventListener('click',function() {
+                            var url = new URL(window.location.href);
+                            url.searchParams.delete('edit');
+                            location.href = url;
+                          })
+                          document.querySelector('.ql-editor').addEventListener('keyup',function() {
+                              document.querySelector('[nosave]').setAttribute('nosave','false')
+                              document.querySelector('[nosave]').disabled = false;
+                              document.querySelector('[nosave]').removeAttribute('disabled')
+                          })
+                          document.querySelector('[nosave]').addEventListener('click',function() {
+                            var fd = new FormData()
+                            fd.append('body',document.querySelector('#post_body_1 > .ql-editor').innerHTML)
+                            var http = new XMLHttpRequest();
+                            http.onreadystatechange = function () {
+                                if (this.readyState == 4 && this.status == 200) {
+
+                                }
+                            }
+                            http.open('POST','/api/v1/?k=editpost&do=edit&pid='+pjson.post_id)
+                            http.send(fd)
+                          })
+                    }
 }
 function comments(post_id) {
     function buildcnd(commentid,auth,hasparent,access) {
