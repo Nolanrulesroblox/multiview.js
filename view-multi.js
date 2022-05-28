@@ -15,28 +15,25 @@ if (geturlparam('p')) {
 var t = document.title
 function removeJS(filename){var tags = document.getElementsByTagName('script');for (var i = tags.length; i >= 0; i--){ if (tags[i] && tags[i].getAttribute('src') != null && tags[i].getAttribute('src').indexOf(filename) != -1);tags[i].parentNode.removeChild(tags[i]);}}
 function loadsplide() {
-            if (document.getElementById("splidejsid")) {
-                new Splide('.splide', {
-                    autoHeight: true,
-                    trimSpace: false,
-                    keyboard: false,
-                    perPage: 1,
-                }).mount();
-                return;
-            }
-            var a = document.createElement('script');
-            a.setAttribute('src','/lib/posts/slide.js');
-            a.setAttribute('id',"splidejsid")
-            document.head.appendChild(a);
-            document.head.insertAdjacentHTML('beforeend','<link rel="stylesheet" href="/lib/posts/slide.css" type="text/css"/ id="splidecss">');
-            a.onload = function(){
-                new Splide('.splide', {
-                    autoHeight: true,
-                    trimSpace: false,
-                    keyboard: false,
-                    perPage: 1,
-                }).mount();
-            }
+                if (document.querySelector('#splidejsid')) {
+                    document.querySelector('#splidejsid').remove()
+                }
+                if (document.querySelector('#splidecss')) {
+                    document.querySelector('#splidecss').remove();
+                }
+                var a = document.createElement('script');
+                a.setAttribute('src','/lib/posts/slide.js');
+                a.setAttribute('id',"splidejsid")
+                document.head.appendChild(a);
+                document.head.insertAdjacentHTML('beforeend','<link rel="stylesheet" href="/lib/posts/slide.css" type="text/css"/ id="splidecss">');
+                a.onload = function(){
+                    new Splide('.splide', {
+                        autoHeight: true,
+                        trimSpace: false,
+                        keyboard: false,
+                        perPage: 1,
+                    }).mount();
+                }
 }
 var images = [];
 function preload() {
@@ -99,55 +96,18 @@ function timeSince(date) {
       return;
   }
 function buildvideo(poster,m3u8) {
+    //dotdo: add SINGLE "build" request for all needed js/css.
     var base = document.getElementById("splidelist")
     const source = m3u8;
     var markup = `<video id="player" playsinline controls data-poster="${poster}" crossorigin></video>`;
    // var markup = `<video id="player" playsinline controls data-poster="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/Sintel.jpg" crossorigin></video>`;
     base.insertAdjacentHTML('beforeend',markup)
-    if (document.getElementById("player_js"),document.getElementById("player_hls")) {
-        function updateQuality(newQuality) {
-            if (newQuality === 0) {
-              window.hls.currentLevel = -1; //Enable AUTO quality if option.value = 0
-            } else {
-              window.hls.levels.forEach((level, levelIndex) => {
-                if (level.height === newQuality) {
-                  window.hls.currentLevel = levelIndex;
-                }
-              });
-            }
-          }
-       //const source = m3u8;
-        const video = document.querySelector('#player');
-        const defaultOptions = {};
-        if (!Hls.isSupported()) {
-          video.src = source;
-        } else {
-            const hls = new Hls({
-                maxMaxBufferLength: '15',
-            });
-            hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
-                const availableQualities = hls.levels.map((l) => l.height)
-                defaultOptions.quality = {
-                    default: availableQualities[availableQualities.length - 1],
-                    options: availableQualities,
-                    forced: true,        
-                    onChange: (e) => updateQuality(e),
-                }
-                defaultOptions.captions = {
-                    active: false, update: true, language: 'en'
-                }
-                const player = new Plyr(video, defaultOptions);
-                player.on('languagechange', () => {
-                    setTimeout(() => hls.subtitleTrack = player.currentTrack, 50);
-                  });
-                  document.querySelector('.plyr').style.minHeight  = "444px"
-                  document.querySelector('.plyr').style.height  = "444px"
-                  hls.attachMedia(video);
-            })
-          hls.loadSource(source);
-          window.hls = hls;
-        }
-    }else{
+    if (document.getElementById('player_js')) {
+        document.getElementById('player_js').remove()
+    }
+    if (document.getElementById('player_hls')) {
+        document.getElementById('player_hls').remove()
+    }
     var a = document.createElement('script');
     a.setAttribute('src','/api/v1/cdn/plyr.js');
     a.setAttribute('id',"player_js")
@@ -205,7 +165,6 @@ function buildvideo(poster,m3u8) {
           window.hls = hls;
         }
     }
-}
 }
 function showpost(e,post_id,post_type,json) {
     if (e === '0') {
@@ -631,7 +590,10 @@ function showpost(e,post_id,post_type,json) {
             var imgjson = pjson.images.split(',');
             buildvideo(imgjson[0],metadata.m3u8)
         }else{
-            if (pjson.type === 'image') {
+            if(pjson.type === 'video'){
+                var imgjson = pjson.images.split(',');
+                buildvideo(imgjson[0],metadata.m3u8)
+            }else if (pjson.type === 'image') {
                 var imgjson = pjson.images.split(',');
                 if (imgjson[0]) {
                     if (imgjson[1]) {
