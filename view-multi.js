@@ -234,7 +234,6 @@
             disablehrefs()
             allowclick = true;
             window.history.pushState(t, t, h);
-     
             return;
         }
         var urlq = window.location.href.split('/')
@@ -282,13 +281,8 @@
                 document.querySelector('._1VP69d9lk-Wk9zokOaylL').insertAdjacentHTML('afterend','<div id="post_viewer" style="background-color: rgba(0, 0, 0, .5) !important;"></div>')
                 var pv = document.getElementById('post_viewer');
                document.querySelector('._1VP69d9lk-Wk9zokOaylL').setAttribute("open","true")
-               if (geturlparam('edit')) {
-                window.history.pushState(pjson.title + ' - Dino Portal', pjson.title + ' - Dino Portal', `/?p=${pjson.post_id}&edit=1`); 
-               }else{
-                window.history.pushState(pjson.title + ' - Dino Portal', pjson.title + ' - Dino Portal', `/?p=${pjson.post_id}`); 
-               }
+               window.history.pushState(pjson.title + ' - Dino Portal', pjson.title + ' - Dino Portal', `/?p=${pjson.post_id}`); 
                //override because dont feel like enabling beta on every single testing device. sorry, but lazy.
-    
                 if (pjson.liked === true) {
                     var likemod = '<div style="display: flex; -ms-flex-align: center; align-items: center; display: -ms-flexbox; cursor: pointer;margin-right:4px" btn="like"><span elike-id="'+pjson.post_id+'" like-id="'+pjson.post_id+'" data-like="unlike" class="JrpAzXnCHrDk" style="-ms-flex-align: center; align-items: center; display: -ms-flexbox; line-height: 20px;display: flex;"><i class="like-btn JrpAzXnCHrDk" data-id="'+pjson.server_pid+'" style=""><i class="site-icon-s JrpAzXnCHrDk" style="font-size: 20px;line-height: 20px;color:#1696e1;line-height: 16px; margin-right: 6px;margin-left: 4px;"></i></i> <span class="likes JrpAzXnCHrDk" style="margin-left: 2px; display: inline-block; line-height: 1; text-transform: capitalize; vertical-align: middle; color: #878A8C; font-weight: 700; font-size: 12px;">'+pjson.likes+'</span></span></div>'
                 } else {
@@ -669,10 +663,9 @@
             }
             if (pjson.auth === true) {
                 if (geturlparam('edit')) {
+                    window.history.pushState(pjson.title + ' - Dino Portal', pjson.title + ' - Dino Portal', `/?p=${pjson.post_id}&edit=1`); 
                     build_edit(pjson)     
                 }
-            }
-            if (pjson.auth === true) {
                 document.getElementById("edit_post").addEventListener('click',function() {
                     build_edit(pjson)
                 })
@@ -711,16 +704,15 @@
             document.querySelector('[data-postalert]').style.width  = (document.querySelector(`[load-post-id="${pjson.post_id}"] > header`).offsetWidth + 8) + "px"
             document.removeEventListener('click',checktarg)
             setTimeout(() => {
-            //wait for doc to load, 50ms
-            document.addEventListener('click', checktarg, false)
-            document.getElementById("post_viewer").addEventListener("click",clear_menus)
-            document.querySelector(`._CmxRiim30CrxSPL`).style.marginBottom = document.querySelector(`[load-post-id='${pjson.post_id}']`).scrollHeight + 60 + 'px'
-            var postdata = {
-                'post_id':pjson.post_id,
-                'time':Date.now(),
-                'viewtype': 1
-            }
-            viewcount(postdata);
+                document.addEventListener('click', checktarg, false)
+                document.getElementById("post_viewer").addEventListener("click",clear_menus)
+                document.querySelector(`._CmxRiim30CrxSPL`).style.marginBottom = document.querySelector(`[load-post-id='${pjson.post_id}']`).scrollHeight + 60 + 'px'
+                var postdata = {
+                    'post_id':pjson.post_id,
+                    'time':Date.now(),
+                    'viewtype': 1
+                }
+                viewcount(postdata);
             }, 50);
             }}
         postjson.open('GET', '/api/v1/?k=loadpid&pid=' + post_id + '&pagetype=trending&currenttime=' + Date.now(), true);
