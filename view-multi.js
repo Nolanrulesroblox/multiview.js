@@ -274,6 +274,7 @@
             //EDIT: Friday, May 27, 2022 @ 03:31:19 AM (GMT): still need to make a web request, useless to make a complex request when its just a waste..... maybe keep for a "offline" PWA fallback?
         }
         const postjson = new XMLHttpRequest();
+        let splide_data;
         postjson.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 allowclick = false;
@@ -283,6 +284,19 @@
                document.querySelector('._1VP69d9lk-Wk9zokOaylL').setAttribute("open","true")
                window.history.pushState(pjson.title + ' - Dino Portal', pjson.title + ' - Dino Portal', `/?p=${pjson.post_id}`); 
                //override because dont feel like enabling beta on every single testing device. sorry, but lazy.
+               if (pjson.type === 'image') {
+                   splide_data = `
+                   <div class="splide" id="splidetracker">
+                   <div class="splide__track">
+                   <ul class="splide__list" id="splidelist">
+                   </ul>
+                   </div>
+               </div>`
+
+               } else {
+                splide_data = `
+                <div id="splidelist"></div>`
+               }
                 if (pjson.liked === true) {
                     var likemod = '<div style="display: flex; -ms-flex-align: center; align-items: center; display: -ms-flexbox; cursor: pointer;margin-right:4px" btn="like"><span elike-id="'+pjson.post_id+'" like-id="'+pjson.post_id+'" data-like="unlike" class="JrpAzXnCHrDk" style="-ms-flex-align: center; align-items: center; display: -ms-flexbox; line-height: 20px;display: flex;"><i class="like-btn JrpAzXnCHrDk" data-id="'+pjson.server_pid+'" style=""><i class="site-icon-s JrpAzXnCHrDk" style="font-size: 20px;line-height: 20px;color:#1696e1;line-height: 16px; margin-right: 6px;margin-left: 4px;"></i></i> <span class="likes JrpAzXnCHrDk" style="margin-left: 2px; display: inline-block; line-height: 1; text-transform: capitalize; vertical-align: middle; color: #878A8C; font-weight: 700; font-size: 12px;">'+pjson.likes+'</span></span></div>'
                 } else {
@@ -421,12 +435,7 @@
                         </div>
                     </div>
                 </header>
-                <div class="splide" id="splidetracker">
-                    <div class="splide__track">
-                    <ul class="splide__list" id="splidelist">
-                    </ul>
-                    </div>
-                </div>
+                ${splide_data}
                 <!-- Post content-->
                 ${editmod}
                 <div class="interactive_0" class="interactive_0" style="margin-left: 8px;margin-right: 8px;margin-top:8px;">
