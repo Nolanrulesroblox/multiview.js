@@ -14,9 +14,8 @@
     }
     var delay = 0
     var t = document.title
-    function removeJS(filename) { var tags = document.getElementsByTagName('script'); for (var i = tags.length; i >= 0; i--) { if (tags[i] && tags[i].getAttribute('src') != null && tags[i].getAttribute('src').indexOf(filename) != -1); tags[i].parentNode.removeChild(tags[i]); } }
     function loadsplide() {
-        //time wasted on splide: 6 hours
+        //time wasted on splide: 9 hours
         if (document.querySelector('#splidejsid')) {
             setTimeout(() => {
                 new Splide('.splide', {
@@ -27,7 +26,8 @@
                 }).mount();
             }, delay);
             //wait for script to load, note for later: change from settimeout to something more "logical"
-            //update: why the ** does this fix it??
+            //update: why the ** does this fix it?? 
+            //set delay to 0 ms
         } else {
             var a = document.createElement('script');
             a.setAttribute('src', '/lib/posts/slide.js');
@@ -310,7 +310,7 @@
                     <section class="mb-5" style=" width:100%;overflow-wrap: break-word;overflow:hidden;padding-top:0%" postcontent>
                         <style>
                         #post_body_1 > * {
-                            font-size:16px
+                            font-size:14px
                         }
                         </style>
                         <div class="fs1">
@@ -579,16 +579,12 @@
                 .outer-comment ul {
                 padding-inline-start: 1rem;
                 }
-                .outer-comment ul ul {
-                padding-inline-start: 0;
-                }
                 .outer-comment > li > div {
-                border-left: 2px solid hsl(220, 100%, 60%);
+                border-left: 2px dotted hsl(220, 100%, 60%);
                 }
                 .outer-comment > li li > div {
-                border-left: 2px solid hsl(40, 100%, 60%);
+                border-left: 2px dotted hsl(40, 100%, 60%);
                 }
-    
                 span.commet-row-label {
                 font-style: italic;
                 }
@@ -667,8 +663,6 @@
                             }
                             loadsplide()
                         }
-                    } else {
-                        //  document.querySelector('#splidetracker').remove()
                     }
                 }
                 if (pjson.auth === true) {
@@ -967,6 +961,7 @@
             self.append = element => { element.appendChild(self.element); return self; }
             return self;
         };
+        
         ((document, window) => {
             "use strict";
             const lang = {
@@ -1003,16 +998,50 @@
                 listReplies(item, data, $reply);
                 buildcnd(item.id, item.auth, item.parent_id, item)
             }
+            var end = 0;
+            var started = 1;
+            var cc = 0;
+            listComment();
+            document.getElementById("output").insertAdjacentHTML('afterend','<button class="submit_com" id="cmtloader">Load more Comments</button>')
+            document.getElementById('cmtloader').addEventListener('click',listComment)
             function listComment() {
-                fetch('/api/v1/?k=postcomments&pid=' + post_id)
+                if (end === 1) {
+                    return;
+                }
+                started = 0;
+                fetch('/api/v1/?k=postcomments&pid=' + post_id+ "&nav="+cc)
                     .then(response => {
-                        $list.html("");
                         response.json().then(data => {
                             data.forEach(comment => {
                                 if (comment.parent_id == 0) {
                                     newComment(comment, data);
                                 }
+                                if (!document.querySelector('#comment-'+comment.id)) {
+                                    try {
+                                        let template = replaceTemplate(comment.id, comment.name, comment.date, comment.comment, comment.parent_id, '', comment.isOP);
+                                        var a = document.querySelector('#comment-'+comment.parent_id+'').parentElement.querySelector('ul')
+                                        const $item = el("li").new().html(template).append(a);
+                                        const $reply = el('ul').new().append($item.node());
+                                        listReplies(item, data, $reply);
+                                        buildcnd(comment.id, comment.auth, comment.parent_id, comment)
+                                    } catch (error) {
+                                        //SKIP :D
+                                        //if commment-REPLY is not found, build the comment REPLY. this is only for replies (allows for pagination and half loading (i.e. 'couldnt find child so ill build it my self'))
+                                    }
+                                }
+                                if (comment.end === true) {
+                                    end = 1;
+                                    document.getElementById('cmtloader').style.display = 'none'
+                                    document.getElementById('cmtloader').setAttribute('disabled',true)
+                                }
                             });
+                            if (data.length < 49) {
+                                end = 1;
+                                document.getElementById('cmtloader').style.display = 'none'
+                                document.getElementById('cmtloader').setAttribute('disabled',true)
+                            }
+                            started = 1;
+                            cc++;
                             document.getElementById("commentloader").style.display = "none"
                         });
                     }).catch(error => {
@@ -1030,12 +1059,9 @@
             function listReplies(parent, data, list) {
                 data.forEach(comment => {
                     if (parent.id == comment.parent_id) {
-
                         let template = replaceTemplate(comment.id, comment.name, comment.date, comment.comment, comment.parent_id, parent.name, comment.isOP);
-
                         const $item = el("li").new().html(template).append(list.node());
                         const $reply = el('ul').new().append($item.node());
-
                         listReplies(comment, data, $reply);
                         buildcnd(comment.id, comment.auth, comment.parent_id, comment)
                     }
@@ -1059,8 +1085,6 @@
                 return formData;
             }
             const submitHandler = e => {
-                console.log("2")
-
                 e.preventDefault();
                 e.stopPropagation();
                 let $comment = el("#comment").node();
@@ -1070,7 +1094,6 @@
                 let origContent = $submit.value;
                 $submit.setAttribute("disabled", true);
                 $submit.value = lang.s;
-                console.log("here")
                 $message.css().remove('msg-success');
                 $message.css().remove('msg-error');
                 $message.html("");
@@ -1111,7 +1134,37 @@
                 e.preventDefault();
                 let id = e.target.dataset.id;
                 el('#commentId').node().value = id;
-                el("#comment").node().focus();
+               // el("#comment").node().focus();
+                var replydata = `
+                <!-- proof of concept -->
+                <form id="comment-reply${id}" style="
+                margin: 0;
+                /* flex-direction: row; */
+                align-items: center;
+            ">
+                                <div class="input-row" style="
+                width: 100%;
+                height: 36px;
+                margin-bottom: 12px;
+                margin-top: 4px;
+            ">
+                                  <textarea class="input-field input-area form-control" type="text" name="comment" id="comment" placeholder="Reply to NRRINC" style="/* min-height:110px; */resize: vertical;height: 100%;"></textarea>
+                                </div>
+                                
+                                <div style="/* padding-top: 5px; */display: flex;/* justify-content: flex-end; *//* width: 10%; */margin-left: auto;"> 
+                                
+                                  <input type="submit" class="submit_com btn-submit" value="Send" style="float:right;margin-top: auto;margin-top: 4px;margin-bottom: 12px;margin-left: auto;" id="addComment_d">
+                                </div>
+                              </form>
+                              <!-- proof of concept -->
+                              `
+                              document.querySelector('#comment-'+id).parentElement.querySelector('ul').insertAdjacentHTML('afterbegin',replydata)
+                              document.querySelector('#comment-reply'+id).addEventListener('submit',function(e) {
+                                  e.preventDefault()
+                                  this.remove();
+                                  return false;
+                              })
+
             }
             const replyOverHandler = e => {
                 if (!e.target.matches('.reply')) return;
@@ -1128,7 +1181,6 @@
             $output.addEventListener("click", replyHandler);
             $output.addEventListener("mouseover", replyOverHandler)
             $output.addEventListener("mouseout", replyOverHandler)
-            listComment();
         })(document, window);
     }
     function vmlike() {
