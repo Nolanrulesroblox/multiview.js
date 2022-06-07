@@ -33,4 +33,4 @@ end result expected:
 <br>
 <i>this is upcoming project Dino Portal</i>
 <br>
-![image](https://user-images.githubusercontent.com/54533608/167019049-33898489-7997-49ec-9bce-b04cf02c1115.png)
+![image](https://user-images.githubusercontent.com/54533608/172410729-29cdf0c7-6b37-4dd8-aa23-aa1eba5abc49.png)
