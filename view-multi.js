@@ -1,6 +1,7 @@
 (function () {
     window.showpost = showpost;
     var h = location.protocol + '//' + location.host + location.pathname
+        //this works for some stupid reason^
     function geturlparam(name, url = window.location.href) {
         name = name.replace(/[\[\]]/g, '\\$&');
         var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
@@ -99,7 +100,7 @@
         var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec;
         return time;
     }
-    async function viewcount(data) {
+    function viewcount(data) {
         var a = new XMLHttpRequest();
         a.open('POST', '/api/v1/?k=viewer&mode=v', true);
         a.send(JSON.stringify(data));
@@ -280,6 +281,16 @@
             if (this.readyState == 4 && this.status == 200) {
                 allowclick = false;
                 var pjson = JSON.parse(this.responseText)[0];
+                if (pjson.isloggedin === true) {
+                    var data = {
+                        'post_id': pjson.post_id,
+                        'time': (Date.now() / 1000),
+                        'viewtype': 1
+                    }
+                    var a = new XMLHttpRequest();
+                    a.open('POST', '/api/v1/?k=viewer&mode=h', true);
+                    a.send(JSON.stringify(data));
+                }
                 document.querySelector('._1VP69d9lk-Wk9zokOaylL').insertAdjacentHTML('afterend', '<div id="post_viewer" style="background-color: rgba(0, 0, 0, .5) !important;"></div>')
                 var pv = document.getElementById('post_viewer');
                 document.querySelector('._1VP69d9lk-Wk9zokOaylL').setAttribute("open", "true")
@@ -338,6 +349,13 @@
                     }
                     @media all and (max-width:559px) {
                             [load-post-id]{
+                                min-width: 100% ;
+                                max-width: 100% ;
+                                width: 100% ;
+                            }
+                            ._CmxRiim30CrxSPL{
+                                min-width: 100% ;
+                                max-width: 100% ;
                                 width: 100% ;
                             }
                     } 
@@ -479,6 +497,45 @@
               <div class="col-md-12">
               <div class="minid2">
                 <div class="comment-form-container">
+                    <style>
+                    .CommentsPageTools__comment {
+                        -ms-flex-align: center;
+                        align-items: center;
+                        display: -ms-flexbox;
+                        display: flex;
+                        -ms-flex-flow: row nowrap;
+                        flex-flow: row nowrap;
+                        padding-top: 8px;
+                        width: 100%
+                    }
+                    .CommentsPageTools__userIcon {
+                        overflow: hidden;
+                        text-indent: 100%;
+                        white-space: nowrap;
+                        border-radius: 50%;
+                        height: 24px;
+                        margin-right: 8px;
+                        width: 24px
+                    }
+                    .CommentsPageTools__reply {
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        border: 1px solid transparent;
+                        border-radius: 15px;
+                        box-sizing: border-box;
+                        -ms-flex: 1;
+                        flex: 1;
+                        font-size: 14px;
+                        height: 30px;
+                        line-height: 17px;
+                        padding: 0 8px;
+                        text-align: left
+                    }
+                    </style>
+                    <div class="CommentsPageTools__comment">
+
+                    </div>
                   <form id="frm-comment">
                     <div class="input-row">
                       <textarea class="input-field input-area form-control" type="text" name="comment" id="comment" placeholder="Add Public Comment" style="min-height:110px;resize: vertical;"></textarea>
@@ -494,7 +551,7 @@
                     </div>
                   </form>
                 </div>
-                <!--<div></div>-->
+                <div></div>
                 </div>
     
                 <div id="commentloader" style="border: 1px solid #f3f3f3; border-radius: 50%; border-top: 1px solid #1696e1; width: 52px; height: 52px; animation: spin 0.75s linear infinite; animation-timing-function: linear; display: flex; margin-left: auto; margin-right: auto;"></div>
@@ -560,6 +617,8 @@
                     border-top: #e0dfdf 1px solid;
                     padding: 0px 10px 0px 10px;
                     border-right: #e0dfdf 1px solid;
+                    display:flex;
+                    flex-direction: column;
                 }
                 .comment-active {
                 background-color: hsl(60, 100%, 95%);
@@ -580,10 +639,10 @@
                 padding-inline-start: 1rem;
                 }
                 .outer-comment > li > div {
-                border-left: 2px dotted hsl(220, 100%, 60%);
+                border-left: 1px solid hsl(220, 100%, 60%);
                 }
                 .outer-comment > li li > div {
-                border-left: 2px dotted hsl(40, 100%, 60%);
+                border-left: 1px solid hsl(40, 100%, 60%);
                 }
                 span.commet-row-label {
                 font-style: italic;
@@ -597,20 +656,23 @@
                 }
                 .comment-text {
                 margin: 0px 0px;
+                display:flex;
+
                 }
                 .reply {
-                background: #f2f2f2;
-                color: #667;
+                color: #0043ff;
                 text-decoration: none;
                 display: inline-block;
                 border-radius: 4px;
                 }
                 .btn-reply {
-                font-size: 0.8em;
-                text-decoration: underline;
-                color: #888787;
-                cursor:pointer;
-                font-weight:900;
+    font-size: 14px;
+    text-decoration: none !important;
+    color: #888787 !important;
+    cursor: pointer;
+    font-weight: 900;
+    line-height: 20px;
+    display: flex;
                 }
     
                 #comment-message {
@@ -638,6 +700,38 @@
                 document.getElementById('cvh').insertAdjacentHTML('afterbegin', comment);
                 document.querySelector(`[elike-id='${pjson.post_id}']`).addEventListener("click", vmlike)
                 comments(post_id)
+                if (pjson.isloggedin == true) {
+                    /*
+                    var comment_loa = `
+                    <img alt="${pjson.self_username} avatar" class="CommentsPageTools__userIcon " src="${pjson.self_icon}">
+                    <button class="CommentsPageTools__reply" id="load-commenter">Leave a comment</button>`
+                    document.getElementById('frm-comment').style.display = 'none'
+                    document.querySelector('.CommentsPageTools__comment').insertAdjacentHTML('afterbegin',comment_loa)
+                    document.getElementById('load-commenter').addEventListener('click',function() {
+                        if (document.getElementById('frm-comment').style.display === 'flex') {
+                            document.getElementById('frm-comment').style.display = 'none'
+                        } else {
+                            document.getElementById('frm-comment').style.display = 'flex'
+                        }
+                    })
+                    */
+                }else{
+                    document.getElementById('frm-comment').style.display = 'none'
+                    data4 = `
+                    <li>
+                    <a style=" text-decoration: none !important; cursor: pointer;color:black" href="/?login=true">
+                    <div class="comment-row" id="comment-0" style="border-left-style:dashed;">							
+                        <div class="comment-info" style="display: flex; align-items: center;"><span class="posted-by" style="display:flex;color:red">System </span> <span style="margin-left:4px;margin-right:4px;display:flex;">·</span>  <span style="margin-left: 4px; margin-right: 4px; display: flex; color: red; font-weight: 700;">Admin</span> <span style="margin-left:4px;margin-right:4px;display:flex;">·</span> <span class="posted-at" style="display:flex;color: black;">Now</span><span class="icon icon-3dot _3DVrpDrMM9NLT6TlsTUMxC" style="display: flex;margin-left: auto;"></span></div>
+                        <div class="dropdown-content" style="display: none; position: absolute; background-color: #f1f1f1; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1;right:0;">
+                        </div>
+                        <div class="comment-text" style="color:black">Login to Leave a Comment.</div>
+                        <div><a class="btn-reply">&nbsp;</a></div>
+                    </div>
+                    </a>
+                    </li>
+                    `
+                    document.querySelector('#output > .outer-comment').insertAdjacentHTML('afterbegin',data4)
+                }
                 if (metadata && metadata.hasOwnProperty('m3u8')) {
                     var imgjson = pjson.images.split(',');
                     buildvideo(imgjson[0], metadata.m3u8)
@@ -713,14 +807,14 @@
                     document.querySelector(`._CmxRiim30CrxSPL`).style.marginBottom = document.querySelector(`[load-post-id='${pjson.post_id}']`).scrollHeight + 60 + 'px'
                     var postdata = {
                         'post_id': pjson.post_id,
-                        'time': Date.now(),
+                        'time': (Date.now() / 1000),
                         'viewtype': 1
                     }
                     viewcount(postdata);
                 }, 50);
             }
         }
-        postjson.open('GET', '/api/v1/?k=loadpid&pid=' + post_id + '&pagetype=trending&currenttime=' + Date.now(), true);
+        postjson.open('GET', '/api/v1/?k=loadpid&pid=' + post_id + '&pagetype=trending&currenttime=' + (Date.now() / 1000), true);
         postjson.send();
     }
     function clear_menus(event) {
@@ -929,19 +1023,22 @@
                 home.insertAdjacentHTML('beforeend', hide)
                 var hidequery = document.querySelector(`[hide-id='${id}']`);
                 hidequery.addEventListener('click', function (e) {
-                    var xml = new XMLHttpRequest();
-                    xml.open('POST', '/fake200.php')
-                    q = new FormData();
                     if (home.parentElement.parentElement.querySelector('ul').style.display === 'none') {
                         home.parentElement.parentElement.querySelector('ul').style.display = 'block'
                         hidequery.innerText = "Collapse thread"
-                        q.append('show', id)
+                        document.querySelector("#comment-"+id+" a.btn-reply").innerText = "Reply"
+                        document.querySelector('[comment="'+id+'"]').querySelector('.comment-text').parentElement.style.cssText = ""
+                        document.querySelector('[comment="'+id+'"]').querySelector('.btn-reply').style.cssText = ""
                     } else {
+                        document.querySelector('[comment="'+id+'"]').querySelector('.comment-text').parentElement.style.flexDirection = 'row-reverse'
+                        document.querySelector('[comment="'+id+'"]').querySelector('.comment-text').parentElement.style.display = 'flex'
+                        document.querySelector('[comment="'+id+'"]').querySelector('.comment-text').parentElement.style.marginRight = 'auto'
+                        document.querySelector('[comment="'+id+'"]').querySelector('.comment-text').parentElement.style.justifyContent = 'flex-end'
+                        document.querySelector('[comment="'+id+'"]').querySelector('.btn-reply').style.marginRight = '8px'
                         home.parentElement.parentElement.querySelector('ul').style.display = 'none'
                         hidequery.innerText = "Expand thread"
-                        q.append('hide', id)
+                        document.querySelector("#comment-"+id+" a.btn-reply").innerText = "Reply ("+(document.querySelector("#comment-"+id).parentElement.querySelectorAll('.comment-row').length - 1)+" hidden)"
                     }
-                    xml.send(q)
                 })
             }
             document.querySelector(`[comment-nav-id='${id}']`).addEventListener("click", function (e) {
@@ -959,6 +1056,7 @@
             self.css = () => { return self.node().classList; }
             self.html = content => { if (content === null) return self.element; self.element.innerHTML = content; return self; }
             self.append = element => { element.appendChild(self.element); return self; }
+            self.connecter = id => {return self.element.setAttribute('comment',id)}
             return self;
         };
         
@@ -978,22 +1076,25 @@
             function formatDatetime(datetime) {
                 return datetime.replace(/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/, '$3. $2. $1 $4:$5');
             }
-            function replaceTemplate(id, name, date, text, parent, parentName = "", isOP) {
-                let OPa = (isOP === true) ? ` <span style="margin-left:4px;margin-right:4px;display:flex;color:blue;">OP</span> <span style="margin-left:4px;margin-right:4px;display:flex;">&middot;</span> ` : ''
-                let reply = (parent > 0) ? `<a href="#comment-${parent}" class="reply" data-id="${parent}">↳ ${parentName}</a> ` : "";
+            function replaceTemplate(id, name, date, text, parent, parentName = "", isOP,icon) {
+                let OPa = (isOP === true) ? ` <span style="margin-left:4px;margin-right:4px;display:flex;color:#0000FF;">OP</span> <span style="margin-left:4px;margin-right:4px;display:flex;">&middot;</span> ` : ''
+                let reply = (parent > 0) ? `<a href="#comment-${parent}" class="reply" data-id="${parent}">@${parentName}</a> ` : "";
                 let template = `<div class='comment-row' id="comment-${id}">							
-                                    <div class='comment-info' style="display: flex; align-items: center;"><span class='posted-by' style="display:flex;">${name}</span> <span style="margin-left:4px;margin-right:4px;display:flex;">&middot;</span> ${OPa}<span class='posted-at' style="display:flex;">${formatDatetime(date)}</span><span class="icon icon-3dot _3DVrpDrMM9NLT6TlsTUMxC" style="display: flex;margin-left: auto;" comment-nav-id="${id}"></span></div>
+                                    <div class='comment-info' style="display: flex; align-items: center;"><div><img src="${icon}" style=" height: 26px; border-radius: 20px; margin-right: 6px; "></div><span class='posted-by' style="display:flex;">${name}</span> <span style="margin-left:4px;margin-right:4px;display:flex;">&middot;</span> ${OPa}<span class='posted-at' style="display:flex;">${formatDatetime(date)}</span><span class="icon icon-3dot _3DVrpDrMM9NLT6TlsTUMxC" style="display: flex;margin-left: auto;" comment-nav-id="${id}"></span></div>
                                     <div comment-nav-id-drop="${id}" class="dropdown-content" style="display: none; position: absolute; background-color: #f1f1f1; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1;right:0;">
                                     
                                     </div>
+                                    <div>
                                     <div class='comment-text'>${reply}${text}</div>
                                     <div><a class='btn-reply' data-id="${id}">${lang.r}</a></div>
+                                    </div>
                                 </div>`;
                 return template;
             }
             function newComment(item, data) {
-                let template = replaceTemplate(item.id, item.name, item.date, item.comment, item.parent_id, '', item.isOP);
+                let template = replaceTemplate(item.id, item.name, item.date, item.comment, item.parent_id, '', item.isOP,item.user_icon);
                 const $item = el("li").new().html(template).append($list.node());
+                $item.connecter(item.id)
                 const $reply = el('ul').new().append($item.node());
                 listReplies(item, data, $reply);
                 buildcnd(item.id, item.auth, item.parent_id, item)
@@ -1013,20 +1114,23 @@
                     .then(response => {
                         response.json().then(data => {
                             data.forEach(comment => {
-                                if (comment.parent_id == 0) {
-                                    newComment(comment, data);
-                                }
                                 if (!document.querySelector('#comment-'+comment.id)) {
-                                    try {
-                                        let template = replaceTemplate(comment.id, comment.name, comment.date, comment.comment, comment.parent_id, '', comment.isOP);
-                                        var a = document.querySelector('#comment-'+comment.parent_id+'').parentElement.querySelector('ul')
-                                        const $item = el("li").new().html(template).append(a);
-                                        const $reply = el('ul').new().append($item.node());
-                                        listReplies(item, data, $reply);
-                                        buildcnd(comment.id, comment.auth, comment.parent_id, comment)
-                                    } catch (error) {
-                                        //SKIP :D
-                                        //if commment-REPLY is not found, build the comment REPLY. this is only for replies (allows for pagination and half loading (i.e. 'couldnt find child so ill build it my self'))
+                                    if (comment.parent_id == 0) {
+                                        newComment(comment, data);
+                                    }
+                                    if (!document.querySelector('#comment-'+comment.id)) {
+                                        try {
+                                            let template = replaceTemplate(comment.id, comment.name, comment.date, comment.comment, comment.parent_id, '', comment.isOP,comment.user_icon);
+                                            var a = document.querySelector('#comment-'+comment.parent_id+'').parentElement.querySelector('ul')
+                                            const $item = el("li").new().html(template).append(a);
+                                            $item.connecter(item.id)
+                                            const $reply = el('ul').new().append($item.node());
+                                            listReplies(item, data, $reply);
+                                            buildcnd(comment.id, comment.auth, comment.parent_id, comment)
+                                        } catch (error) {
+                                            //SKIP :D
+                                            //if commment-REPLY is not found, build the comment REPLY. this is only for replies (allows for pagination and half loading (i.e. 'couldnt find child so ill build it my self'))
+                                        }
                                     }
                                 }
                                 if (comment.end === true) {
@@ -1059,7 +1163,7 @@
             function listReplies(parent, data, list) {
                 data.forEach(comment => {
                     if (parent.id == comment.parent_id) {
-                        let template = replaceTemplate(comment.id, comment.name, comment.date, comment.comment, comment.parent_id, parent.name, comment.isOP);
+                        let template = replaceTemplate(comment.id, comment.name, comment.date, comment.comment, comment.parent_id, parent.name, comment.isOP,comment.user_icon);
                         const $item = el("li").new().html(template).append(list.node());
                         const $reply = el('ul').new().append($item.node());
                         listReplies(comment, data, $reply);
@@ -1194,7 +1298,7 @@
             return;
         }
         var request = new XMLHttpRequest();
-        request.open('POST', '/api/v1/?k=like&time' + Date.now(), true);
+        request.open('POST', '/api/v1/?k=like&time' + (Date.now() / 1000), true);
         var formData = new FormData();
         formData.append('action', `${action}`);
         formData.append('post_id', `${post_id}`);
