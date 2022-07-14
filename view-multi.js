@@ -281,7 +281,7 @@
             if (this.readyState == 4 && this.status == 200) {
                 allowclick = false;
                 var pjson = JSON.parse(this.responseText)[0];
-                if (pjson.isloggedin === true) {
+                if (pjson.self.isloggedin === true) {
                     var data = {
                         'post_id': pjson.post_id,
                         'time': (Date.now() / 1000),
@@ -294,7 +294,7 @@
                 document.querySelector('._1VP69d9lk-Wk9zokOaylL').insertAdjacentHTML('afterend', '<div id="post_viewer" style="background-color: rgba(0, 0, 0, .5) !important;"></div>')
                 var pv = document.getElementById('post_viewer');
                 document.querySelector('._1VP69d9lk-Wk9zokOaylL').setAttribute("open", "true")
-                window.history.pushState(pjson.title + ' - Dino Portal', pjson.title + ' - Dino Portal', `/?p=${pjson.post_id}`);
+                window.history.pushState(pjson.title + ' - The Forum', pjson.title + ' - The Forum', `/?p=${pjson.post_id}`);
                 //override because dont feel like enabling beta on every single testing device. sorry, but lazy.
                 if (pjson.type === 'image') {
                     splide_data = `
@@ -309,10 +309,10 @@
                     splide_data = `
                 <div id="splidelist"></div>`
                 }
-                if (pjson.liked === true) {
-                    var likemod = '<div style="display: flex; -ms-flex-align: center; align-items: center; display: -ms-flexbox; cursor: pointer;margin-right:4px" btn="like"><span elike-id="' + pjson.post_id + '" like-id="' + pjson.post_id + '" data-like="unlike" class="JrpAzXnCHrDk" style="-ms-flex-align: center; align-items: center; display: -ms-flexbox; line-height: 20px;display: flex;"><i class="like-btn JrpAzXnCHrDk" data-id="' + pjson.server_pid + '" style=""><i class="site-icon-s JrpAzXnCHrDk" style="font-size: 20px;line-height: 20px;color:#1696e1;line-height: 16px; margin-right: 6px;margin-left: 4px;"></i></i> <span class="likes JrpAzXnCHrDk" style="margin-left: 2px; display: inline-block; line-height: 1; text-transform: capitalize; vertical-align: middle; color: #878A8C; font-weight: 700; font-size: 12px;">' + pjson.likes + '</span></span></div>'
+                if (pjson.like.liked === true) {
+                    var likemod = '<div style="display: flex; -ms-flex-align: center; align-items: center; display: -ms-flexbox; cursor: pointer;margin-right:4px" btn="like"><span elike-id="' + pjson.post_id + '" like-id="' + pjson.post_id + '" data-like="unlike" class="JrpAzXnCHrDk" style="-ms-flex-align: center; align-items: center; display: -ms-flexbox; line-height: 20px;display: flex;"><i class="like-btn JrpAzXnCHrDk" data-id="' + pjson.gen.SSR_id+ '" style=""><i class="site-icon-s JrpAzXnCHrDk" style="font-size: 20px;line-height: 20px;color:#1696e1;line-height: 16px; margin-right: 6px;margin-left: 4px;"></i></i> <span class="likes JrpAzXnCHrDk" style="margin-left: 2px; display: inline-block; line-height: 1; text-transform: capitalize; vertical-align: middle; color: #878A8C; font-weight: 700; font-size: 12px;">' + pjson.like.likes + '</span></span></div>'
                 } else {
-                    var likemod = '<div style="display: flex; -ms-flex-align: center; align-items: center; display: -ms-flexbox; cursor: pointer;margin-right:4px" btn="like"><span elike-id="' + pjson.post_id + '" like-id="' + pjson.post_id + '"  data-like="like" class="JrpAzXnCHrDk" style="-ms-flex-align: center; align-items: center; display: -ms-flexbox; line-height: 20px;display: flex;"><i class="like-btn JrpAzXnCHrDk" data-id="' + pjson.server_pid + '" style=""><i class="site-icon-s JrpAzXnCHrDk" style="font-size: 20px;line-height: 20px;color:unset;line-height: 16px; margin-right: 6px;margin-left: 4px;color:#878A8C;"></i></i> <span class="likes JrpAzXnCHrDk" style="margin-left: 2px; display: inline-block; line-height: 1; text-transform: capitalize; vertical-align: middle; color: #878A8C; font-weight: 700; font-size: 12px;">' + pjson.likes + '</span></span></div>'
+                    var likemod = '<div style="display: flex; -ms-flex-align: center; align-items: center; display: -ms-flexbox; cursor: pointer;margin-right:4px" btn="like"><span elike-id="' + pjson.post_id + '" like-id="' + pjson.post_id + '"  data-like="like" class="JrpAzXnCHrDk" style="-ms-flex-align: center; align-items: center; display: -ms-flexbox; line-height: 20px;display: flex;"><i class="like-btn JrpAzXnCHrDk" data-id="' + pjson.gen.SSR_id + '" style=""><i class="site-icon-s JrpAzXnCHrDk" style="font-size: 20px;line-height: 20px;color:unset;line-height: 16px; margin-right: 6px;margin-left: 4px;color:#878A8C;"></i></i> <span class="likes JrpAzXnCHrDk" style="margin-left: 2px; display: inline-block; line-height: 1; text-transform: capitalize; vertical-align: middle; color: #878A8C; font-weight: 700; font-size: 12px;">' + pjson.like.likes + '</span></span></div>'
                 }
                 if (pjson.metadata) {
                     var metadata = JSON.parse(pjson.metadata)
@@ -421,8 +421,8 @@
                     <div class="css-1dbjc4n r-18u37iz" style="cursor:auto;">
                         <div class="ad74e8a5" style="border-radius: 25px;width: 100%;box-shadow:none;border:none;">
                             <div class="css-1dbjc4n r-1awozwy r-1hwvwag r-18kxxzh r-1b7u577">
-                                <a href="/u/${pjson.author}">
-                                    <img src="${pjson.picon}" alt="Name"
+                                <a href="/u/${pjson.author.name}" user_name="${pjson.author.name}" user_id="${pjson.author.id}" user_icon="${pjson.author.icon}">
+                                    <img src="${pjson.author.icon}" alt="Name"
                                         class="avatar">
                                 </a>
                             </div>
@@ -438,7 +438,7 @@
                                             style="color: rgb(129, 131, 132);">Posted by</span>
                                         <div class="_2mHuuvyV9doV3zwbZPtIPG"><a
                                                 class="_2tbHP6ZydRpjI44J3syuqC  _23wugcdiaj44hdfugIAlnX oQctV4n0yUb0uiHDdGnmE"
-                                                href="/u/${pjson.author}/" style="color: rgb(129, 131, 132);margin: 0 4px;">${pjson.author}</a>
+                                                href="/u/${pjson.author.name}/" style="color: rgb(129, 131, 132);margin: 0 4px;">${pjson.author.name}</a>
                                             <div id="UserInfoTooltip--t3_s95h3k--lightbox"></div>
                                         </div><span><span></span></span><a class="_3jOxDPIQ0KaOWpzvSQo-1s"
                                             href=""
@@ -446,7 +446,8 @@
                                     </div>
                                     <div class="_2wFk1qX4e1cxk8Pkw1rAHk"></div>
                                     <div class="_3XoW0oYd5806XiOr24gGdb"></div>
-                                    <div style="margin-left: auto; font-weight: 900; font-size: 20px; color: #c1c1c1; margin-right: 4px;cursor:pointer;" onclick="showpost()">X</div>
+                                    <div style="font-weight: 900;color: #c1c1c1;margin-right: 4px;font-size: 16px;cursor: pointer;box-sizing: content-box;width: 2em;height: 1em;padding: .25em 0.25em;color: #000;background: transparent url(&quot;data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e&quot;) center/1em auto no-repeat;border: 0;border-radius: .25rem;opacity: .5;margin-left: auto;" onclick="showpost()"></div>
+                                    
                                 </div>
                                 </div>
                                 <h1 class="fw-bolder" style="margin-top:0.5rem">${pjson.title}</h1>
@@ -664,6 +665,7 @@
                 text-decoration: none;
                 display: inline-block;
                 border-radius: 4px;
+                margin-right:8px
                 }
                 .btn-reply {
     font-size: 14px;
@@ -700,7 +702,7 @@
                 document.getElementById('cvh').insertAdjacentHTML('afterbegin', comment);
                 document.querySelector(`[elike-id='${pjson.post_id}']`).addEventListener("click", vmlike)
                 comments(post_id)
-                if (pjson.isloggedin == true) {
+                if (pjson.self.isloggedin == true) {
                     /*
                     var comment_loa = `
                     <img alt="${pjson.self_username} avatar" class="CommentsPageTools__userIcon " src="${pjson.self_icon}">
@@ -759,7 +761,7 @@
                         }
                     }
                 }
-                if (pjson.auth === true) {
+                if (pjson.self.auth === true) {
                     if (geturlparam('edit')) {
                         window.history.pushState(pjson.title + ' - Dino Portal', pjson.title + ' - Dino Portal', `/?p=${pjson.post_id}&edit=1`);
                         build_edit(pjson)
@@ -791,12 +793,23 @@
                 })
                 disablehrefs()
                 document.querySelector('.vmshare').addEventListener('click', async function () {
-                    const shareData = {
-                        title: `${pjson.title} - Dinoportal.com`,
-                        text: `${pjson.author} is talking about ${pjson.title} on Dinoportal.com`,
-                        url: `https://dinoportal.com/p/${pjson.post_id}`
+                    let platform = navigator?.userAgentData?.platform || navigator?.platform || ''
+                    var a = new XMLHttpRequest();
+                    a.open('GET', '/api/v1/?k=userdata&user=self')
+                    a.send()
+                    a.onreadystatechange = async function () {
+                        if (this.readyState == 4 && this.status == 200) {
+                            const q = JSON.parse(this.responseText)
+                            const shareData = {
+                                title: `${pjson.title} - Dinoportal.com`,
+                                text: `${pjson.author.name} is talking about ${pjson.title} on Dinoportal.com`,
+                                //url: `https://dinoportal.com/p/${pjson.post_id}`
+                                url: `https://nrrinc.net?p=${pjson.post_id}&ref=s&rp=${platform}&refid=`+pjson.self.self_id
+                            }
+                            await navigator.share(shareData)
+                        }
                     }
-                    await navigator.share(shareData)
+
                 })
                 pv.style.display = "flex";
                 document.querySelector('[data-postalert]').style.width = (document.querySelector(`[load-post-id="${pjson.post_id}"] > header`).offsetWidth + 8) + "px"
@@ -1030,7 +1043,7 @@
                         document.querySelector('[comment="'+id+'"]').querySelector('.comment-text').parentElement.style.cssText = ""
                         document.querySelector('[comment="'+id+'"]').querySelector('.btn-reply').style.cssText = ""
                     } else {
-                        document.querySelector('[comment="'+id+'"]').querySelector('.comment-text').parentElement.style.flexDirection = 'row-reverse'
+                        document.querySelector('[comment="'+id+'"]').querySelector('.comment-text').parentElement.style.flexDirection = 'column'
                         document.querySelector('[comment="'+id+'"]').querySelector('.comment-text').parentElement.style.display = 'flex'
                         document.querySelector('[comment="'+id+'"]').querySelector('.comment-text').parentElement.style.marginRight = 'auto'
                         document.querySelector('[comment="'+id+'"]').querySelector('.comment-text').parentElement.style.justifyContent = 'flex-end'
@@ -1211,7 +1224,6 @@
                             $message.html(lang.a);
                             el("#comment").node().value = "";
                             el("#commentId").node().value = "";
-
                             listComment();
                         } else {
                             $message.css().add('msg-error');
@@ -1236,36 +1248,60 @@
             const replyHandler = e => {
                 if (!e.target.matches('.btn-reply')) return;
                 e.preventDefault();
+
                 let id = e.target.dataset.id;
                 el('#commentId').node().value = id;
                // el("#comment").node().focus();
+               if (document.getElementById('comment-reply-'+id)) {
+                document.getElementById('comment-reply-'+id).remove()
+                return;
+                }
                 var replydata = `
                 <!-- proof of concept -->
-                <form id="comment-reply${id}" style="
-                margin: 0;
-                /* flex-direction: row; */
-                align-items: center;
-            ">
-                                <div class="input-row" style="
-                width: 100%;
-                height: 36px;
-                margin-bottom: 12px;
-                margin-top: 4px;
-            ">
-                                  <textarea class="input-field input-area form-control" type="text" name="comment" id="comment" placeholder="Reply to NRRINC" style="/* min-height:110px; */resize: vertical;height: 100%;"></textarea>
-                                </div>
-                                
-                                <div style="/* padding-top: 5px; */display: flex;/* justify-content: flex-end; *//* width: 10%; */margin-left: auto;"> 
-                                
-                                  <input type="submit" class="submit_com btn-submit" value="Send" style="float:right;margin-top: auto;margin-top: 4px;margin-bottom: 12px;margin-left: auto;" id="addComment_d">
-                                </div>
+                            <form id="comment-reply-${id}" style="margin: 0; flex-direction: row; align-items: center; display: flex;">
+                                            <div class="input-row" style="width: 100%; height: 36px; margin-bottom: 12px; margin-top: 4px; display: flex;">
+                                                <input class="nrrinc-btn ghost fatter" type="text" name="comment" id="comment" placeholder="Reply to ${document.querySelector('#comment-'+id+ ' > .comment-info > .posted-by').innerText}" style="height: 36px; border-radius: 5px 0px 0px 5px; display: flex;width:100%;margin-right:0">
+                                                <button  class="btn-submit nrrinc-btn ghost fatter font-smaller" style="height: 36px; display: flex; margin: 0; border-radius: 0 0.25rem 0.25rem 0;" type="submit" id="addComment_d">Reply</button>
+                                            </div>
+                                            <div class="input-row">
+                                                <input type="hidden" name="token" value="">
+                                                <input type="hidden" name="comment_id" id="commentId" value="${id}">
+                                                <input class="input-field" type="text" name="name" id="name" placeholder="e" hidden="" value="bacon">
+                                            </div>
                               </form>
                               <!-- proof of concept -->
                               `
                               document.querySelector('#comment-'+id).parentElement.querySelector('ul').insertAdjacentHTML('afterbegin',replydata)
-                              document.querySelector('#comment-reply'+id).addEventListener('submit',function(e) {
-                                  e.preventDefault()
-                                  this.remove();
+                              document.querySelector('#comment-reply-'+id).addEventListener('submit',function(e) {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                let $comment = document.querySelector('#comment-reply-'+id+'> div > input')
+                                let $name = el("#name").node();
+                                if ($comment.value == "") { $comment.focus(); return; }
+                                if ($name.value == "") { $name.focus(); return; }
+                                $submit.setAttribute("disabled", true);
+                                $submit.value = lang.s;
+                                $message.css().remove('msg-success');
+                                $message.css().remove('msg-error');
+                                $message.html("");
+                                fetch("/api/v1/?k=submitcomment&pid=" + post_id, {
+                                    method: 'POST',
+                                    body: getFormData(el('#comment-reply-'+id).node()),
+                                })
+                                    .then(response => {
+                                        if (response.ok) {
+                                            $message.css().add('msg-success');
+                                            $message.html(lang.a);
+                                            document.location.reload()
+                                        } else {
+                                            $message.css().add('msg-error');
+                                            $message.html(lang.e);
+                                            return false;
+                                        }
+                                    }).catch(error => {
+                                        // Handle error
+                                    });
+
                                   return false;
                               })
 
