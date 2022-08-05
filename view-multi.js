@@ -1,5 +1,6 @@
 (function () {
     window.showpost = showpost;
+    let userdata; //all user data.
     var h = location.protocol + '//' + location.host + location.pathname
         //this works for some stupid reason^
     function geturlparam(name, url = window.location.href) {
@@ -10,13 +11,33 @@
         if (!results[2]) return '';
         return decodeURIComponent(results[2].replace(/\+/g, ' '));
     }
+    function httpRequest(address, reqType, asyncProc) {
+        //trying new HTTPrequest 'global - multiuse - crossplatform function '
+        var req = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+        if (asyncProc) { 
+          req.onreadystatechange = function() { 
+            if (this.readyState == 4) {
+              asyncProc(this);
+            } 
+          };
+        } else { 
+          req.timeout = 4000; 
+        }
+        req.open(reqType, address, !(!asyncProc));
+        req.send();
+        return req;
+      }
+    httpRequest('/api/v1/?k=userdata&user=self','GET',function(e) {
+        userdata = JSON.parse(e.responseText)
+    })
     if (geturlparam('p')) {
         showpost('loader', geturlparam('p'))
     }
     var delay = 0
     var t = document.title
     function loadsplide() {
-        //time wasted on splide: 9 hours
+        //time wasted on splide: 11 hours
+        //i think its fixed this time, splide was running v1.2.5 when current is v4.07.
         if (document.querySelector('#splidejsid')) {
             setTimeout(() => {
                 new Splide('.splide', {
@@ -31,10 +52,10 @@
             //set delay to 0 ms
         } else {
             var a = document.createElement('script');
-            a.setAttribute('src', '/lib/posts/slide.js');
+            a.setAttribute('src', '/api/v1/cdn/splide.min.js');
             a.setAttribute('id', "splidejsid")
             document.body.appendChild(a);
-            document.body.insertAdjacentHTML('beforeend', '<link rel="stylesheet" href="/lib/posts/slide.css" type="text/css"/ id="splidecss">');
+            document.body.insertAdjacentHTML('beforeend', '<link rel="stylesheet" href="/api/v1/cdn/splide.min.css" type="text/css"/ id="splidecss">');
             a.onload = function () {
                 new Splide('.splide', {
                     autoHeight: true,
@@ -117,14 +138,12 @@
             var a = document.createElement('script');
             a.setAttribute('src', '/api/v1/cdn/plyr.js');
             a.setAttribute('id', "player_js")
-            a.setAttribute('integrity', 'sha384-uax8bmVz/F8mujhaWffZ88h+z0gLEpiA0cwr3YrDKKZ+067Gp0KNRvHbQkjLSUQj')
             a.setAttribute('crossorigin', 'anonymous')
             document.head.appendChild(a);
             document.head.insertAdjacentHTML('beforeend', '<link rel="stylesheet" href="/api/v1/cdn/plyr.css" />');
             var b = document.createElement('script');
             b.setAttribute('src', '/api/v1/cdn/hls.js');
             b.setAttribute('id', "player_hls")
-            b.setAttribute('integrity', 'sha384-FSscRoYqQx+aRysVdvMNt2wLcgFIMbYudcy01xVelD901vcXg5CmMoqAru3KgbEs')
             b.setAttribute('crossorigin', 'anonymous')
             document.head.appendChild(b);
             b.onload = function () {
@@ -219,6 +238,136 @@
 
         }
     }
+    function buildvideov2(array) {
+        console.log(array.server + array.code + '/track.vtt')
+        //dotdo: add SINGLE "build" request for all needed js/css.
+        var base = document.getElementById("splidelist")
+        const source = array.server + array.code + '/_.m3u8';
+        var markup = `<video id="player" playsinline controls data-poster="${array.server + array.code + '/thumbnail.jpg'}" crossorigin></video>`;
+        // var markup = `<video id="player" playsinline controls data-poster="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/Sintel.jpg" crossorigin></video>`;
+        base.insertAdjacentHTML('beforeend', markup)
+        if (!document.getElementById('player_js')) {
+            var a = document.createElement('script');
+            a.setAttribute('src', '/api/v1/cdn/plyr.js');
+            a.setAttribute('id', "player_js")
+            a.setAttribute('crossorigin', 'anonymous')
+            document.head.appendChild(a);
+            document.head.insertAdjacentHTML('beforeend', '<link rel="stylesheet" href="/api/v1/cdn/plyr.css" />');
+            var b = document.createElement('script');
+            b.setAttribute('src', '/api/v1/cdn/hls.js');
+            b.setAttribute('id', "player_hls")
+            b.setAttribute('crossorigin', 'anonymous')
+            document.head.appendChild(b);
+            b.onload = function () {
+                function updateQuality(newQuality) {
+                    if (newQuality === 0) {
+                        window.hls.currentLevel = -1; //Enable AUTO quality if option.value = 0
+                    } else {
+                        window.hls.levels.forEach((level, levelIndex) => {
+                            if (level.height === newQuality) {
+                                window.hls.currentLevel = levelIndex;
+                            }
+                        });
+                    }
+                }
+                //const source = m3u8;
+                const video = document.querySelector('#player');
+                const defaultOptions = {};
+                if (!Hls.isSupported()) {
+                    video.src = source;
+                } else {
+                    const hls = new Hls({
+                        maxMaxBufferLength: '15',
+                    });
+                    hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+                        const availableQualities = hls.levels.map((l) => l.height)
+                        const defaultOptions = {
+                            captions: {
+                                active: false,
+                                update: true,
+                                language: 'en'
+                            },
+                            raito: '16:9',
+                            previewThumbnails :{
+                                enabled: true,
+                                src: array.server + array.code + '/track.vtt' 
+                            },
+                            quality: {
+                                default: availableQualities[availableQualities.length - 1],
+                                options: availableQualities,
+                                forced: true,
+                                onChange: (e) => updateQuality(e),
+                            }
+                        }
+                        const player = new Plyr(video, defaultOptions);
+                        player.on('languagechange', () => {
+                            setTimeout(() => hls.subtitleTrack = player.currentTrack, 50);
+                        });
+                        document.querySelector('.plyr').style.minHeight = "444px"
+                        document.querySelector('.plyr').style.height = "444px"
+                        hls.attachMedia(video);
+                    })
+                    hls.loadSource(source);
+                    window.hls = hls;
+                }
+            }
+        } else {
+            setTimeout(() => {
+                function updateQuality(newQuality) {
+                    if (newQuality === 0) {
+                        window.hls.currentLevel = -1; //Enable AUTO quality if option.value = 0
+                    } else {
+                        window.hls.levels.forEach((level, levelIndex) => {
+                            if (level.height === newQuality) {
+                                window.hls.currentLevel = levelIndex;
+                            }
+                        });
+                    }
+                }
+                //const source = m3u8;
+                const video = document.querySelector('#player');
+                const defaultOptions = {};
+                if (!Hls.isSupported()) {
+                    video.src = source;
+                } else {
+                    const hls = new Hls({
+                        maxMaxBufferLength: '15',
+                    });
+                    hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+                        const availableQualities = hls.levels.map((l) => l.height)
+                        const defaultOptions = {
+                            captions: {
+                                active: false,
+                                update: true,
+                                language: 'en'
+                            },
+                            raito: '16:9',
+                            previewThumbnails :{
+                                enabled: true,
+                                src: array.server + array.code + '/track.vtt' 
+                            },
+                            quality: {
+                                default: availableQualities[availableQualities.length - 1],
+                                options: availableQualities,
+                                forced: true,
+                                onChange: (e) => updateQuality(e),
+                            }
+                        }
+                        const player = new Plyr(video, defaultOptions);
+                        player.on('languagechange', () => {
+                            setTimeout(() => hls.subtitleTrack = player.currentTrack, 50);
+                        });
+                        document.querySelector('.plyr').style.minHeight = "444px"
+                        document.querySelector('.plyr').style.height = "444px"
+                        hls.attachMedia(video);
+                    })
+                    hls.loadSource(source);
+                    window.hls = hls;
+                }
+            }, delay);
+
+        }
+    }
     function showpost(e, post_id, post_type, json) {
         if (e === '0') {
             showpost = function () { };
@@ -281,7 +430,7 @@
             if (this.readyState == 4 && this.status == 200) {
                 allowclick = false;
                 var pjson = JSON.parse(this.responseText)[0];
-                if (pjson.self.isloggedin === true) {
+                if (userdata.isloggedin === true) {
                     var data = {
                         'post_id': pjson.post_id,
                         'time': (Date.now() / 1000),
@@ -294,7 +443,7 @@
                 document.querySelector('._1VP69d9lk-Wk9zokOaylL').insertAdjacentHTML('afterend', '<div id="post_viewer" style="background-color: rgba(0, 0, 0, .5) !important;"></div>')
                 var pv = document.getElementById('post_viewer');
                 document.querySelector('._1VP69d9lk-Wk9zokOaylL').setAttribute("open", "true")
-                window.history.pushState(pjson.title + ' - The Forum', pjson.title + ' - The Forum', `/?p=${pjson.post_id}`);
+                window.history.pushState(pjson.title + ' - NRRINC', pjson.title + ' - NRRINC', `/?p=${pjson.post_id}`);
                 //override because dont feel like enabling beta on every single testing device. sorry, but lazy.
                 if (pjson.type === 'image') {
                     splide_data = `
@@ -321,7 +470,12 @@
                     <section class="mb-5" style=" width:100%;overflow-wrap: break-word;overflow:hidden;padding-top:0%" postcontent>
                         <style>
                         #post_body_1 > * {
-                            font-size:14px
+                            font-size:14px;
+                            margin-bottom:2px;
+                        }
+                        #post_body_1{
+                            margin-bottom:8px;
+                            margin-top:8px;
                         }
                         </style>
                         <div class="fs1">
@@ -554,7 +708,6 @@
                 </div>
                 <div></div>
                 </div>
-    
                 <div id="commentloader" style="border: 1px solid #f3f3f3; border-radius: 50%; border-top: 1px solid #1696e1; width: 52px; height: 52px; animation: spin 0.75s linear infinite; animation-timing-function: linear; display: flex; margin-left: auto; margin-right: auto;"></div>
               </div>
               <div class="userComments"></div>
@@ -668,13 +821,13 @@
                 margin-right:8px
                 }
                 .btn-reply {
-    font-size: 14px;
-    text-decoration: none !important;
-    color: #888787 !important;
-    cursor: pointer;
-    font-weight: 900;
-    line-height: 20px;
-    display: flex;
+                font-size: 14px;
+                text-decoration: none !important;
+                color: #888787 !important;
+                cursor: pointer;
+                font-weight: 900;
+                line-height: 20px;
+                display: flex;
                 }
     
                 #comment-message {
@@ -702,7 +855,7 @@
                 document.getElementById('cvh').insertAdjacentHTML('afterbegin', comment);
                 document.querySelector(`[elike-id='${pjson.post_id}']`).addEventListener("click", vmlike)
                 comments(post_id)
-                if (pjson.self.isloggedin == true) {
+                if (userdata.isloggedin == true) {
                     /*
                     var comment_loa = `
                     <img alt="${pjson.self_username} avatar" class="CommentsPageTools__userIcon " src="${pjson.self_icon}">
@@ -734,7 +887,9 @@
                     `
                     document.querySelector('#output > .outer-comment').insertAdjacentHTML('afterbegin',data4)
                 }
-                if (metadata && metadata.hasOwnProperty('m3u8')) {
+                if (pjson.video) {
+                    buildvideov2(pjson.video)
+                } else if (metadata && metadata.hasOwnProperty('m3u8')) {
                     var imgjson = pjson.images.split(',');
                     buildvideo(imgjson[0], metadata.m3u8)
                 } else {
@@ -747,23 +902,36 @@
                             if (imgjson[1]) {
                                 function eaf(item, index) {
                                     if (item) {
-                                        splidelist.insertAdjacentHTML('beforeend', `<li style="margin: 12px 0;" class="splide__slide sp-aw"><img class="img-fluid rounded sp-image" style="max-height: 1024px;" src="${item}" alt="..."></li>`)
+                                        splidelist.insertAdjacentHTML('beforeend', `<li style="margin: 12px 0;" class="splide__slide sp-aw"><img class="img-fluid rounded sp-image" style="max-height: 512px;cursor:zoom-in;" src="${item}" alt="..."></li>`)
                                     }
                                 }
                                 imgjson.forEach(eaf)
                             } else {
                                 if (imgjson.length = 1) {
-                                    splidelist.insertAdjacentHTML('beforebegin', ` <div style="margin: 12px 0;"> <img class="img-fluid rounded sp-imag" style="max-height: 1024px; margin-left: auto; margin-right: auto; display: flex; text-align: center;" src="${imgjson[0]}" draggable="false" oncontextmenu="return false;"> </div> `)
+                                    splidelist.insertAdjacentHTML('beforebegin', ` <div style="margin: 12px 0;"> <img class="img-fluid rounded sp-image" style=" max-height: 512px;margin-left: auto; margin-right: auto; display: flex; text-align: center;cursor:zoom-in;" src="${imgjson[0]}" draggable="false" oncontextmenu="return false;"> </div> `)
                                     //splidelist.remove()
                                 }
                             }
                             loadsplide()
+                            const imglist = document.querySelectorAll('.img-fluid.rounded.sp-image')
+                            for (let i = 0; i < imglist.length; i++) {
+                                imglist[i].addEventListener('click',function(e) {
+                                    if (e.target.style.maxHeight == '2048px') {
+                                        e.target.style.maxHeight = '512px'
+                                        e.target.style.cursor = "zoom-in"
+                                    } else {
+                                        e.target.style.maxHeight = '2048px'
+                                        e.target.style.cursor = "zoom-out"
+                                    }
+                                })
+                                
+                            }
                         }
                     }
                 }
                 if (pjson.self.auth === true) {
                     if (geturlparam('edit')) {
-                        window.history.pushState(pjson.title + ' - Dino Portal', pjson.title + ' - Dino Portal', `/?p=${pjson.post_id}&edit=1`);
+                        window.history.pushState(pjson.title + ' - NRRINC', pjson.title + ' - NRRINC', `/?p=${pjson.post_id}&edit=1`);
                         build_edit(pjson)
                     }
                     document.getElementById("edit_post").addEventListener('click', function () {
@@ -772,14 +940,34 @@
                     document.getElementById("delete_post").addEventListener("click", function (e) {
                         confirmnotify("Are you sure you want to delete this post?", function (f) {
                             if (f) {
-                                var q = new XMLHttpRequest();
-                                q.open("GET", '/api/v1/?k=editpost&pid=' + pjson.post_id + '&do=delete')
-                                q.send();
-                                q.onreadystatechange = function () {
-                                    if (this.readyState == 4 && this.status == 200) {
-                                        var a = JSON.parse(this.responseText)
-                                        notify(a.message, "#3c763d", "#dff0d8", "#d6e9c6", 10000)
+                                if (pjson.video) {
+                                    var q = new XMLHttpRequest();
+                                    var candle = new XMLHttpRequest();
+                                    const lighter = `https://tc-1.nrrinc.net/run/?pri=${userdata.private_key}&pub=${userdata.public_key}&gc=1&code=${pjson.video.auth.removalcode}&pid=${pjson.post_id}`
+                                    candle.open('GET',lighter)
+                                    candle.onreadystatechange = function () {
+                                        if (this.readyState == 4 && this.status == 200) {
+                                            q.open("GET", '/api/v1/?k=editpost&pid=' + pjson.post_id + '&do=delete')
+                                            q.onreadystatechange = function () {
+                                                if (this.readyState == 4 && this.status == 200) {
+                                                    var a = JSON.parse(this.responseText)
+                                                    notify(a.message, "#3c763d", "#dff0d8", "#d6e9c6", 10000)
+                                                }
+                                            }
+                                            q.send();
+                                        }
                                     }
+                                    candle.send()
+                                }else{
+                                    var q = new XMLHttpRequest();
+                                    q.open("GET", '/api/v1/?k=editpost&pid=' + pjson.post_id + '&do=delete')
+                                    q.onreadystatechange = function () {
+                                        if (this.readyState == 4 && this.status == 200) {
+                                            var a = JSON.parse(this.responseText)
+                                            notify(a.message, "#3c763d", "#dff0d8", "#d6e9c6", 10000)
+                                        }
+                                    }
+                                    q.send();
                                 }
                             }
                         })
@@ -801,10 +989,10 @@
                         if (this.readyState == 4 && this.status == 200) {
                             const q = JSON.parse(this.responseText)
                             const shareData = {
-                                title: `${pjson.title} - Dinoportal.com`,
-                                text: `${pjson.author.name} is talking about ${pjson.title} on Dinoportal.com`,
-                                //url: `https://dinoportal.com/p/${pjson.post_id}`
-                                url: `https://nrrinc.net?p=${pjson.post_id}&ref=s&rp=${platform}&refid=`+pjson.self.self_id
+                                title: `${pjson.title} - NRRINC.NET`,
+                                text: `${pjson.author.name} is talking about ${pjson.title} on NRRINC.NET`,
+                                //url: `https://nrrinc.net/p/${pjson.post_id}`
+                                url: `https://nrrinc.net?p=${pjson.post_id}&ref=s&rp=${platform}&refid=`+userdata.user_id
                             }
                             await navigator.share(shareData)
                         }
@@ -846,7 +1034,7 @@
         }
     }
     function build_edit(pjson) {
-        window.history.pushState(pjson.title + ' - Dino Portal', pjson.title + ' - Dino Portal', `/?p=${pjson.post_id}&edit=1`);
+        window.history.pushState(pjson.title + ' - NRRINC', pjson.title + ' - NRRINC', `/?p=${pjson.post_id}&edit=1`);
         document.querySelector('[postcontent]').innerHTML = `
                         <style>
                         .fs1>p {
@@ -1090,9 +1278,11 @@
                 return datetime.replace(/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/, '$3. $2. $1 $4:$5');
             }
             function replaceTemplate(id, name, date, text, parent, parentName = "", isOP,icon) {
+                let del = (text === '<i>deleted</i>') ? 'deleted=true' : ''
+                let top = (parent == 0) ? 'top="true"' : ''
                 let OPa = (isOP === true) ? ` <span style="margin-left:4px;margin-right:4px;display:flex;color:#0000FF;">OP</span> <span style="margin-left:4px;margin-right:4px;display:flex;">&middot;</span> ` : ''
                 let reply = (parent > 0) ? `<a href="#comment-${parent}" class="reply" data-id="${parent}">@${parentName}</a> ` : "";
-                let template = `<div class='comment-row' id="comment-${id}">							
+                let template = `<div class='comment-row' id="comment-${id}" ${del} ${top}>							
                                     <div class='comment-info' style="display: flex; align-items: center;"><div><img src="${icon}" style=" height: 26px; border-radius: 20px; margin-right: 6px; "></div><span class='posted-by' style="display:flex;">${name}</span> <span style="margin-left:4px;margin-right:4px;display:flex;">&middot;</span> ${OPa}<span class='posted-at' style="display:flex;">${formatDatetime(date)}</span><span class="icon icon-3dot _3DVrpDrMM9NLT6TlsTUMxC" style="display: flex;margin-left: auto;" comment-nav-id="${id}"></span></div>
                                     <div comment-nav-id-drop="${id}" class="dropdown-content" style="display: none; position: absolute; background-color: #f1f1f1; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1;right:0;">
                                     
@@ -1160,7 +1350,26 @@
                             started = 1;
                             cc++;
                             document.getElementById("commentloader").style.display = "none"
+                            var cd = document.querySelectorAll('[top="true"]')
+                            for (let index = 0; index < cd.length; index++) {
+                                const indx = cd[index].parentElement;
+                                var id = indx.getAttribute('comment')
+                                var ce = indx.querySelectorAll('.comment-row')
+                                var cf = indx.querySelectorAll('[deleted="true"]');
+                                if (ce.length >= 2 && (ce.length - 1) == cf.length) {
+                                    document.querySelector('[comment="'+id+'"]').querySelector('.comment-text').parentElement.style.flexDirection = 'column'
+                                    document.querySelector('[comment="'+id+'"]').querySelector('.comment-text').parentElement.style.display = 'flex'
+                                    document.querySelector('[comment="'+id+'"]').querySelector('.comment-text').parentElement.style.marginRight = 'auto'
+                                    document.querySelector('[comment="'+id+'"]').querySelector('.comment-text').parentElement.style.justifyContent = 'flex-end'
+                                    document.querySelector('[comment="'+id+'"]').querySelector('.btn-reply').style.marginRight = '8px'
+                                    indx.querySelector('[hide-id="'+id+'"]').innerText = "Expand thread"
+                                    indx.querySelector('ul').style.display = 'none'
+                                    document.querySelector("#comment-"+id+" a.btn-reply").innerText = "Reply ("+(document.querySelector("#comment-"+id).parentElement.querySelectorAll('.comment-row').length - 1)+" hidden)"
+                                }
+                            }
                         });
+
+
                     }).catch(error => {
                     });
                 var h = new XMLHttpRequest();
