@@ -6,15 +6,36 @@
     let userdata; //all user data.
     var h = location.protocol + '//' + location.host + location.pathname
     let postviewer;
+    let postviewercontroller; //control all elements
+    var cssstyle = `
+    .sp-aw { text-align: center !important; list-style: none; }
+    @media all and (min-width:940px) { [load-post-id]{ width: 937px!important; } } 
+    @media all and (min-width:729px) and (max-width:939px){ [load-post-id]{ width: 640px; } } 
+    @media all and (max-width:559px) { [load-post-id]{ min-width: 100% ; max-width: 100% ; width: 100% ; } 
+    ._CmxRiim30CrxSPL{ min-width: 100% ; max-width: 100% ; width: 100% ; } } .fs1{ max-width: 96vw; } #splidelist{padding-left:0rem !important} ._CmxRiim30CrxSPL{margin-top: 60px;} 
+    ._1VP69d9lk-Wk9zokOaylL-TMP {-webkit-filter: blur(8px); -moz-filter: blur(8px); -o-filter: blur(8px); -ms-filter: blur(8px); filter: blur(8px);} #post_viewer{height: 100%;position: fixed; -webkit-backface-visibility: hidden; backface-visibility: hidden; right: 0; top: 0; width: 100%; z-index: 50; margin-bottom: 60px;display: flex; justify-content: center; position: fixed; left: 50%; transform: translateX(-50%); overflow-y: scroll; overflow-x: hidden;}
+    [load-post-id]{display: flex;width:100%;background-color: #fff; border: 1px solid rgba(0, 0, 0, 0.125); border-radius: 0.25rem; padding: 0.5rem 0.25rem; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); flex-direction: column;} .fs1>p {font-size: 14px;line-height: 21px;margin-bottom: 0 !important;} .cZPZhMe-UCZ8htPodMyJ5 {-ms-flex-align: center;align-items: center;display: -ms-flexbox;display: flex;-ms-flex-wrap: wrap;flex-wrap: wrap;-ms-flex: 1 1 auto;flex: 1 1 auto;overflow: hidden;}
+    ._2mHuuvyV9doV3zwbZPtIPG {display: inline-block;-ms-flex: 0 0 auto;flex: 0 0 auto} ._3LS4zudUBagjFS7HjWJYxo {color: var(--newCommunityTheme-metaText);font-size: 6px;line-height: 20px;margin: 0 4px;vertical-align: middle;} .icon {font-size: 20px;font-weight: 400;height: 20px;line-height: 20px;vertical-align: middle;width: 20px;font-style: normal;} ._2pFdCpgBihIaYh9DSMWBIu {height: 24px;}
+    ._2pFdCpgBihIaYh9DSMWBIu.uMPgOFYlCc5uvpa2Lbteu {border-radius: 2px;} ._2pFdCpgBihIaYh9DSMWBIu.uMPgOFYlCc5uvpa2Lbteu:focus,._2pFdCpgBihIaYh9DSMWBIu.uMPgOFYlCc5uvpa2Lbteu:hover {outline: none;} ._10K5i7NW6qcm-UoCtpB3aK {-ms-flex-align: center;align-items: center;display: -ms-flexbox;display: flex;-ms-flex-direction: row;flex-direction: row;text-align: left;width: 100%;} .pthKOcceozMuXLYrLlbL1 {margin-right: 6px;}
+    .icon:before {-webkit-font-smoothing: antialiased;-moz-osx-font-smoothing: grayscale;font-family: 'fontello';} .icon-award:before {content: "\\e85d";} .icon-edit:before {content: "\\e835";} .icon-comment:before {content: "\\e83a";color: #878A8C;} .icon-save:before {content: "\\e869";} .icon-share:before {content: "\\e855";} .icon-3dot:before {content: "\\e80f";} .icon-trash:before { content: '\\e845'; }
+    .icon-report:before { content: '\\e83d'; } ._1UoeAeSRhOKSNdY_h3iS1O {font-size: 12px;font-weight: 700;line-height: 16px;padding: 4px;box-sizing: border-box;} ._1UoeAeSRhOKSNdY_h3iS1O ._3DVrpDrMM9NLT6TlsTUMxC {margin-right: 6px;} ._3m17ICJgx45k_z-t82iVuO {cursor: default;} .FHCV02u6Cp2zYL0fhQPsO {display: inline-block;line-height: 1;text-transform: capitalize;vertical-align: middle;color: #878A8C;font-weight: 700;font-size: 12px;} ._3-miAEojrCvx_4FQ8x3P-s {font-size: 12px;font-weight: 700;line-height: 16px;-ms-flex-align: stretch;align-items: stretch;display: -ms-flexbox;display: flex;-ms-flex-direction: row;flex-direction: row;overflow: hidden;padding: 0 8px 0 4px;-ms-flex-positive: 1;flex-grow: 1;}
+    ._3-miAEojrCvx_4FQ8x3P-s .YszYBnnIoNY8pZ6UwCivd {border-radius: 2px;margin-right: 4px;padding: 8px;text-transform: capitalize;white-space: nowrap;width: auto;word-break: normal;word-wrap: normal;height: 100%;} ._3-miAEojrCvx_4FQ8x3P-s .YszYBnnIoNY8pZ6UwCivd:focus,._3-miAEojrCvx_4FQ8x3P-s .YszYBnnIoNY8pZ6UwCivd:hover {outline: none;} ._3U_7i38RDpostviewer5eBv7m4M-9J {-ms-flex-align: center;align-items: center;display: -ms-flexbox;display: flex;} ._6_44iTtZoeY6_XChKt5b0 {display: inline-block;line-height: 1;text-align: left;overflow: hidden;text-overflow: ellipsis;line-height: 12px;max-height: 36px;display: -webkit-inline-box;-webkit-line-clamp: 3;white-space: normal;-webkit-box-orient: vertical;font-weight: 700;font-size: 12px;vertical-align: middle;}
+    ._2qww3J5KKzsD7e5DO0BvvU {padding: 8px;word-break: normal;margin-right: 4px;} .kU8ebCMnbXfjCWfqn0WPb {border-radius: 2px;padding: 8px;display: -ms-flexbox;display: flex;-ms-flex-align: center;align-items: center;text-transform: capitalize;height: 100%;outline: none;} .kU8ebCMnbXfjCWfqn0WPb ._1GQDWqbF-wkYWbrpmOvjqJ {line-height: 16px;margin-right: 6px;} ._JRBNstMcGxbZUxrrIKXe {margin: 0 4px 0 0;width: auto;word-break: normal;} ._3MmwvEEt6fv5kQPFCVJizH {display: -ms-flexbox;display: flex;-ms-flex-direction: column;flex-direction: column;-ms-flex-pack: center;justify-content: center;} ._1hwEKkB_38tIoal6fcdrt9 {-ms-flex-align: center;align-items: center;-ms-flex-wrap: wrap-reverse;flex-wrap: wrap-reverse;-ms-flex-pack: justify;justify-content: space-between;padding-right: 0;padding-top: 4px;display: -ms-flexbox;display: flex;}
+    ._10K5i7NW6qcm-UoCtpB3aK,.kU8ebCMnbXfjCWfqn0WPb {outline: none;background: transparent;border: none;color: inherit;cursor: pointer;padding: initial;color: #878A8C;} #myDropdown > a {background-color: transparent;border: 0;font-size: 14px;line-height: 16px;display: flex;margin: 8px;} .flex{display: flex;display: -ms-flexbox;} .icon:before {-webkit-font-smoothing: antialiased;-moz-osx-font-smoothing: grayscale;font-family: 'fontello';} .icon {font-size: 20px;font-weight: 400;height: 20px;line-height: 20px;vertical-align: middle;width: 20px;font-style: normal;} .dropbtn{background-color: transparent;border: 0;font-size: 14px;line-height: 16px;display: flex;margin: 8px;} .dropdown { position: relative; display: inline-block; margin-left: auto; } #myDropdown > button{background-color: transparent;border: 0;font-size: 14px;line-height: 16px;display: flex;margin: 8px;}
+    .dropdown-content { display: none; position: absolute; background-color: #f1f1f1; min-width: 160px; overflow: auto; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1; } .dropdown-content a { color: black; padding: 12px 16px; text-decoration: none; display: block; } .show {display: block;} #myDropdown{ right: 0; } .dropdown-content div[interact] { color: black; padding: 12px 16px; text-decoration: none; display: block; cursor:pointer; } .CommentsPageTools__comment { -ms-flex-align: center; align-items: center; display: -ms-flexbox; display: flex; -ms-flex-flow: row nowrap; flex-flow: row nowrap; padding-top: 8px; width: 100% } 
+    .CommentsPageTools__userIcon { overflow: hidden; text-indent: 100%; white-space: nowrap; border-radius: 50%; height: 24px; margin-right: 8px; width: 24px } .CommentsPageTools__reply { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; border: 1px solid transparent; border-radius: 15px; box-sizing: border-box; -ms-flex: 1; flex: 1; font-size: 14px; height: 30px; line-height: 17px; padding: 0 8px; text-align: left } .submit_com{ font-size: 12px; font-weight: 700; letter-spacing: unset; line-height: 16px; white-space: pre; word-break: keep-all; padding:0.375rem 0.75rem; margin: 4px 8px; -ms-flex-order: 2; order: 2; text-transform: unset; min-height: 24px; min-width: 24px; float: right; color: #fff; background-color: #007bff; border-color: #007bff; border:1px solid transparent; border-radius:0.25rem; transition:color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; }
+    #output > ul > li::marker{ content: ""; } .comment-row > *{ font-size: 14px; } .btn-reply{ cursor: pointer; text-decoration: none !important; } .btn-submit:disabled { background: #eee; color: #667; cursor: not-allowed; } #output ul { list-style-type: none; } #frm-comment{ flex-direction: column; display: flex; } #frm-comment .input-row{ display:flex; } @media all and (min-width:600px) { #frm-comment{ margin:8px 40px 24px 48px; } } .comment-row { border-bottom: #e0dfdf 1px solid; margin-bottom: 8px; border-top: #e0dfdf 1px solid; padding: 0px 10px 0px 10px; border-right: #e0dfdf 1px solid; display:flex; flex-direction: column; } .comment-active { background-color: hsl(60, 100%, 95%); } .comment-row:target { animation: bg-fadeout 5s ease; } @keyframes bg-fadeout { from {background-color: hsl(60, 100%, 95%);} to {background-color: transparent;} } .outer-comment { margin-top:8px; padding-inline-start: 0; } .outer-comment ul { padding-inline-start: 1rem; }
+    .outer-comment > li > div { border-left: 1px solid hsl(220, 100%, 60%); } .outer-comment > li li > div { border-left: 1px solid hsl(40, 100%, 60%); } span.commet-row-label { font-style: italic; } .outer-comment ul{ margin-bottom:0 !important } .posted-by { color: hsl(220, 100%, 40%); font-weight: 700; } .comment-text { margin: 0px 0px; display:flex; } .reply { color: #0043ff; text-decoration: none; display: inline-block; border-radius: 4px; margin-right:8px } .btn-reply { font-size: 14px; text-decoration: none !important; color: #888787 !important; cursor: pointer; font-weight: 900; line-height: 20px; display: flex; } #comment-message { margin-left: 20px; display: inline-block; opacity: 1; } .msg-success {color: hsl(120, 75%, 40%); animation: fadeOut 5s ease;} .msg-error {color: hsl(10, 90%, 50%); animation: fadeOut 5s ease;} @keyframes fadeOut { 0%, 50% {opacity:1;} 100% {opacity:0;} }
+    `;
+    document.head.insertAdjacentHTML('beforeend', `<style>${cssstyle}</style>`);
     document.addEventListener('DOMContentLoaded',function() {
         document.querySelector('._1VP69d9lk-Wk9zokOaylL').insertAdjacentHTML('afterend', '<div id="post_viewer" style="background-color: rgba(0, 0, 0, .5) !important;"></div>')
         postviewer = document.getElementById('post_viewer');
-        console.log(postviewer)
+        postviewer.style.left = '99999px'
         postviewer.setAttribute('postviewer','inactive')
         //START fix of checktarg
         postviewer.addEventListener('click', (event) => {
             if (event.target.getAttribute('postviewer') == 'active') {
-                console.log('close')
                 showpost()
                 
             }
@@ -258,12 +279,8 @@
             }, delay);
 
         }
-        player.addEventListener('ready',function(e) {
-            console.log(e)
-        })
     }
     function buildvideov2(array) {
-        console.log(array.server + array.code + '/track.vtt')
         //dotdo: add SINGLE "build" request for all needed js/css.
         var base = document.getElementById("splidelist")
         const source = array.server + array.code + '/_.m3u8';
@@ -380,11 +397,9 @@
                         const player = new Plyr(video, defaultOptions);
                         player.on('ready', (event) => {
                             const instance = event.detail.plyr;
-                            console.log(instance)
                         });
                         player.on('timeupdate', (event) => {
-                            console.log(event)
-                            console.log()
+                            //do something later
                         });
                         player.on('languagechange', () => {
                             setTimeout(() => hls.subtitleTrack = player.currentTrack, 50);
@@ -410,14 +425,14 @@
         if (postviewer.getAttribute('postviewer') == 'active') {
             for (let index = 0; index < document.querySelectorAll('._CmxRiim30CrxSPL').length; index++) {
                 const f = document.querySelectorAll('._CmxRiim30CrxSPL')[index];
-                f.remove()
+                //f.remove()
             }
             blur.style.cssText = ''
             //postviewer.removeEventListener("click", clear_menus)
             disablehrefs()
             allowclick = true;
-            postviewer.style.left = '99999px'
             window.history.pushState(t, t, h);
+            postviewer.style.left = '99999px'
             postviewer.setAttribute('postviewer','inactive')
             return;
         }
@@ -529,87 +544,12 @@
                     `;
                 var css = `
                     <style>
-                    .sp-aw {
-                        text-align: center !important;
-                        list-style: none;
-                    }
-                    @media all and (min-width:940px) {
-                        [load-post-id]{
-                            width: 937px!important;
-                        }
-                }  
-                    @media all and (min-width:729px) and (max-width:939px){
-                            [load-post-id]{
-                                width: 640px;
-                            }
-                    }
-                    @media all and (max-width:559px) {
-                            [load-post-id]{
-                                min-width: 100% ;
-                                max-width: 100% ;
-                                width: 100% ;
-                            }
-                            ._CmxRiim30CrxSPL{
-                                min-width: 100% ;
-                                max-width: 100% ;
-                                width: 100% ;
-                            }
-                    } 
-                    .fs1{
-                        max-width: 96vw;
-                    }
-                    #splidelist{padding-left:0rem !important}
-                    ._CmxRiim30CrxSPL{margin-top: 60px;}
-                    ._1VP69d9lk-Wk9zokOaylL-TMP {-webkit-filter: blur(8px); -moz-filter: blur(8px); -o-filter: blur(8px); -ms-filter: blur(8px); filter: blur(8px);}
-                    #post_viewer{height: 100%;position: fixed; -webkit-backface-visibility: hidden; backface-visibility: hidden; right: 0; top: 0; width: 100%; z-index: 50; margin-bottom: 60px;display: flex; justify-content: center; position: fixed; left: 50%; transform: translateX(-50%); overflow-y: scroll; overflow-x: hidden;}
-                    [load-post-id]{display: flex;width:100%;background-color: #fff; border: 1px solid rgba(0, 0, 0, 0.125); border-radius: 0.25rem; padding: 0.5rem 0.25rem; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); flex-direction: column;}
-                    .fs1>p {font-size: 14px;line-height: 21px;margin-bottom: 0 !important;}
-                    .cZPZhMe-UCZ8htPodMyJ5 {-ms-flex-align: center;align-items: center;display: -ms-flexbox;display: flex;-ms-flex-wrap: wrap;flex-wrap: wrap;-ms-flex: 1 1 auto;flex: 1 1 auto;overflow: hidden;}
-                    ._2mHuuvyV9doV3zwbZPtIPG {display: inline-block;-ms-flex: 0 0 auto;flex: 0 0 auto}
-                    ._3LS4zudUBagjFS7HjWJYxo {color: var(--newCommunityTheme-metaText);font-size: 6px;line-height: 20px;margin: 0 4px;vertical-align: middle;}
-                    .icon {font-size: 20px;font-weight: 400;height: 20px;line-height: 20px;vertical-align: middle;width: 20px;font-style: normal;}
-                    ._2pFdCpgBihIaYh9DSMWBIu {height: 24px;}
-                    ._2pFdCpgBihIaYh9DSMWBIu.uMPgOFYlCc5uvpa2Lbteu {border-radius: 2px;}
-                    ._2pFdCpgBihIaYh9DSMWBIu.uMPgOFYlCc5uvpa2Lbteu:focus,._2pFdCpgBihIaYh9DSMWBIu.uMPgOFYlCc5uvpa2Lbteu:hover {outline: none;}
-                    ._10K5i7NW6qcm-UoCtpB3aK {-ms-flex-align: center;align-items: center;display: -ms-flexbox;display: flex;-ms-flex-direction: row;flex-direction: row;text-align: left;width: 100%;}
-                    .pthKOcceozMuXLYrLlbL1 {margin-right: 6px;}
-                    .icon:before {-webkit-font-smoothing: antialiased;-moz-osx-font-smoothing: grayscale;font-family: 'fontello';}
-                    .icon-award:before {content: "\\e85d";}
-                    .icon-edit:before {content: "\\e835";}
-                    .icon-comment:before {content: "\\e83a";color: #878A8C;}
-                    .icon-save:before {content: "\\e869";}
-                    .icon-share:before {content: "\\e855";}
-                    .icon-3dot:before {content: "\\e80f";}
-                    .icon-trash:before { content: '\\e845'; }
-                    .icon-report:before { content: '\\e83d'; }
-                    ._1UoeAeSRhOKSNdY_h3iS1O {font-size: 12px;font-weight: 700;line-height: 16px;padding: 4px;box-sizing: border-box;}
-                    ._1UoeAeSRhOKSNdY_h3iS1O ._3DVrpDrMM9NLT6TlsTUMxC {margin-right: 6px;}
-                    ._3m17ICJgx45k_z-t82iVuO {cursor: default;}
-                    .FHCV02u6Cp2zYL0fhQPsO {display: inline-block;line-height: 1;text-transform: capitalize;vertical-align: middle;color: #878A8C;font-weight: 700;font-size: 12px;}
-                    ._3-miAEojrCvx_4FQ8x3P-s {font-size: 12px;font-weight: 700;line-height: 16px;-ms-flex-align: stretch;align-items: stretch;display: -ms-flexbox;display: flex;-ms-flex-direction: row;flex-direction: row;overflow: hidden;padding: 0 8px 0 4px;-ms-flex-positive: 1;flex-grow: 1;}
-                    ._3-miAEojrCvx_4FQ8x3P-s .YszYBnnIoNY8pZ6UwCivd {border-radius: 2px;margin-right: 4px;padding: 8px;text-transform: capitalize;white-space: nowrap;width: auto;word-break: normal;word-wrap: normal;height: 100%;}
-                    ._3-miAEojrCvx_4FQ8x3P-s .YszYBnnIoNY8pZ6UwCivd:focus,._3-miAEojrCvx_4FQ8x3P-s .YszYBnnIoNY8pZ6UwCivd:hover {outline: none;}
-                    ._3U_7i38RDpostviewer5eBv7m4M-9J {-ms-flex-align: center;align-items: center;display: -ms-flexbox;display: flex;}
-                    ._6_44iTtZoeY6_XChKt5b0 {display: inline-block;line-height: 1;text-align: left;overflow: hidden;text-overflow: ellipsis;line-height: 12px;max-height: 36px;display: -webkit-inline-box;-webkit-line-clamp: 3;white-space: normal;-webkit-box-orient: vertical;font-weight: 700;font-size: 12px;vertical-align: middle;}
-                    ._2qww3J5KKzsD7e5DO0BvvU {padding: 8px;word-break: normal;margin-right: 4px;}
-                    .kU8ebCMnbXfjCWfqn0WPb {border-radius: 2px;padding: 8px;display: -ms-flexbox;display: flex;-ms-flex-align: center;align-items: center;text-transform: capitalize;height: 100%;outline: none;}
-                    .kU8ebCMnbXfjCWfqn0WPb ._1GQDWqbF-wkYWbrpmOvjqJ {line-height: 16px;margin-right: 6px;}
-                    ._JRBNstMcGxbZUxrrIKXe {margin: 0 4px 0 0;width: auto;word-break: normal;}
-                    ._3MmwvEEt6fv5kQPFCVJizH {display: -ms-flexbox;display: flex;-ms-flex-direction: column;flex-direction: column;-ms-flex-pack: center;justify-content: center;}
-                    ._1hwEKkB_38tIoal6fcdrt9 {-ms-flex-align: center;align-items: center;-ms-flex-wrap: wrap-reverse;flex-wrap: wrap-reverse;-ms-flex-pack: justify;justify-content: space-between;padding-right: 0;padding-top: 4px;display: -ms-flexbox;display: flex;}
-                    ._10K5i7NW6qcm-UoCtpB3aK,.kU8ebCMnbXfjCWfqn0WPb {outline: none;background: transparent;border: none;color: inherit;cursor: pointer;padding: initial;color: #878A8C;}
-                    #myDropdown > a {background-color: transparent;border: 0;font-size: 14px;line-height: 16px;display: flex;margin: 8px;}
-                    .flex{display: flex;display: -ms-flexbox;}
-                    .icon:before {-webkit-font-smoothing: antialiased;-moz-osx-font-smoothing: grayscale;font-family: 'fontello';} .icon {font-size: 20px;font-weight: 400;height: 20px;line-height: 20px;vertical-align: middle;width: 20px;font-style: normal;} .dropbtn{background-color: transparent;border: 0;font-size: 14px;line-height: 16px;display: flex;margin: 8px;} .dropdown { position: relative; display: inline-block; margin-left: auto; } #myDropdown > button{background-color: transparent;border: 0;font-size: 14px;line-height: 16px;display: flex;margin: 8px;} .dropdown-content { display: none; position: absolute; background-color: #f1f1f1; min-width: 160px; overflow: auto; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1; } .dropdown-content a { color: black; padding: 12px 16px; text-decoration: none; display: block; } .show {display: block;} #myDropdown{ right: 0; }
-                    .dropdown-content div[interact] {
-                        color: black; padding: 12px 16px; text-decoration: none; display: block;
-                        cursor:pointer; 
-                    }
+
                     </style>
                     `
                 var template = `
                 <div dclass="rpBJOHq2PR60pnwJlUyP0" class="_CmxRiim30CrxSPL">
-                <article load-post-id="${pjson.post_id}">
+                <article load-post-id="${pjson.post_id}" postviewercontroller="posttop">
                 <div data-postalert style="justify-content: space-around; margin-left: auto; margin-right: auto; padding-top: 5px; padding-bottom: 5px; margin-bottom: 10px;border-radius: 4px; font-size: 14px;position: fixed;box-shadow: -6px 9px 17px -1px rgb(0 0 0 / 39%);z-index: 997;transition: all .99s ease-out;display: none;">
                 <div style="padding-left: 5px; font-size: 14px; padding-right: 5px;"></div>
                 </div>
@@ -617,8 +557,8 @@
                     <div class="css-1dbjc4n r-18u37iz" style="cursor:auto;">
                         <div class="ad74e8a5" style="border-radius: 25px;width: 100%;box-shadow:none;border:none;">
                             <div class="css-1dbjc4n r-1awozwy r-1hwvwag r-18kxxzh r-1b7u577">
-                                <a href="/u/${pjson.author.name}" user_name="${pjson.author.name}" user_id="${pjson.author.id}" user_icon="${pjson.author.icon}">
-                                    <img src="${pjson.author.icon}" alt="Name"
+                                <a postviewercontroller="author_icon_url" href="/u/${pjson.author.name}">
+                                    <img src="${pjson.author.icon}" postviewercontroller="author_icon_image"
                                         class="avatar">
                                 </a>
                             </div>
@@ -632,9 +572,7 @@
                                         </div><span class="_3LS4zudUBagjFS7HjWJYxo _37gsGHa8DMRAxBmQS-Ppg8 _3V4xlrklKBP2Hg51ejjjvz"
                                             role="presentation">•</span><span class="_2fCzxBE1dlMh4OFc7B3Dun"
                                             style="color: rgb(129, 131, 132);">Posted by</span>
-                                        <div class="_2mHuuvyV9doV3zwbZPtIPG"><a
-                                                class="_2tbHP6ZydRpjI44J3syuqC  _23wugcdiaj44hdfugIAlnX oQctV4n0yUb0uiHDdGnmE"
-                                                href="/u/${pjson.author.name}/" style="color: rgb(129, 131, 132);margin: 0 4px;">${pjson.author.name}</a>
+                                        <div class="_2mHuuvyV9doV3zwbZPtIPG"><a postviewercontroller="author_url" class="_2tbHP6ZydRpjI44J3syuqC  _23wugcdiaj44hdfugIAlnX oQctV4n0yUb0uiHDdGnmE" href="/u/${pjson.author.name}/" style="color: rgb(129, 131, 132);margin: 0 4px;">${pjson.author.name}</a>
                                             <div id="UserInfoTooltip--t3_s95h3k--lightbox"></div>
                                         </div><span><span></span></span><a class="_3jOxDPIQ0KaOWpzvSQo-1s"
                                             href=""
@@ -646,19 +584,21 @@
                                     
                                 </div>
                                 </div>
-                                <h1 class="fw-bolder" style="margin-top:0.5rem">${pjson.title}</h1>
+                                <h1 class="fw-bolder" style="margin-top:0.5rem" postviewercontroller="post_title">${pjson.title}</h1>
                             </div>
                         </div>
                     </div>
                 </header>
+                <div postviewercontroller="post_content">
                 ${splide_data}
                 <!-- Post content-->
                 ${editmod}
+                </div>
                 <div class="interactive_0" class="interactive_0" style="margin-left: 8px;margin-right: 8px;margin-top:8px;">
                     <div style="/*border-radius: 5px 5px 0px 0px;*/ border: 1px solid #00000024;">
                         <div class="_1hwEKkB_38tIoal6fcdrt9" style="margin-left: 8px;margin-right: 8px;">
                             <div class="_3-miAEojrCvx_4FQ8x3P-s">
-                            <div style="display:flex" btn="like">${likemod}</div>
+                            <div style="display:flex" btn="like" postviewercontroller="post_like_array">${likemod}</div>
                                 <div
                                     class="_1UoeAeSRhOKSNdY_h3iS1O _3m17ICJgx45k_z-t82iVuO _3U_7i38RDpostviewer5eBv7m4M-9J _2qww3J5KKzsD7e5DO0BvvU">
                                     <i class="icon icon-comment _3DVrpDrMM9NLT6TlsTUMxC" role="presentation"></i><span
@@ -684,7 +624,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="cvh" style="margin-top: 4px;"></div>
+                <div id="cvh" style="margin-top: 4px;" postviewercontroller="post_comments"></div>
             </article>
             </div>
             `;
@@ -694,44 +634,7 @@
               <div class="col-md-12">
               <div class="minid2">
                 <div class="comment-form-container">
-                    <style>
-                    .CommentsPageTools__comment {
-                        -ms-flex-align: center;
-                        align-items: center;
-                        display: -ms-flexbox;
-                        display: flex;
-                        -ms-flex-flow: row nowrap;
-                        flex-flow: row nowrap;
-                        padding-top: 8px;
-                        width: 100%
-                    }
-                    .CommentsPageTools__userIcon {
-                        overflow: hidden;
-                        text-indent: 100%;
-                        white-space: nowrap;
-                        border-radius: 50%;
-                        height: 24px;
-                        margin-right: 8px;
-                        width: 24px
-                    }
-                    .CommentsPageTools__reply {
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        white-space: nowrap;
-                        border: 1px solid transparent;
-                        border-radius: 15px;
-                        box-sizing: border-box;
-                        -ms-flex: 1;
-                        flex: 1;
-                        font-size: 14px;
-                        height: 30px;
-                        line-height: 17px;
-                        padding: 0 8px;
-                        text-align: left
-                    }
-                    </style>
                     <div class="CommentsPageTools__comment">
-
                     </div>
                   <form id="frm-comment">
                     <div class="input-row">
@@ -753,149 +656,27 @@
                 <div id="commentloader" style="border: 1px solid #f3f3f3; border-radius: 50%; border-top: 1px solid #1696e1; width: 52px; height: 52px; animation: spin 0.75s linear infinite; animation-timing-function: linear; display: flex; margin-left: auto; margin-right: auto;"></div>
               </div>
               <div class="userComments"></div>
-              <style>
-                .submit_com{
-                    font-size: 12px;
-                    font-weight: 700;
-                    letter-spacing: unset;
-                    line-height: 16px;
-                    white-space: pre;
-                    word-break: keep-all;
-                    padding:0.375rem 0.75rem;
-                    margin: 4px 8px;
-                    -ms-flex-order: 2;
-                    order: 2;
-                    text-transform: unset;
-                    min-height: 24px;
-                    min-width: 24px;
-                    float: right;
-                    color: #fff;
-                    background-color: #007bff;
-                    border-color: #007bff;
-                    border:1px solid transparent;
-                    border-radius:0.25rem;
-                    transition:color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-                }
-                #output > ul > li::marker{
-                  content: "";
-                }
-                .comment-row > *{
-                  font-size: 14px;
-                }
-                .btn-reply{
-                  cursor: pointer;
-                  text-decoration: none !important;
-                }
-                .btn-submit:disabled {
-                background: #eee;
-                color: #667;
-                cursor: not-allowed;
-                }
-    
-                #output ul {
-                list-style-type: none;
-                }
-                #frm-comment{
-                    flex-direction: column;
-                    display: flex;
-                }
-                #frm-comment .input-row{
-                    display:flex;
-                }
-                @media all and (min-width:600px) {
-                    #frm-comment{
-                        margin:8px 40px 24px 48px;
-                    }
-                    } 
-                .comment-row {
-                    border-bottom: #e0dfdf 1px solid;
-                    margin-bottom: 8px;
-                    border-top: #e0dfdf 1px solid;
-                    padding: 0px 10px 0px 10px;
-                    border-right: #e0dfdf 1px solid;
-                    display:flex;
-                    flex-direction: column;
-                }
-                .comment-active {
-                background-color: hsl(60, 100%, 95%);
-                }
-                .comment-row:target {
-                animation: bg-fadeout 5s ease;
-                }
-                @keyframes bg-fadeout {
-                from {background-color: hsl(60, 100%, 95%);}
-                to {background-color: transparent;}
-                }
-    
-                .outer-comment {
-                margin-top:8px;
-                padding-inline-start: 0;
-                }
-                .outer-comment ul {
-                padding-inline-start: 1rem;
-                }
-                .outer-comment > li > div {
-                border-left: 1px solid hsl(220, 100%, 60%);
-                }
-                .outer-comment > li li > div {
-                border-left: 1px solid hsl(40, 100%, 60%);
-                }
-                span.commet-row-label {
-                font-style: italic;
-                }
-                .outer-comment ul{
-                    margin-bottom:0 !important
-                }
-                .posted-by {
-                color: hsl(220, 100%, 40%);
-                font-weight: 700;
-                }
-                .comment-text {
-                margin: 0px 0px;
-                display:flex;
-
-                }
-                .reply {
-                color: #0043ff;
-                text-decoration: none;
-                display: inline-block;
-                border-radius: 4px;
-                margin-right:8px
-                }
-                .btn-reply {
-                font-size: 14px;
-                text-decoration: none !important;
-                color: #888787 !important;
-                cursor: pointer;
-                font-weight: 900;
-                line-height: 20px;
-                display: flex;
-                }
-    
-                #comment-message {
-                margin-left: 20px;
-                display: inline-block;
-                opacity: 1;
-                }
-    
-                .msg-success {color: hsl(120, 75%, 40%); animation: fadeOut 5s ease;}
-                .msg-error {color: hsl(10, 90%, 50%); animation: fadeOut 5s ease;}
-    
-                @keyframes fadeOut {
-                0%, 50% {opacity:1;}
-                100% {opacity:0;}
-                }
-                @
-              </style>
               <div id="output"></div>
             </div>
           </div>
             `;
                 postviewer.style.display = "none";
-                postviewer.insertAdjacentHTML('afterbegin', template);
-                postviewer.insertAdjacentHTML('afterbegin', css);
-                document.getElementById('cvh').insertAdjacentHTML('afterbegin', comment);
+                if (!document.querySelector('[postviewercontroller="posttop"]')) {
+                    postviewer.insertAdjacentHTML('afterbegin', template);
+                    postviewer.insertAdjacentHTML('afterbegin', css);
+                    document.querySelector('[postviewercontroller="post_comments"]').insertAdjacentHTML('afterbegin', comment);
+                }
+                document.querySelector('[load-post-id]').setAttribute('load-post-id',pjson.post_id)
+
+                document.querySelector('[postviewercontroller="post_like_array"]').innerHTML = likemod
                 document.querySelector(`[elike-id='${pjson.post_id}']`).addEventListener("click", vmlike)
+                document.querySelector('[postviewercontroller="post_title"]').innerHTML = pjson.title
+                document.querySelector('[postviewercontroller="author_url"]').innerHTML = pjson.author.name
+                document.querySelector('[postviewercontroller="author_url"]').href = "/u/${pjson.author.name}/"
+                document.querySelector('[postviewercontroller="author_icon_url"]').href = "/u/${pjson.author.name}/"
+                document.querySelector('[postviewercontroller="author_icon_image"]').src = pjson.author.icon
+                document.querySelector('[postviewercontroller="posttop"]');
+                document.querySelector('[postviewercontroller="post_content"]').innerHTML = splide_data + editmod;
                 comments(post_id)
                 if (userdata.isloggedin == true) {
                     /*
