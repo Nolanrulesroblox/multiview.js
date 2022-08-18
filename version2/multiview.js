@@ -660,6 +660,7 @@
             </div>
           </div>
             `;
+            disablehrefs()
                 postviewer.style.display = "none";
                 if (!document.querySelector('[postviewercontroller="posttop"]')) {
                     postviewer.insertAdjacentHTML('afterbegin', template);
@@ -716,7 +717,11 @@
                     var imgjson = pjson.images.split(',');
                     buildvideo(imgjson[0], metadata.m3u8)
                 } else {
-                    if (pjson.type === 'videoff') {
+                    if (pjson.type === 'video') {
+                        if (!metadata) {
+                            showpost()
+                            return
+                        }
                         var imgjson = pjson.images.split(',');
                         buildvideo(imgjson[0], metadata.m3u8)
                     } else if (pjson.type === 'image') {
@@ -802,7 +807,6 @@
                 document.getElementById('pop').addEventListener('click', function (e) {
                     document.getElementById("myDropdown").classList.toggle("show")
                 })
-                disablehrefs()
                 document.querySelector('.vmshare').addEventListener('click', async function () {
                     let platform = navigator?.userAgentData?.platform || navigator?.platform || ''
                             const shareData = {
@@ -819,9 +823,9 @@
                 })
                 postviewer.style.display = "flex";
                 document.querySelector('[data-postalert]').style.width = (document.querySelector(`[load-post-id="${pjson.post_id}"] > header`).offsetWidth + 8) + "px"
-                document.removeEventListener('click', checktarg)
+                //document.removeEventListener('click', checktarg)
                 setTimeout(() => {
-                    document.addEventListener('click', checktarg, false)
+                    //document.addEventListener('click', checktarg, false)
                     document.getElementById("post_viewer").addEventListener("click", clear_menus)
                     document.querySelector(`._CmxRiim30CrxSPL`).style.marginBottom = document.querySelector(`[load-post-id='${pjson.post_id}']`).scrollHeight + 60 + 'px'
                     var postdata = {
