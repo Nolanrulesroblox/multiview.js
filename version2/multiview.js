@@ -716,7 +716,7 @@
                     var imgjson = pjson.images.split(',');
                     buildvideo(imgjson[0], metadata.m3u8)
                 } else {
-                    if (pjson.type === 'video') {
+                    if (pjson.type === 'videoff') {
                         var imgjson = pjson.images.split(',');
                         buildvideo(imgjson[0], metadata.m3u8)
                     } else if (pjson.type === 'image') {
