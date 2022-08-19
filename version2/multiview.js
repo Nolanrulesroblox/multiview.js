@@ -427,6 +427,7 @@
                 const f = document.querySelectorAll('._CmxRiim30CrxSPL')[index];
                 //f.remove()
             }
+            document.querySelector('[postviewercontroller="post_content"]').innerHTML = ''
             blur.style.cssText = ''
             //postviewer.removeEventListener("click", clear_menus)
             disablehrefs()
@@ -823,9 +824,7 @@
                 })
                 postviewer.style.display = "flex";
                 document.querySelector('[data-postalert]').style.width = (document.querySelector(`[load-post-id="${pjson.post_id}"] > header`).offsetWidth + 8) + "px"
-                //document.removeEventListener('click', checktarg)
                 setTimeout(() => {
-                    //document.addEventListener('click', checktarg, false)
                     document.getElementById("post_viewer").addEventListener("click", clear_menus)
                     document.querySelector(`._CmxRiim30CrxSPL`).style.marginBottom = document.querySelector(`[load-post-id='${pjson.post_id}']`).scrollHeight + 60 + 'px'
                     var postdata = {
