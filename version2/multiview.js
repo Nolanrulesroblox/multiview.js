@@ -4,17 +4,14 @@
     }
     window.showpost = showpost;
     let userdata; //all user data.
-    var h = location.protocol + '//' + location.host + location.pathname
+    let h = location.protocol + '//' + location.host + location.pathname
     let postviewer;
     let postviewercontroller; //control all elements
-    var cssstyle = `
-    .sp-aw { text-align: center !important; list-style: none; }
-    @media all and (min-width:940px) { [load-post-id]{ width: 937px!important; } } 
-    @media all and (min-width:729px) and (max-width:939px){ [load-post-id]{ width: 640px; } } 
-    @media all and (max-width:559px) { [load-post-id]{ min-width: 100% ; max-width: 100% ; width: 100% ; } 
+    let cssstyle = `
+    .sp-aw { text-align: center !important; list-style: none; } @media all and (min-width:940px) { [load-post-id]{ width: 937px!important; } } @media all and (min-width:729px) and (max-width:939px){ [load-post-id]{ width: 640px; } } @media all and (max-width:559px) { [load-post-id]{ min-width: 100% ; max-width: 100% ; width: 100% ; } 
     ._CmxRiim30CrxSPL{ min-width: 100% ; max-width: 100% ; width: 100% ; } } .fs1{ max-width: 96vw; } #splidelist{padding-left:0rem !important} ._CmxRiim30CrxSPL{margin-top: 60px;} 
     ._1VP69d9lk-Wk9zokOaylL-TMP {-webkit-filter: blur(8px); -moz-filter: blur(8px); -o-filter: blur(8px); -ms-filter: blur(8px); filter: blur(8px);} #post_viewer{height: 100%;position: fixed; -webkit-backface-visibility: hidden; backface-visibility: hidden; right: 0; top: 0; width: 100%; z-index: 50; margin-bottom: 60px;display: flex; justify-content: center; position: fixed; left: 50%; transform: translateX(-50%); overflow-y: scroll; overflow-x: hidden;}
-    [load-post-id]{display: flex;width:100%;background-color: #fff; border: 1px solid rgba(0, 0, 0, 0.125); border-radius: 0.25rem; padding: 0.5rem 0.25rem; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); flex-direction: column;} .fs1>p {font-size: 14px;line-height: 21px;margin-bottom: 0 !important;} .cZPZhMe-UCZ8htPodMyJ5 {-ms-flex-align: center;align-items: center;display: -ms-flexbox;display: flex;-ms-flex-wrap: wrap;flex-wrap: wrap;-ms-flex: 1 1 auto;flex: 1 1 auto;overflow: hidden;}
+    [load-post-id]{display: flex;width:100%;/*background-color: #fff;*/background-color: var(--post-background); border: 1px solid rgba(0, 0, 0, 0.125); border-radius: 0.25rem; padding: 0.5rem 0.25rem; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); flex-direction: column;} .fs1>p {font-size: 14px;line-height: 21px;margin-bottom: 0 !important;} .cZPZhMe-UCZ8htPodMyJ5 {-ms-flex-align: center;align-items: center;display: -ms-flexbox;display: flex;-ms-flex-wrap: wrap;flex-wrap: wrap;-ms-flex: 1 1 auto;flex: 1 1 auto;overflow: hidden;}
     ._2mHuuvyV9doV3zwbZPtIPG {display: inline-block;-ms-flex: 0 0 auto;flex: 0 0 auto} ._3LS4zudUBagjFS7HjWJYxo {color: var(--newCommunityTheme-metaText);font-size: 6px;line-height: 20px;margin: 0 4px;vertical-align: middle;} .icon {font-size: 20px;font-weight: 400;height: 20px;line-height: 20px;vertical-align: middle;width: 20px;font-style: normal;} ._2pFdCpgBihIaYh9DSMWBIu {height: 24px;}
     ._2pFdCpgBihIaYh9DSMWBIu.uMPgOFYlCc5uvpa2Lbteu {border-radius: 2px;} ._2pFdCpgBihIaYh9DSMWBIu.uMPgOFYlCc5uvpa2Lbteu:focus,._2pFdCpgBihIaYh9DSMWBIu.uMPgOFYlCc5uvpa2Lbteu:hover {outline: none;} ._10K5i7NW6qcm-UoCtpB3aK {-ms-flex-align: center;align-items: center;display: -ms-flexbox;display: flex;-ms-flex-direction: row;flex-direction: row;text-align: left;width: 100%;} .pthKOcceozMuXLYrLlbL1 {margin-right: 6px;}
     .icon:before {-webkit-font-smoothing: antialiased;-moz-osx-font-smoothing: grayscale;font-family: 'fontello';} .icon-award:before {content: "\\e85d";} .icon-edit:before {content: "\\e835";} .icon-comment:before {content: "\\e83a";color: #878A8C;} .icon-save:before {content: "\\e869";} .icon-share:before {content: "\\e855";} .icon-3dot:before {content: "\\e80f";} .icon-trash:before { content: '\\e845'; }
@@ -25,7 +22,7 @@
     .dropdown-content { display: none; position: absolute; background-color: #f1f1f1; min-width: 160px; overflow: auto; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1; } .dropdown-content a { color: black; padding: 12px 16px; text-decoration: none; display: block; } .show {display: block;} #myDropdown{ right: 0; } .dropdown-content div[interact] { color: black; padding: 12px 16px; text-decoration: none; display: block; cursor:pointer; } .CommentsPageTools__comment { -ms-flex-align: center; align-items: center; display: -ms-flexbox; display: flex; -ms-flex-flow: row nowrap; flex-flow: row nowrap; padding-top: 8px; width: 100% } 
     .CommentsPageTools__userIcon { overflow: hidden; text-indent: 100%; white-space: nowrap; border-radius: 50%; height: 24px; margin-right: 8px; width: 24px } .CommentsPageTools__reply { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; border: 1px solid transparent; border-radius: 15px; box-sizing: border-box; -ms-flex: 1; flex: 1; font-size: 14px; height: 30px; line-height: 17px; padding: 0 8px; text-align: left } .submit_com{ font-size: 12px; font-weight: 700; letter-spacing: unset; line-height: 16px; white-space: pre; word-break: keep-all; padding:0.375rem 0.75rem; margin: 4px 8px; -ms-flex-order: 2; order: 2; text-transform: unset; min-height: 24px; min-width: 24px; float: right; color: #fff; background-color: #007bff; border-color: #007bff; border:1px solid transparent; border-radius:0.25rem; transition:color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; }
     #output > ul > li::marker{ content: ""; } .comment-row > *{ font-size: 14px; } .btn-reply{ cursor: pointer; text-decoration: none !important; } .btn-submit:disabled { background: #eee; color: #667; cursor: not-allowed; } #output ul { list-style-type: none; } #frm-comment{ flex-direction: column; display: flex; } #frm-comment .input-row{ display:flex; } @media all and (min-width:600px) { #frm-comment{ margin:8px 40px 24px 48px; } } .comment-row { border-bottom: #e0dfdf 1px solid; margin-bottom: 8px; border-top: #e0dfdf 1px solid; padding: 0px 10px 0px 10px; border-right: #e0dfdf 1px solid; display:flex; flex-direction: column; } .comment-active { background-color: hsl(60, 100%, 95%); } .comment-row:target { animation: bg-fadeout 5s ease; } @keyframes bg-fadeout { from {background-color: hsl(60, 100%, 95%);} to {background-color: transparent;} } .outer-comment { margin-top:8px; padding-inline-start: 0; } .outer-comment ul { padding-inline-start: 1rem; }
-    .outer-comment > li > div { border-left: 1px solid hsl(220, 100%, 60%); } .outer-comment > li li > div { border-left: 1px solid hsl(40, 100%, 60%); } span.commet-row-label { font-style: italic; } .outer-comment ul{ margin-bottom:0 !important } .posted-by { color: hsl(220, 100%, 40%); font-weight: 700; } .comment-text { margin: 0px 0px; display:flex; } .reply { color: #0043ff; text-decoration: none; display: inline-block; border-radius: 4px; margin-right:8px } .btn-reply { font-size: 14px; text-decoration: none !important; color: #888787 !important; cursor: pointer; font-weight: 900; line-height: 20px; display: flex; } #comment-message { margin-left: 20px; display: inline-block; opacity: 1; } .msg-success {color: hsl(120, 75%, 40%); animation: fadeOut 5s ease;} .msg-error {color: hsl(10, 90%, 50%); animation: fadeOut 5s ease;} @keyframes fadeOut { 0%, 50% {opacity:1;} 100% {opacity:0;} }
+    .outer-comment > li > div { border-left: 1px solid hsl(220, 100%, 60%); } .outer-comment > li li > div { border-left: 1px solid hsl(40, 100%, 60%); } span.commet-row-label { font-style: italic; } .outer-comment ul{ margin-bottom:0 !important } .posted-by { color: var(--user-at); font-weight: 700; } .comment-text { margin: 0px 0px; display:flex;color:var(--text) } .reply { color: #0043ff; text-decoration: none; display: inline-block; border-radius: 4px; margin-right:8px } .btn-reply { font-size: 14px; text-decoration: none !important; color: #888787 !important; cursor: pointer; font-weight: 900; line-height: 20px; display: flex; } #comment-message { margin-left: 20px; display: inline-block; opacity: 1; } .msg-success {color: hsl(120, 75%, 40%); animation: fadeOut 5s ease;} .msg-error {color: hsl(10, 90%, 50%); animation: fadeOut 5s ease;} @keyframes fadeOut { 0%, 50% {opacity:1;} 100% {opacity:0;} }
     `;
     document.head.insertAdjacentHTML('beforeend', `<style>${cssstyle}</style>`);
     document.addEventListener('DOMContentLoaded',function() {
@@ -44,7 +41,6 @@
             showpost('loader', geturlparam('p'))
         }
     })
-        //this works for some stupid reason^
     function geturlparam(name, url = window.location.href) {
         name = name.replace(/[\[\]]/g, '\\$&');
         var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
@@ -527,13 +523,19 @@
                 var editmod = `
                     <section class="mb-5" style=" width:100%;overflow-wrap: break-word;overflow:hidden;padding-top:0%" postcontent>
                         <style>
-                        #post_body_1 > * {
-                            font-size:14px;
+                        #post_body_1 > p{
                             margin-bottom:2px;
                         }
                         #post_body_1{
+                            color: var(--text);
                             margin-bottom:8px;
                             margin-top:8px;
+                        }
+                        [postviewercontroller="post_title"]{
+                            color: var(--text);
+                        }
+                        [postviewercontroller="author_url"]{
+                            color: var(--text);
                         }
                         </style>
                         <div class="fs1">
@@ -567,17 +569,17 @@
                                 <div>
                                 <div class="cZPZhMe-UCZ8htPodMyJ5"><span></span>
                                     <div class="_3AStxql1mQsrZuUIFP9xSg nU4Je7n-eSXStTBAPMYt8">
-                                        <div class="_2mHuuvyV9doV3zwbZPtIPG"><a data-click-id="subreddit"
-                                                class="_3ryJoIoycVkA88fy40qNJc" href="Blogs">Blogs</a>
+                                        <div class="_2mHuuvyV9doV3zwbZPtIPG"><a style="color: var(--text)"
+                                                class="_3ryJoIoycVkA88fy40qNJc" href="Blogs" >Blogs</a>
                                             <div id="SubredditInfoTooltip--t3_s95h3k--lightbox--Bible"></div>
                                         </div><span class="_3LS4zudUBagjFS7HjWJYxo _37gsGHa8DMRAxBmQS-Ppg8 _3V4xlrklKBP2Hg51ejjjvz"
-                                            role="presentation">•</span><span class="_2fCzxBE1dlMh4OFc7B3Dun"
-                                            style="color: rgb(129, 131, 132);">Posted by</span>
-                                        <div class="_2mHuuvyV9doV3zwbZPtIPG"><a postviewercontroller="author_url" class="_2tbHP6ZydRpjI44J3syuqC  _23wugcdiaj44hdfugIAlnX oQctV4n0yUb0uiHDdGnmE" href="/u/${pjson.author.name}/" style="color: rgb(129, 131, 132);margin: 0 4px;">${pjson.author.name}</a>
+                                            role="presentation" style="color: var(--text);">•</span><span class="_2fCzxBE1dlMh4OFc7B3Dun"
+                                            style="color: var(--text)">Posted by</span>
+                                        <div class="_2mHuuvyV9doV3zwbZPtIPG"><a postviewercontroller="author_url" class="_2tbHP6ZydRpjI44J3syuqC  _23wugcdiaj44hdfugIAlnX oQctV4n0yUb0uiHDdGnmE" href="/u/${pjson.author.name}/" style="color: var(--text);margin: 0 4px;">${pjson.author.name}</a>
                                             <div id="UserInfoTooltip--t3_s95h3k--lightbox"></div>
                                         </div><span><span></span></span><a class="_3jOxDPIQ0KaOWpzvSQo-1s"
                                             href=""
-                                            target="_blank" rel="nofollow noopener noreferrer" style="color: rgb(129, 131, 132);">${timeSince(new Date(timeConverter(pjson.unix_time)))}</a>
+                                            target="_blank" rel="nofollow noopener noreferrer" style="color: var(--text);">${timeSince(new Date(timeConverter(pjson.unix_time)))}</a>
                                     </div>
                                     <div class="_2wFk1qX4e1cxk8Pkw1rAHk"></div>
                                     <div class="_3XoW0oYd5806XiOr24gGdb"></div>
@@ -631,7 +633,7 @@
             `;
                 var comment = `
             <div>
-            <div class="col-md-12" style="background-color: #fbfbfb; border-radius:  0px 0px 25px 25px;padding-bottom: 2%;">
+            <div class="col-md-12" style="background-color: var(--post-background); border-radius:  0px 0px 25px 25px;padding-bottom: 2%;">
               <div class="col-md-12">
               <div class="minid2">
                 <div class="comment-form-container">
@@ -679,6 +681,7 @@
                 document.querySelector('[postviewercontroller="author_icon_image"]').src = pjson.author.icon
                 document.querySelector('[postviewercontroller="posttop"]');
                 document.querySelector('[postviewercontroller="post_content"]').innerHTML = splide_data + editmod;
+                document.querySelector('#output').innerHTML = '';
                 comments(post_id)
                 if (userdata.isloggedin == true) {
                     /*
@@ -704,7 +707,7 @@
                         <div class="comment-info" style="display: flex; align-items: center;"><span class="posted-by" style="display:flex;color:red">System </span> <span style="margin-left:4px;margin-right:4px;display:flex;">·</span>  <span style="margin-left: 4px; margin-right: 4px; display: flex; color: red; font-weight: 700;">Admin</span> <span style="margin-left:4px;margin-right:4px;display:flex;">·</span> <span class="posted-at" style="display:flex;color: black;">Now</span><span class="icon icon-3dot _3DVrpDrMM9NLT6TlsTUMxC" style="display: flex;margin-left: auto;"></span></div>
                         <div class="dropdown-content" style="display: none; position: absolute; background-color: #f1f1f1; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1;right:0;">
                         </div>
-                        <div class="comment-text" style="color:black">Login to Leave a Comment.</div>
+                        <div class="comment-text">Login to Leave a Comment.</div>
                         <div><a class="btn-reply">&nbsp;</a></div>
                     </div>
                     </a>
@@ -1101,10 +1104,10 @@
             function replaceTemplate(id, name, date, text, parent, parentName = "", isOP,icon) {
                 let del = (text === '<i>deleted</i>') ? 'deleted=true' : ''
                 let top = (parent == 0) ? 'top="true"' : ''
-                let OPa = (isOP === true) ? ` <span style="margin-left:4px;margin-right:4px;display:flex;color:#0000FF;">OP</span> <span style="margin-left:4px;margin-right:4px;display:flex;">&middot;</span> ` : ''
-                let reply = (parent > 0) ? `<a href="#comment-${parent}" class="reply" data-id="${parent}">@${parentName}</a> ` : "";
+                let OPa = (isOP === true) ? ` <span style="margin-left:4px;margin-right:4px;display:flex;color:var(--user-at);">OP</span> <span style="margin-left:4px;margin-right:4px;display:flex;color:var(--text);">&middot;</span> ` : ''
+                let reply = (parent > 0) ? `<a href="#comment-${parent}" style="color:var(--user-at);" class="reply" data-id="${parent}">@${parentName}</a> ` : "";
                 let template = `<div class='comment-row' id="comment-${id}" ${del} ${top}>							
-                                    <div class='comment-info' style="display: flex; align-items: center;"><div><img src="${icon}" style=" height: 26px; border-radius: 20px; margin-right: 6px; "></div><span class='posted-by' style="display:flex;">${name}</span> <span style="margin-left:4px;margin-right:4px;display:flex;">&middot;</span> ${OPa}<span class='posted-at' style="display:flex;">${formatDatetime(date)}</span><span class="icon icon-3dot _3DVrpDrMM9NLT6TlsTUMxC" style="display: flex;margin-left: auto;" comment-nav-id="${id}"></span></div>
+                                    <div class='comment-info' style="display: flex; align-items: center;"><div><img src="${icon}" style=" height: 26px; border-radius: 20px; margin-right: 6px; "></div><span class='posted-by' style="display:flex;">${name}</span> <span style="margin-left:4px;margin-right:4px;display:flex;color:var(--atext);">&middot;</span> ${OPa}<span class='posted-at' style="display:flex;color:var(--text);">${formatDatetime(date)}</span><span class="icon icon-3dot _3DVrpDrMM9NLT6TlsTUMxC" style="display: flex;margin-left: auto;" comment-nav-id="${id}"></span></div>
                                     <div comment-nav-id-drop="${id}" class="dropdown-content" style="display: none; position: absolute; background-color: #f1f1f1; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1;right:0;">
                                     
                                     </div>
