@@ -342,6 +342,7 @@
                         });
                         document.querySelector('.plyr').style.minHeight = "444px"
                         document.querySelector('.plyr').style.height = "444px"
+                        document.querySelector('.plyr__menu__container [role="menu"]').insertAdjacentHTML('afterbegin','<button type="button" class="plyr__control" role="menuitem"><span>Edit<span class="plyr__menu__value">video</span></span></button>')
                         hls.attachMedia(video);
                     })
                     hls.loadSource(source);
@@ -402,6 +403,7 @@
                         });
                         document.querySelector('.plyr').style.minHeight = "444px"
                         document.querySelector('.plyr').style.height = "444px"
+                        document.querySelector('.plyr__menu__container [role="menu"]').insertAdjacentHTML('afterbegin','<button type="button" class="plyr__control" role="menuitem"><span>Edit<span class="plyr__menu__value">video</span></span></button>')
                         hls.attachMedia(video);
                     })
                     hls.loadSource(source);
@@ -579,7 +581,7 @@
                                             <div id="UserInfoTooltip--t3_s95h3k--lightbox"></div>
                                         </div><span><span></span></span><a class="_3jOxDPIQ0KaOWpzvSQo-1s"
                                             href=""
-                                            target="_blank" rel="nofollow noopener noreferrer" style="color: var(--text);">${timeSince(new Date(timeConverter(pjson.unix_time)))}</a>
+                                            target="_blank" rel="nofollow noopener noreferrer" postviewercontroller="post_time" style="color: var(--text);">${timeSince(new Date(timeConverter(pjson.unix_time)))} ago</a>
                                     </div>
                                     <div class="_2wFk1qX4e1cxk8Pkw1rAHk"></div>
                                     <div class="_3XoW0oYd5806XiOr24gGdb"></div>
@@ -679,6 +681,7 @@
                 document.querySelector('[postviewercontroller="author_url"]').href = "/u/${pjson.author.name}/"
                 document.querySelector('[postviewercontroller="author_icon_url"]').href = "/u/${pjson.author.name}/"
                 document.querySelector('[postviewercontroller="author_icon_image"]').src = pjson.author.icon
+                document.querySelector('[postviewercontroller="post_time"]').innerHTML = `${timeSince(new Date(timeConverter(pjson.unix_time)))} ago`
                 document.querySelector('[postviewercontroller="posttop"]');
                 document.querySelector('[postviewercontroller="post_content"]').innerHTML = splide_data + editmod;
                 document.querySelector('#output').innerHTML = '';
@@ -805,8 +808,12 @@
                         })
                     })
                 } else {
-                    document.getElementById("delete_post").remove()
-                    document.getElementById("edit_post").remove();
+                    if (document.getElementById("delete_post")) {
+                        document.getElementById("delete_post").remove()
+                    }
+                    if (document.getElementById("edit_post")) {
+                        document.getElementById("edit_post").remove()
+                    }
                 }
                 document.getElementById('pop').addEventListener('click', function (e) {
                     document.getElementById("myDropdown").classList.toggle("show")
@@ -1367,7 +1374,7 @@
             return;
         }
         var request = new XMLHttpRequest();
-        request.open('POST', '/api/v1/?k=like&time' + (Date.now() / 1000), true);
+        request.open('POST', '/api/v1/?k=like&time=' + (Date.now()), true);
         var formData = new FormData();
         formData.append('action', `${action}`);
         formData.append('post_id', `${post_id}`);
