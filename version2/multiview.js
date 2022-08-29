@@ -7,9 +7,10 @@
     let h = location.protocol + '//' + location.host + location.pathname
     let postviewer;
     let postviewercontroller; //control all elements
+    let exe = false;
     let cssstyle = `
     .sp-aw { text-align: center !important; list-style: none; } @media all and (min-width:940px) { [load-post-id]{ width: 937px!important; } } @media all and (min-width:729px) and (max-width:939px){ [load-post-id]{ width: 640px; } } @media all and (max-width:559px) { [load-post-id]{ min-width: 100% ; max-width: 100% ; width: 100% ; } 
-    ._CmxRiim30CrxSPL{ min-width: 100% ; max-width: 100% ; width: 100% ; } } .fs1{ max-width: 96vw; } #splidelist{padding-left:0rem !important} ._CmxRiim30CrxSPL{margin-top: 60px;} 
+    ._CmxRiim30CrxSPL{ min-width: 100% ; max-width: 100% ; width: 100% ; } } .fs1{ max-width: 96vw; } #splidelist{padding-left:0rem !important} /*._CmxRiim30CrxSPL{margin-top: 60px;}*/ 
     ._1VP69d9lk-Wk9zokOaylL-TMP {-webkit-filter: blur(8px); -moz-filter: blur(8px); -o-filter: blur(8px); -ms-filter: blur(8px); filter: blur(8px);} #post_viewer{height: 100%;position: fixed; -webkit-backface-visibility: hidden; backface-visibility: hidden; right: 0; top: 0; width: 100%; z-index: 50; margin-bottom: 60px;display: flex; justify-content: center; position: fixed; left: 50%; transform: translateX(-50%); overflow-y: scroll; overflow-x: hidden;}
     [load-post-id]{display: flex;width:100%;/*background-color: #fff;*/background-color: var(--post-background); border: 1px solid rgba(0, 0, 0, 0.125); border-radius: 0.25rem; padding: 0.5rem 0.25rem; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); flex-direction: column;} .fs1>p {font-size: 14px;line-height: 21px;margin-bottom: 0 !important;} .cZPZhMe-UCZ8htPodMyJ5 {-ms-flex-align: center;align-items: center;display: -ms-flexbox;display: flex;-ms-flex-wrap: wrap;flex-wrap: wrap;-ms-flex: 1 1 auto;flex: 1 1 auto;overflow: hidden;}
     ._2mHuuvyV9doV3zwbZPtIPG {display: inline-block;-ms-flex: 0 0 auto;flex: 0 0 auto} ._3LS4zudUBagjFS7HjWJYxo {color: var(--newCommunityTheme-metaText);font-size: 6px;line-height: 20px;margin: 0 4px;vertical-align: middle;} .icon {font-size: 20px;font-weight: 400;height: 20px;line-height: 20px;vertical-align: middle;width: 20px;font-style: normal;} ._2pFdCpgBihIaYh9DSMWBIu {height: 24px;}
@@ -21,7 +22,7 @@
     ._10K5i7NW6qcm-UoCtpB3aK,.kU8ebCMnbXfjCWfqn0WPb {outline: none;background: transparent;border: none;color: inherit;cursor: pointer;padding: initial;color: #878A8C;} #myDropdown > a {background-color: transparent;border: 0;font-size: 14px;line-height: 16px;display: flex;margin: 8px;} .flex{display: flex;display: -ms-flexbox;} .icon:before {-webkit-font-smoothing: antialiased;-moz-osx-font-smoothing: grayscale;font-family: 'fontello';} .icon {font-size: 20px;font-weight: 400;height: 20px;line-height: 20px;vertical-align: middle;width: 20px;font-style: normal;} .dropbtn{background-color: transparent;border: 0;font-size: 14px;line-height: 16px;display: flex;margin: 8px;} .dropdown { position: relative; display: inline-block; margin-left: auto; } #myDropdown > button{background-color: transparent;border: 0;font-size: 14px;line-height: 16px;display: flex;margin: 8px;}
     .dropdown-content { display: none; position: absolute; background-color: #f1f1f1; min-width: 160px; overflow: auto; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1; } .dropdown-content a { color: black; padding: 12px 16px; text-decoration: none; display: block; } .show {display: block;} #myDropdown{ right: 0; } .dropdown-content div[interact] { color: black; padding: 12px 16px; text-decoration: none; display: block; cursor:pointer; } .CommentsPageTools__comment { -ms-flex-align: center; align-items: center; display: -ms-flexbox; display: flex; -ms-flex-flow: row nowrap; flex-flow: row nowrap; padding-top: 8px; width: 100% } 
     .CommentsPageTools__userIcon { overflow: hidden; text-indent: 100%; white-space: nowrap; border-radius: 50%; height: 24px; margin-right: 8px; width: 24px } .CommentsPageTools__reply { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; border: 1px solid transparent; border-radius: 15px; box-sizing: border-box; -ms-flex: 1; flex: 1; font-size: 14px; height: 30px; line-height: 17px; padding: 0 8px; text-align: left } .submit_com{ font-size: 12px; font-weight: 700; letter-spacing: unset; line-height: 16px; white-space: pre; word-break: keep-all; padding:0.375rem 0.75rem; margin: 4px 8px; -ms-flex-order: 2; order: 2; text-transform: unset; min-height: 24px; min-width: 24px; float: right; color: #fff; background-color: #007bff; border-color: #007bff; border:1px solid transparent; border-radius:0.25rem; transition:color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; }
-    #output > ul > li::marker{ content: ""; } .comment-row > *{ font-size: 14px; } .btn-reply{ cursor: pointer; text-decoration: none !important; } .btn-submit:disabled { background: #eee; color: #667; cursor: not-allowed; } #output ul { list-style-type: none; } #frm-comment{ flex-direction: column; display: flex; } #frm-comment .input-row{ display:flex; } @media all and (min-width:600px) { #frm-comment{ margin:8px 40px 24px 48px; } } .comment-row { border-bottom: #e0dfdf 1px solid; margin-bottom: 8px; border-top: #e0dfdf 1px solid; padding: 0px 10px 0px 10px; border-right: #e0dfdf 1px solid; display:flex; flex-direction: column; } .comment-active { background-color: hsl(60, 100%, 95%); } .comment-row:target { animation: bg-fadeout 5s ease; } @keyframes bg-fadeout { from {background-color: hsl(60, 100%, 95%);} to {background-color: transparent;} } .outer-comment { margin-top:8px; padding-inline-start: 0; } .outer-comment ul { padding-inline-start: 1rem; }
+    #output > ul > li::marker{ content: ""; } .comment-row > *{ font-size: 14px; } .btn-reply{ cursor: pointer; text-decoration: none !important; } .btn-submit:disabled { background: #eee; color: #667; cursor: not-allowed; } #output ul { list-style-type: none; } #frm-comment{ flex-direction: column; display: flex; } #frm-comment .input-row{ display:flex; } @media all and (min-width:600px) { #frm-comment{ margin:8px 40px 24px 48px; } } .comment-row {position: relative; border-bottom: #e0dfdf 1px solid; margin-bottom: 8px; border-top: #e0dfdf 1px solid; padding: 0px 10px 0px 10px; border-right: #e0dfdf 1px solid; display:flex; flex-direction: column; } .comment-active { background-color: hsl(60, 100%, 95%); } .comment-row:target { animation: bg-fadeout 5s ease; } @keyframes bg-fadeout { from {background-color: hsl(60, 100%, 95%);} to {background-color: transparent;} } .outer-comment { margin-top:8px; padding-inline-start: 0; } .outer-comment ul { padding-inline-start: 1rem; }
     .outer-comment > li > div { border-left: 1px solid hsl(220, 100%, 60%); } .outer-comment > li li > div { border-left: 1px solid hsl(40, 100%, 60%); } span.commet-row-label { font-style: italic; } .outer-comment ul{ margin-bottom:0 !important } .posted-by { color: var(--user-at); font-weight: 700; } .comment-text { margin: 0px 0px; display:flex;color:var(--text) } .reply { color: #0043ff; text-decoration: none; display: inline-block; border-radius: 4px; margin-right:8px } .btn-reply { font-size: 14px; text-decoration: none !important; color: #888787 !important; cursor: pointer; font-weight: 900; line-height: 20px; display: flex; } #comment-message { margin-left: 20px; display: inline-block; opacity: 1; } .msg-success {color: hsl(120, 75%, 40%); animation: fadeOut 5s ease;} .msg-error {color: hsl(10, 90%, 50%); animation: fadeOut 5s ease;} @keyframes fadeOut { 0%, 50% {opacity:1;} 100% {opacity:0;} }
     `;
     document.head.insertAdjacentHTML('beforeend', `<style>${cssstyle}</style>`);
@@ -554,7 +555,7 @@
                     `
                 var template = `
                 <div dclass="rpBJOHq2PR60pnwJlUyP0" class="_CmxRiim30CrxSPL">
-                <article load-post-id="${pjson.post_id}" postviewercontroller="posttop">
+                <article load-post-id="${pjson.post_id}" postviewercontroller="posttop" style=" display: inline-flex; margin-top: 60px; margin-bottom: 50px !important; ">
                 <div data-postalert style="justify-content: space-around; margin-left: auto; margin-right: auto; padding-top: 5px; padding-bottom: 5px; margin-bottom: 10px;border-radius: 4px; font-size: 14px;position: fixed;box-shadow: -6px 9px 17px -1px rgb(0 0 0 / 39%);z-index: 997;transition: all .99s ease-out;display: none;">
                 <div style="padding-left: 5px; font-size: 14px; padding-right: 5px;"></div>
                 </div>
@@ -681,7 +682,7 @@
                 document.querySelector('[postviewercontroller="author_url"]').href = "/u/${pjson.author.name}/"
                 document.querySelector('[postviewercontroller="author_icon_url"]').href = "/u/${pjson.author.name}/"
                 document.querySelector('[postviewercontroller="author_icon_image"]').src = pjson.author.icon
-                document.querySelector('[postviewercontroller="post_time"]').innerHTML = `${timeSince(new Date(timeConverter(pjson.unix_time)))} ago`
+                document.querySelector('[postviewercontroller="post_time"]').innerHTML = timeSince(new Date(pjson.unix_time * 1000)) + ' ago'
                 document.querySelector('[postviewercontroller="posttop"]');
                 document.querySelector('[postviewercontroller="post_content"]').innerHTML = splide_data + editmod;
                 document.querySelector('#output').innerHTML = '';
@@ -836,7 +837,7 @@
                 document.querySelector('[data-postalert]').style.width = (document.querySelector(`[load-post-id="${pjson.post_id}"] > header`).offsetWidth + 8) + "px"
                 setTimeout(() => {
                     document.getElementById("post_viewer").addEventListener("click", clear_menus)
-                    document.querySelector(`._CmxRiim30CrxSPL`).style.marginBottom = document.querySelector(`[load-post-id='${pjson.post_id}']`).scrollHeight + 60 + 'px'
+                    //document.querySelector(`._CmxRiim30CrxSPL`).style.marginBottom = document.querySelector(`[load-post-id='${pjson.post_id}']`).scrollHeight + 60 + 'px'
                     var postdata = {
                         'post_id': pjson.post_id,
                         'time': (Date.now() / 1000),
@@ -1357,10 +1358,13 @@
                     parentCSS.remove("comment-active");
                 }
             }
-            $form.addEventListener("submit", submitHandler);
-            $output.addEventListener("click", replyHandler);
-            $output.addEventListener("mouseover", replyOverHandler)
-            $output.addEventListener("mouseout", replyOverHandler)
+            if (!exe) {
+                $form.addEventListener("submit", submitHandler);
+                $output.addEventListener("click", replyHandler);
+                $output.addEventListener("mouseover", replyOverHandler)
+                $output.addEventListener("mouseout", replyOverHandler)
+                exe = true
+            }
         })(document, window);
     }
     function vmlike() {
