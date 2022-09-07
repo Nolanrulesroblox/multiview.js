@@ -1,23 +1,24 @@
 //tmp stuff
 window.evt = function (params) {
-    
+
 };
-function timeSince (params) {
+function timeSince(params) {
     return params
 }
-function timeConverter (params) {
+function timeConverter(params) {
     return params
 }
 function vmlike(params) {
     console.log('like')
 }
-(function() {
+(function () {
     //window.showpost = showpost;
     let userdata; //all user data.
     let h = location.protocol + '//' + location.host + location.pathname;
     let t = document.title
     //let post_id = '4iRZzfm-sp-pics-2-occ';
-    let post_id = '5WLNBDG-sp-pics-1-occ';
+    //let post_id = '5WLNBDG-sp-pics-1-occ';
+    let post_id = '3bYo0A0-testing';
     let cssstyle = `
     .sp-aw { text-align: center !important; list-style: none; } @media all and (min-width:940px) { [load-post-id]{ width: 937px!important; } } @media all and (min-width:729px) and (max-width:939px){ [load-post-id]{ width: 640px; } } @media all and (max-width:559px) { [load-post-id]{ min-width: 100% ; max-width: 100% ; width: 100% ; } 
     ._CmxRiim30CrxSPL{ min-width: 100% ; max-width: 100% ; width: 100% ; } } .fs1{ max-width: 96vw; } #splidelist{padding-left:0rem !important} /*._CmxRiim30CrxSPL{margin-top: 60px;}*/ 
@@ -79,41 +80,490 @@ function vmlike(params) {
         </header>
         <div postviewercontroller="post_content">
         </div>
-        <div class="interactive_0" class="interactive_0" style="margin-left: 8px;margin-right: 8px;margin-top:8px;">
-            <div style="/*border-radius: 5px 5px 0px 0px;*/ border: 1px solid #00000024;">
-                <div class="_1hwEKkB_38tIoal6fcdrt9" style="margin-left: 8px;margin-right: 8px;">
-                    <div class="_3-miAEojrCvx_4FQ8x3P-s">
-                    <div style="display:flex" btn="like" postviewercontroller="post_like_array"></div>
-                        <div
-                            class="_1UoeAeSRhOKSNdY_h3iS1O _3m17ICJgx45k_z-t82iVuO _3U_7i38RDpostviewer5eBv7m4M-9J _2qww3J5KKzsD7e5DO0BvvU">
-                            <i class="icon icon-comment _3DVrpDrMM9NLT6TlsTUMxC" role="presentation"></i><span
-                                class="FHCV02u6Cp2zYL0fhQPsO" id="numComments">0 Comments</span></div>
+        <div class="interactive_0" postviewercontroller="menu" style="margin-left: 8px;margin-right: 8px;margin-top:8px;">
 
-                        <div style="display: flex;">
-                            <div class="icontop vmshare" style="display: flex;">
-                                <div class="_JRBNstMcGxbZUxrrIKXe _3U_7i38RDpostviewer5eBv7m4M-9J _3yh2bniLq7bYr4BaiXowdO _1pShbCnOaF7EGWTq6IvZux _28vEaVlLWeas1CDiLuTCap vmshare"
-                                    id="share_native"><button data-click-id="share" class="kU8ebCMnbXfjCWfqn0WPb vmshare"><i
-                                            class="icon icon-share _1GQDWqbF-wkYWbrpmOvjqJ vmshare"></i><span
-                                            class="_6_44iTtZoeY6_XChKt5b0 vmshare">share</span></button></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="dropdown" postviewercontroller="dropdown">
-                        <button id="pop" class="dropbtn icon icon-3dot" style="cursor: pointer;"></button>
-                        <div id="myDropdown" class="dropdown-content">
-                            <button class="kU8ebCMnbXfjCWfqn0WPb"> <i class="icon icon-report _1GQDWqbF-wkYWbrpmOvjqJ" style="/*color:#ff8d00*/"></i><span class="_6_44iTtZoeY6_XChKt5b0">Report</span></button>
-                            <button class="kU8ebCMnbXfjCWfqn0WPb" id="edit_post"> <i class="icon icon-edit _1GQDWqbF-wkYWbrpmOvjqJ" style="/*color:#ff8d00*/"></i><span class="_6_44iTtZoeY6_XChKt5b0">Edit</span></button>
-                            <button class="kU8ebCMnbXfjCWfqn0WPb" id="delete_post"> <i class="icon icon-trash _1GQDWqbF-wkYWbrpmOvjqJ" style="/*color:#ff8d00*/"></i><span class="_6_44iTtZoeY6_XChKt5b0">Delete</span></button>
-                        </div>
-                </div>
-                </div>
-            </div>
         </div>
         <div id="cvh" style="margin-top: 4px;" postviewercontroller="post_comments"></div>
     </article>
     </div>
     `;
-    var comment = `<div>
+    document.head.insertAdjacentHTML('beforeend', `<style>${cssstyle}</style>`);
+    function geturlparam(name, url = window.location.href) {
+        name = name.replace(/[\[\]]/g, '\\$&');
+        var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    }
+    if (window.localStorage.getItem('sDY')) {
+        //do note, this is only a SIMPLE auth, no real auth is happening here, its just for templating and stuff. try n be stupid... it wont work
+        if (JSON.parse(window.localStorage.getItem('sDY')).expire >= (Date.now())) {
+            window.localStorage.removeItem('sDY')
+            httpRequest('/api/v1/?k=userdata&user=self', 'GET', function (e) {
+                q = e.responseText
+                userdata = JSON.parse(q)
+                userdata['expire'] = Date.now();
+                window.localStorage.setItem('sDY', JSON.stringify(userdata))
+            })
+        } else {
+            userdata = JSON.parse(window.localStorage.getItem('sDY'))
+        }
+    } else {
+        httpRequest('/api/v1/?k=userdata&user=self', 'GET', function (e) {
+            q = e.responseText
+            userdata = JSON.parse(q)
+            userdata['expire'] = Date.now() + 1000 * 60 * 60 * 4;
+            window.localStorage.setItem('sDY', JSON.stringify(userdata))
+        })
+    }
+    async function createscript(script_urls) {
+        let re = /(?:\.([^.]+))?$/;
+        function load(script_url) {
+            return new Promise(function (resolve, reject) {
+                if (createscript.loaded.has(script_url)) {
+                    resolve();
+                } else {
+                    if (re.exec(script_url)[1] == 'css') {
+                        document.head.insertAdjacentHTML('beforeend', '<link rel="stylesheet" href="' + script_url + '" type="text/css"/>');
+                        resolve()
+                    } else {
+                        var script = document.createElement('script');
+                        script.onload = resolve;
+                        script.src = script_url
+                        document.head.appendChild(script);
+                    }
+                }
+            });
+        }
+        var promises = [];
+        for (const script_url of script_urls) {
+            promises.push(load(script_url));
+        }
+        await Promise.all(promises);
+        for (const script_url of script_urls) {
+            createscript.loaded.add(script_url);
+        }
+    }
+    //let sliding = document.createElement('script');
+    //sliding.setAttribute('src', '/api/v1/cdn/splide.min.js');
+    //sliding.setAttribute('id', "splidejsid")
+    //document.body.appendChild(sliding);
+    //document.body.insertAdjacentHTML('beforeend', '<link rel="stylesheet" href="/api/v1/cdn/splide.min.css" type="text/css"/ id="splidecss">');
+    document.addEventListener('DOMContentLoaded', async function () {
+        createscript.loaded = new Set();
+        await createscript(['/api/v1/cdn/splide.min.js', '/api/v1/cdn/splide.min.css', '/api/v1/cdn/plyr.css', '/api/v1/cdn/hls.js', '/api/v1/cdn/plyr.js',]);
+        document.querySelector('body').insertAdjacentHTML('beforeend', '<div id="post_viewer2" style="background-color: rgba(0, 0, 0, .5) !important;"></div>')
+        postviewer = document.getElementById('post_viewer2');
+        postviewer.style.left = '99999px'
+        postviewer.setAttribute('postviewer', 'inactive');
+        postviewer.insertAdjacentHTML('afterbegin', template);
+        document.querySelector('#post_viewer2 > div').addEventListener('click', function (event) {
+            if (!event.target.matches('.icon-3dot')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                var i;
+                for (i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.style.display === "inline-block") {
+                        openDropdown.style.display = "none";
+                    }
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        })
+        //postviewer.insertAdjacentHTML('afterbegin', css);
+        //START fix of checktarg
+        postviewer.addEventListener('click', (event) => {
+            if (event.target.getAttribute('postviewer') == 'active') {
+                showpost()
+
+            }
+        });
+        if (geturlparam('p')) {
+            showpost('loader', geturlparam('p'))
+        }
+        postjson.open('GET', '/api/v1/?k=loadpid&pid=' + post_id + '&pagetype=trending&currenttime=' + (Math.floor(Date.now() / 1000)), true);
+        postjson.send();
+        document.getElementById('post_viewer2').addEventListener('click', function (e) {
+            if (e.target.getAttribute('id') == 'post_viewer2') {
+                document.body.style.overflowY = ""
+                if (postviewer.getAttribute('postviewer') == 'active') {
+                    for (let index = 0; index < document.querySelectorAll('._CmxRiim30CrxSPL').length; index++) {
+                        const f = document.querySelectorAll('._CmxRiim30CrxSPL')[index];
+                        //f.remove()
+                    }
+                    document.querySelector('[postviewercontroller="post_content"]').innerHTML = ''
+                    //blur.style.cssText = ''
+                    //postviewer.removeEventListener("click", clear_menus)
+                    //disablehrefs()
+                    window.history.pushState(t, t, h);
+                    postviewer.style.left = '99999px'
+                    postviewer.setAttribute('postviewer', 'inactive')
+                }
+            }
+        })
+    })
+    const postjson = new XMLHttpRequest();
+    postjson.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            document.body.style.overflowY = "hidden"
+            postviewer.style.left = '50%'
+            //blur.style.cssText = '-webkit-filter: blur(8px); -moz-filter: blur(8px); -o-filter: blur(8px); -ms-filter: blur(8px); filter: blur(8px);'
+            postviewer.setAttribute('postviewer', 'active')
+            var pjson = JSON.parse(this.responseText)[0];
+            if (userdata.isloggedin === true) {
+                var data = {
+                    'post_id': pjson.post_id,
+                    'time': (Date.now() / 1000),
+                    'viewtype': 1
+                }
+                var a = new XMLHttpRequest();
+                a.open('POST', '/api/v1/?k=viewer&mode=h', true);
+                a.send(JSON.stringify(data));
+                window.evt('view', {
+                    postid: pjson.post_id,
+                    time: Date.now(),
+                    type: 1
+                })
+            }
+            //END fix of checktarg
+            //window.history.pushState(pjson.title + ' - NRRINC', pjson.title + ' - NRRINC', `/?p=${pjson.post_id}`);
+            //override because dont feel like enabling beta on every single testing device. sorry, but lazy.
+            if (pjson.metadata) {
+                var metadata = JSON.parse(pjson.metadata)
+            }
+            //disablehrefs()
+            postviewer.style.display = "none";
+            document.querySelector('[load-post-id]').setAttribute('load-post-id', pjson.post_id)
+            document.querySelector('[postviewercontroller="post_title"]').innerHTML = pjson.title
+            document.querySelector('[postviewercontroller="author_url"]').innerHTML = pjson.author.name
+            document.querySelector('[postviewercontroller="author_url"]').href = "/u/${pjson.author.name}/"
+            document.querySelector('[postviewercontroller="author_icon_url"]').href = "/u/${pjson.author.name}/"
+            document.querySelector('[postviewercontroller="author_icon_image"]').src = pjson.author.icon
+            document.querySelector('[postviewercontroller="post_time"]').innerHTML = timeSince(new Date(pjson.unix_time * 1000)) + ' ago'
+            document.querySelector('[postviewercontroller="posttop"]');
+            buildmedia(pjson)
+            buildmenu(pjson)
+            buildcomments(pjson)
+            //document.querySelector('[postviewercontroller="post_content"]').innerHTML = splide_data + editmod;
+            document.querySelector('#output').innerHTML = '';
+            //comments(post_id)
+            if (userdata.isloggedin == 'e') {
+                /*
+                var comment_loa = `
+                <img alt="${pjson.self_username} avatar" class="CommentsPageTools__userIcon " src="${pjson.self_icon}">
+                <button class="CommentsPageTools__reply" id="load-commenter">Leave a comment</button>`
+                document.getElementById('frm-comment').style.display = 'none'
+                document.querySelector('.CommentsPageTools__comment').insertAdjacentHTML('afterbegin',comment_loa)
+                document.getElementById('load-commenter').addEventListener('click',function() {
+                    if (document.getElementById('frm-comment').style.display === 'flex') {
+                        document.getElementById('frm-comment').style.display = 'none'
+                    } else {
+                        document.getElementById('frm-comment').style.display = 'flex'
+                    }
+                })
+                */
+            } else {
+                document.getElementById('frm-comment').style.display = 'none'
+                data4 = `
+                <li>
+                <a style=" text-decoration: none !important; cursor: pointer;color:black" href="/?login=true">
+                <div class="comment-row" id="comment-0" style="border-left-style:dashed;">							
+                    <div class="comment-info" style="display: flex; align-items: center;"><span class="posted-by" style="display:flex;color:red">System </span> <span style="margin-left:4px;margin-right:4px;display:flex;">·</span>  <span style="margin-left: 4px; margin-right: 4px; display: flex; color: red; font-weight: 700;">Admin</span> <span style="margin-left:4px;margin-right:4px;display:flex;">·</span> <span class="posted-at" style="display:flex;color: black;">Now</span><span class="icon icon-3dot _3DVrpDrMM9NLT6TlsTUMxC" style="display: flex;margin-left: auto;"></span></div>
+                    <div class="dropdown-content" style="display: none; position: absolute; background-color: #f1f1f1; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1;right:0;">
+                    </div>
+                    <div class="comment-text">Login to Leave a Comment.</div>
+                    <div><a class="btn-reply">&nbsp;</a></div>
+                </div>
+                </a>
+                </li>
+                `
+                //document.querySelector('#output > .outer-comment').insertAdjacentHTML('afterbegin',data4)
+            }
+            //loading comments
+
+            //end
+            postviewer.style.display = "flex";
+            document.querySelector('[data-postalert]').style.width = (document.querySelector(`[load-post-id] > header`).offsetWidth + 8) + "px"
+        }
+    }
+    function buildmedia(data) {
+        const base = document.querySelector('[postviewercontroller="post_content"]');
+        base.innerHTML = null;
+        let meta = data.metadata;
+        if (data.video) {
+            setTimeout(() => {
+                const source = data.video.server + data.video.code + '/_.m3u8'
+                //add loading for video
+                base.insertAdjacentHTML('beforeend', `<video id="player" playsinline controls data-poster="${data.image[0]}" crossorigin></video>`)
+                function updateQuality(newQuality) {
+                    if (newQuality === 0) {
+                        window.hls.currentLevel = -1; //Enable AUTO quality if option.value = 0
+                    } else {
+                        window.hls.levels.forEach((level, levelIndex) => {
+                            if (level.height === newQuality) {
+                                window.hls.currentLevel = levelIndex;
+                            }
+                        });
+                    }
+                }
+                //const source = m3u8;
+                const video = document.querySelector('#player');
+                const defaultOptions = {};
+                if (!Hls.isSupported()) {
+                    video.src = source;
+                } else {
+                    const hls = new Hls({
+                        maxMaxBufferLength: '15',
+                    });
+                    hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+                        const availableQualities = hls.levels.map((l) => l.height)
+                        defaultOptions.quality = {
+                            default: availableQualities[availableQualities.length - 1],
+                            options: availableQualities,
+                            forced: true,
+                            onChange: (e) => updateQuality(e),
+                        }
+                        defaultOptions.captions = {
+                            active: false, update: true, language: 'en'
+                        }
+                        const player = new Plyr(video, defaultOptions);
+                        player.on('languagechange', () => {
+                            setTimeout(() => hls.subtitleTrack = player.currentTrack, 50);
+                        });
+                        document.querySelector('.plyr').style.minHeight = "444px"
+                        document.querySelector('.plyr').style.height = "444px"
+                        hls.attachMedia(video);
+
+                    })
+                    hls.loadSource(source);
+                    window.hls = hls;
+                    base.insertAdjacentHTML('beforeend', `
+                    <div class="mb-5" style=" min-width: 100%;overflow-wrap: break-word;overflow:hidden;padding-top:0px;padding-left: 16px;padding-right: 16px;" postcontent>
+                        <style>
+                        #post_body_1 > p{margin-bottom:2px;}
+                        #post_body_1{color: var(--text);margin-bottom:8px;margin-top:8px;}
+                        [postviewercontroller="post_title"]{color: var(--text);}
+                        [postviewercontroller="author_url"]{color: var(--text);}
+                        </style>
+                            <div id="post_body_1">${data.post_body}</div>
+                    </div>`)
+                }
+            }, 5);
+
+        } else if (data.image) {
+            if (data.image.length >= 2) {
+                base.insertAdjacentHTML('beforeend', '<div class="splide" id="splidetracker"><div class="splide__track"><ul class="splide__list" postviewercontroller="slider"></ul></div></div>')
+                data.image.forEach(function (i, ii) {
+                    document.querySelector('[postviewercontroller="slider"]').insertAdjacentHTML('beforeend', `<li style="margin: 12px 0;" class="splide__slide sp-aw"><img class="img-fluid rounded sp-image" style="max-height: 512px;cursor:zoom-in;" src="${i}" alt"image"></li>`)
+                })
+                //now load splide
+                setTimeout(() => {
+                    new Splide('.splide', {
+                        autoHeight: true,
+                        trimSpace: false,
+                        keyboard: false,
+                        perPage: 1,
+                    }).mount();
+                }, 5);
+            } else {
+                data.image.forEach(function (i, ii) {
+                    base.insertAdjacentHTML('beforeend', `<li style="margin: 12px 0;" class="sp-aw"><img class="img-fluid rounded sp-image" style="max-height: 512px;cursor:zoom-in;" src="${i}" alt"image"></li>`)
+                })
+            }
+            const imglist = document.querySelectorAll('.img-fluid.rounded.sp-image')
+            for (let i = 0; i < imglist.length; i++) {
+                imglist[i].addEventListener('click', function (e) {
+                    if (e.target.style.maxHeight == '2048px') {
+                        e.target.style.maxHeight = '512px'
+                        e.target.style.cursor = "zoom-in"
+                    } else {
+                        e.target.style.maxHeight = '2048px'
+                        e.target.style.cursor = "zoom-out"
+                    }
+                })
+
+            }
+            base.insertAdjacentHTML('beforeend', `
+            <div class="mb-5" style=" min-width: 100%;overflow-wrap: break-word;overflow:hidden;padding-top:0px;padding-left: 16px;padding-right: 16px;" postcontent>
+                <style>
+                #post_body_1 > p{margin-bottom:2px;}
+                #post_body_1{color: var(--text);margin-bottom:8px;margin-top:8px;}
+                [postviewercontroller="post_title"]{color: var(--text);}
+                [postviewercontroller="author_url"]{color: var(--text);}
+                </style>
+                    <div id="post_body_1">${data.post_body}</div>
+            </div>`)
+        } else {
+            base.insertAdjacentHTML('beforeend', `
+            <div class="mb-5" style=" min-width: 100%;overflow-wrap: break-word;overflow:hidden;padding-top:0px;padding-left: 16px;padding-right: 16px;" postcontent>
+                <style>
+                #post_body_1 > p{margin-bottom:2px;}
+                #post_body_1{color: var(--text);margin-bottom:8px;margin-top:8px;}
+                [postviewercontroller="post_title"]{color: var(--text);}
+                [postviewercontroller="author_url"]{color: var(--text);}
+                </style>
+                    <div id="post_body_1">${data.post_body}</div>
+            </div>`)
+        }
+    }
+    function buildmenu(data) {
+        const base = document.querySelector('[postviewercontroller="menu"]');
+        base.innerHTML = null;
+        let markup = `
+            <div style="border: 1px solid #00000024;">
+            <div class="_1hwEKkB_38tIoal6fcdrt9" style="margin-left: 8px;margin-right: 8px;">
+                <div class="_3-miAEojrCvx_4FQ8x3P-s">
+                <div style="display:flex" btn="like" postviewercontroller="post_like_array"></div>
+                    <div
+                        class="_1UoeAeSRhOKSNdY_h3iS1O _3m17ICJgx45k_z-t82iVuO _3U_7i38RDpostviewer5eBv7m4M-9J _2qww3J5KKzsD7e5DO0BvvU">
+                        <i class="icon icon-comment _3DVrpDrMM9NLT6TlsTUMxC" role="presentation"></i><span
+                            class="FHCV02u6Cp2zYL0fhQPsO">${data.comments.count} Comments</span></div>
+
+                    <div style="display: flex;">
+                        <div class="icontop vmshare" style="display: flex;">
+                            <div class="_JRBNstMcGxbZUxrrIKXe _3U_7i38RDpostviewer5eBv7m4M-9J _3yh2bniLq7bYr4BaiXowdO _1pShbCnOaF7EGWTq6IvZux _28vEaVlLWeas1CDiLuTCap vmshare"
+                                id="share_native"><button data-click-id="share" class="kU8ebCMnbXfjCWfqn0WPb vmshare"><i
+                                        class="icon icon-share _1GQDWqbF-wkYWbrpmOvjqJ vmshare"></i><span
+                                        class="_6_44iTtZoeY6_XChKt5b0 vmshare">share</span></button></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="dropdown" postviewercontroller="dropdown">
+                    <button id="pop" class="dropbtn icon icon-3dot" style="cursor: pointer;"></button>
+                    <div id="myDropdown" class="dropdown-content">
+                        <button class="kU8ebCMnbXfjCWfqn0WPb"> <i class="icon icon-report _1GQDWqbF-wkYWbrpmOvjqJ" style="/*color:#ff8d00*/"></i><span class="_6_44iTtZoeY6_XChKt5b0">Report</span></button>
+                        <button class="kU8ebCMnbXfjCWfqn0WPb" id="edit_post"> <i class="icon icon-edit _1GQDWqbF-wkYWbrpmOvjqJ" style="/*color:#ff8d00*/"></i><span class="_6_44iTtZoeY6_XChKt5b0">Edit</span></button>
+                        <button class="kU8ebCMnbXfjCWfqn0WPb" id="delete_post"> <i class="icon icon-trash _1GQDWqbF-wkYWbrpmOvjqJ" style="/*color:#ff8d00*/"></i><span class="_6_44iTtZoeY6_XChKt5b0">Delete</span></button>
+                    </div>
+            </div>
+            </div>
+        </div>`
+        if (data.like.liked === true) {
+            var likemod = '<div style="display: flex; -ms-flex-align: center; align-items: center; display: -ms-flexbox; cursor: pointer;margin-right:4px" btn="like"><span elike-id="' + data.post_id + '" like-id="' + data.post_id + '" data-like="unlike" class="JrpAzXnCHrDk" style="-ms-flex-align: center; align-items: center; display: -ms-flexbox; line-height: 20px;display: flex;"><i class="like-btn JrpAzXnCHrDk" data-id="' + data.gen.SSR_id + '" style=""><i class="site-icon-s JrpAzXnCHrDk" style="font-size: 20px;line-height: 20px;color:#1696e1;line-height: 16px; margin-right: 6px;margin-left: 4px;"></i></i> <span class="likes JrpAzXnCHrDk" style="margin-left: 2px; display: inline-block; line-height: 1; text-transform: capitalize; vertical-align: middle; color: #878A8C; font-weight: 700; font-size: 12px;">' + data.like.likes + '</span></span></div>'
+        } else {
+            var likemod = '<div style="display: flex; -ms-flex-align: center; align-items: center; display: -ms-flexbox; cursor: pointer;margin-right:4px" btn="like"><span elike-id="' + data.post_id + '" like-id="' + data.post_id + '"  data-like="like" class="JrpAzXnCHrDk" style="-ms-flex-align: center; align-items: center; display: -ms-flexbox; line-height: 20px;display: flex;"><i class="like-btn JrpAzXnCHrDk" data-id="' + data.gen.SSR_id + '" style=""><i class="site-icon-s JrpAzXnCHrDk" style="font-size: 20px;line-height: 20px;color:unset;line-height: 16px; margin-right: 6px;margin-left: 4px;color:#878A8C;"></i></i> <span class="likes JrpAzXnCHrDk" style="margin-left: 2px; display: inline-block; line-height: 1; text-transform: capitalize; vertical-align: middle; color: #878A8C; font-weight: 700; font-size: 12px;">' + data.like.likes + '</span></span></div>'
+        }
+        base.innerHTML = markup;
+        document.querySelector('[postviewercontroller="post_like_array"]').innerHTML = likemod;
+        document.querySelector(`[elike-id='${data.post_id}']`).addEventListener("click", function like(e) {
+            var post_id = this.getAttribute("like-id");
+            var clicked_btn = this;
+            if (clicked_btn.getAttribute("data-like") === 'like') {
+                action = 'like';
+            } else if (clicked_btn.getAttribute("data-like") === 'unlike') {
+                action = 'unlike';
+            } else {
+                return;
+            }
+            var request = new XMLHttpRequest();
+            request.open('POST', '/api/v1/?k=like&time=' + (Date.now()), true);
+            var formData = new FormData();
+            formData.append('action', `${action}`);
+            formData.append('post_id', `${post_id}`);
+            request.onload = function () {
+                if (this.status >= 200 && this.status < 400) {
+                    var res = JSON.parse(this.response);
+                    if (action == "like") {
+                        document.querySelector(`[elike-id='${post_id}'] > i > i`).style.color = "#1696e1"
+                        document.querySelector(`[like-id='${post_id}'] > i > i`).style.color = "#1696e1"
+                        clicked_btn.setAttribute('data-like', 'unlike')
+                    } else if (action == "unlike") {
+                        document.querySelector(`[elike-id='${post_id}'] > i > i`).style.color = "#878A8C"
+                        document.querySelector(`[like-id='${post_id}'] > i > i`).style.color = "#878A8C"
+                        clicked_btn.setAttribute('data-like', 'like')
+                    }
+                    var allSiblingsLike = clicked_btn.parentElement.querySelectorAll('span.likes');
+                    for (let i = 0; i < allSiblingsLike.length; i++) {
+                        allSiblingsLike[i].innerText = res.likes;
+                    }
+                    var allSiblingsLikem = document.querySelector(`[like-id='${post_id}']`).parentElement.querySelectorAll('span.likes')
+                    for (let i = 0; i < allSiblingsLikem.length; i++) {
+                        allSiblingsLikem[i].innerText = res.likes;
+                    }
+                }
+                if (this.status === 400) {
+                    notify('Log in to leave a rating.', "#a94442", "#f2dede", "#ebccd1", 7500)
+                }
+            };
+            request.send(formData);
+        })
+        document.querySelector('[postviewercontroller="dropdown"]').innerHTML = `
+        <button id="pop" class="dropbtn icon icon-3dot" style="cursor: pointer;"></button>
+        <div id="myDropdown" class="dropdown-content">
+            <button class="kU8ebCMnbXfjCWfqn0WPb"> <i class="icon icon-report _1GQDWqbF-wkYWbrpmOvjqJ" style="/*color:#ff8d00*/"></i><span class="_6_44iTtZoeY6_XChKt5b0">Report</span></button>
+            <button class="kU8ebCMnbXfjCWfqn0WPb" id="edit_post"> <i class="icon icon-edit _1GQDWqbF-wkYWbrpmOvjqJ" style="/*color:#ff8d00*/"></i><span class="_6_44iTtZoeY6_XChKt5b0">Edit</span></button>
+            <button class="kU8ebCMnbXfjCWfqn0WPb" id="delete_post"> <i class="icon icon-trash _1GQDWqbF-wkYWbrpmOvjqJ" style="/*color:#ff8d00*/"></i><span class="_6_44iTtZoeY6_XChKt5b0">Delete</span></button>
+        </div>
+        `
+        if (data.self.auth == true) {
+            if (geturlparam('edit')) {
+                window.history.pushState(data.title + ' - NRRINC', data.title + ' - NRRINC', `/?p=${data.post_id}&edit=1`);
+                console.log('edit mode on')
+            }
+            document.getElementById("edit_post").addEventListener('click', function () {
+                console.log('edit mode on')
+            })
+            document.getElementById("delete_post").addEventListener("click", function (e) {
+                confirmnotify("Are you sure you want to delete this post?", function (f) {
+                    if (f) {
+                        if (pjson.video) {
+                            var q = new XMLHttpRequest();
+                            var candle = new XMLHttpRequest();
+                            const lighter = `https://tc-1.nrrinc.net/run/?pri=${userdata.private_key}&pub=${userdata.public_key}&gc=1&code=${data.video.auth.removalcode}&pid=${data.post_id}`
+                            candle.open('GET', lighter)
+                            candle.onreadystatechange = function () {
+                                if (this.readyState == 4 && this.status == 200) {
+                                    q.open("GET", '/api/v1/?k=editpost&pid=' + pjson.post_id + '&do=delete')
+                                    q.onreadystatechange = function () {
+                                        if (this.readyState == 4 && this.status == 200) {
+                                            var a = JSON.parse(this.responseText)
+                                            notify(a.message, "#3c763d", "#dff0d8", "#d6e9c6", 10000)
+                                        }
+                                    }
+                                    q.send();
+                                }
+                            }
+                            candle.send()
+                        } else {
+                            var q = new XMLHttpRequest();
+                            q.open("GET", '/api/v1/?k=editpost&pid=' + pjson.post_id + '&do=delete')
+                            q.onreadystatechange = function () {
+                                if (this.readyState == 4 && this.status == 200) {
+                                    var a = JSON.parse(this.responseText)
+                                    notify(a.message, "#3c763d", "#dff0d8", "#d6e9c6", 10000)
+                                }
+                            }
+                            q.send();
+                        }
+                    }
+                })
+            })
+        }
+        document.getElementById('pop').addEventListener('click', function (e) {
+            document.getElementById("myDropdown").classList.toggle("show")
+        })
+        document.querySelector('.vmshare').addEventListener('click', async function () {
+            let platform = navigator?.userAgentData?.platform || navigator?.platform || ''
+            const shareData = {
+                title: `${data.title} - NRRINC.NET`,
+                text: `${data.author.name} is talking about ${data.title} on NRRINC.NET`,
+                url: `https://nrrinc.net?p=${data.post_id}&ref=s&rp=${platform}`
+            }
+            await navigator.share(shareData)
+            window.evt('share', {
+                postid: data.post_id,
+                time: Date.now(),
+                type: 1
+            })
+        })
+    }
+    function buildcomments(data) {
+        const base = document.querySelector('[postviewercontroller="post_comments"]');
+        base.innerHTML = null;
+        let markup = `<div>
         <div class="col-md-12" style="background-color: var(--post-background); border-radius:  0px 0px 25px 25px;padding-bottom: 2%;">
         <div class="col-md-12">
         <div class="minid2">
@@ -143,341 +593,7 @@ function vmlike(params) {
         <div id="output"></div>
         </div>
         </div>`;
-    document.head.insertAdjacentHTML('beforeend', `<style>${cssstyle}</style>`);
-    function geturlparam(name, url = window.location.href) {
-        name = name.replace(/[\[\]]/g, '\\$&');
-        var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-            results = regex.exec(url);
-        if (!results) return null;
-        if (!results[2]) return '';
-        return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        base.innerHTML = markup;
     }
-    if (window.localStorage.getItem('sDY')) {
-        //do note, this is only a SIMPLE auth, no real auth is happening here, its just for templating and stuff. try n be stupid... it wont work
-        if (JSON.parse(window.localStorage.getItem('sDY')).expire >= (Date.now())) {
-            window.localStorage.removeItem('sDY')
-            httpRequest('/api/v1/?k=userdata&user=self','GET',function(e) {
-                q = e.responseText
-                userdata = JSON.parse(q)
-                userdata['expire'] = Date.now();
-                window.localStorage.setItem('sDY',JSON.stringify(userdata))
-            })
-        }else{
-            userdata = JSON.parse(window.localStorage.getItem('sDY'))
-        }
-    } else {
-        httpRequest('/api/v1/?k=userdata&user=self','GET',function(e) {
-            q = e.responseText
-            userdata = JSON.parse(q)
-            userdata['expire'] = Date.now()  + 1000 * 60 * 60 * 4;
-            window.localStorage.setItem('sDY',JSON.stringify(userdata))
-        })
-    }
-    let sliding = document.createElement('script');
-    sliding.setAttribute('src', '/api/v1/cdn/splide.min.js');
-    sliding.setAttribute('id', "splidejsid")
-    document.body.appendChild(sliding);
-    document.body.insertAdjacentHTML('beforeend', '<link rel="stylesheet" href="/api/v1/cdn/splide.min.css" type="text/css"/ id="splidecss">');
-    document.addEventListener('DOMContentLoaded',function() {
-        document.querySelector('body').insertAdjacentHTML('beforeend', '<div id="post_viewer2" style="background-color: rgba(0, 0, 0, .5) !important;"></div>')
-        postviewer = document.getElementById('post_viewer2');
-        postviewer.style.left = '99999px'
-        postviewer.setAttribute('postviewer','inactive');
-        postviewer.insertAdjacentHTML('afterbegin', template);
-        //postviewer.insertAdjacentHTML('afterbegin', css);
-        document.querySelector('[postviewercontroller="post_comments"]').insertAdjacentHTML('afterbegin', comment);
-        //START fix of checktarg
-        postviewer.addEventListener('click', (event) => {
-            if (event.target.getAttribute('postviewer') == 'active') {
-                showpost()
-                
-            }
-        });
-        if (geturlparam('p')) {
-            showpost('loader', geturlparam('p'))
-        }
-        postjson.open('GET', '/api/v1/?k=loadpid&pid=' + post_id + '&pagetype=trending&currenttime=' + (Math.floor(Date.now() / 1000)), true);
-        postjson.send();
-        document.getElementById('post_viewer2').addEventListener('click',function(e) {
-            if (e.target.getAttribute('id') == 'post_viewer2') {
-                document.body.style.overflowY = ""
-                if (postviewer.getAttribute('postviewer') == 'active') {
-                    for (let index = 0; index < document.querySelectorAll('._CmxRiim30CrxSPL').length; index++) {
-                        const f = document.querySelectorAll('._CmxRiim30CrxSPL')[index];
-                        //f.remove()
-                    }
-                    document.querySelector('[postviewercontroller="post_content"]').innerHTML = ''
-                    //blur.style.cssText = ''
-                    //postviewer.removeEventListener("click", clear_menus)
-                    //disablehrefs()
-                    window.history.pushState(t, t, h);
-                    postviewer.style.left = '99999px'
-                    postviewer.setAttribute('postviewer','inactive')
-                }
-            }
-        })
-    })
-    const postjson = new XMLHttpRequest();
-    postjson.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            document.body.style.overflowY = "hidden"
-            postviewer.style.left = '50%'
-            //blur.style.cssText = '-webkit-filter: blur(8px); -moz-filter: blur(8px); -o-filter: blur(8px); -ms-filter: blur(8px); filter: blur(8px);'
-            postviewer.setAttribute('postviewer','active')
-            var pjson = JSON.parse(this.responseText)[0];
-            if (userdata.isloggedin === true) {
-                var data = {
-                    'post_id': pjson.post_id,
-                    'time': (Date.now() / 1000),
-                    'viewtype': 1
-                }
-                var a = new XMLHttpRequest();
-                a.open('POST', '/api/v1/?k=viewer&mode=h', true);
-                a.send(JSON.stringify(data));
-                window.evt('view',{
-                    postid:pjson.post_id,
-                    time:Date.now(),
-                    type:1
-                })
-            }
-            //END fix of checktarg
-            //window.history.pushState(pjson.title + ' - NRRINC', pjson.title + ' - NRRINC', `/?p=${pjson.post_id}`);
-            //override because dont feel like enabling beta on every single testing device. sorry, but lazy.
-            if (pjson.like.liked === true) {
-                var likemod = '<div style="display: flex; -ms-flex-align: center; align-items: center; display: -ms-flexbox; cursor: pointer;margin-right:4px" btn="like"><span elike-id="' + pjson.post_id + '" like-id="' + pjson.post_id + '" data-like="unlike" class="JrpAzXnCHrDk" style="-ms-flex-align: center; align-items: center; display: -ms-flexbox; line-height: 20px;display: flex;"><i class="like-btn JrpAzXnCHrDk" data-id="' + pjson.gen.SSR_id+ '" style=""><i class="site-icon-s JrpAzXnCHrDk" style="font-size: 20px;line-height: 20px;color:#1696e1;line-height: 16px; margin-right: 6px;margin-left: 4px;"></i></i> <span class="likes JrpAzXnCHrDk" style="margin-left: 2px; display: inline-block; line-height: 1; text-transform: capitalize; vertical-align: middle; color: #878A8C; font-weight: 700; font-size: 12px;">' + pjson.like.likes + '</span></span></div>'
-            } else {
-                var likemod = '<div style="display: flex; -ms-flex-align: center; align-items: center; display: -ms-flexbox; cursor: pointer;margin-right:4px" btn="like"><span elike-id="' + pjson.post_id + '" like-id="' + pjson.post_id + '"  data-like="like" class="JrpAzXnCHrDk" style="-ms-flex-align: center; align-items: center; display: -ms-flexbox; line-height: 20px;display: flex;"><i class="like-btn JrpAzXnCHrDk" data-id="' + pjson.gen.SSR_id + '" style=""><i class="site-icon-s JrpAzXnCHrDk" style="font-size: 20px;line-height: 20px;color:unset;line-height: 16px; margin-right: 6px;margin-left: 4px;color:#878A8C;"></i></i> <span class="likes JrpAzXnCHrDk" style="margin-left: 2px; display: inline-block; line-height: 1; text-transform: capitalize; vertical-align: middle; color: #878A8C; font-weight: 700; font-size: 12px;">' + pjson.like.likes + '</span></span></div>'
-            }
-            if (pjson.metadata) {
-                var metadata = JSON.parse(pjson.metadata)
-            }
-            var editmod = `
-                <section class="mb-5" style=" width:100%;overflow-wrap: break-word;overflow:hidden;padding-top:0%" postcontent>
-                    <style>
-                    #post_body_1 > p{
-                        margin-bottom:2px;
-                    }
-                    #post_body_1{
-                        color: var(--text);
-                        margin-bottom:8px;
-                        margin-top:8px;
-                    }
-                    [postviewercontroller="post_title"]{
-                        color: var(--text);
-                    }
-                    [postviewercontroller="author_url"]{
-                        color: var(--text);
-                    }
-                    </style>
-                    <div class="fs1">
-                        <div id="post_body_1">
-                            ${pjson.post_body}
-                        </div>
-                    </div>
-                </section>
-                `;
-            var css = `
-                <style>
-
-                </style>
-                `
-        //disablehrefs()
-            postviewer.style.display = "none";
-            document.querySelector('[load-post-id]').setAttribute('load-post-id',pjson.post_id)
-            document.querySelector('[postviewercontroller="post_like_array"]').innerHTML = likemod
-            document.querySelector(`[elike-id='${pjson.post_id}']`).addEventListener("click", vmlike)
-            document.querySelector('[postviewercontroller="post_title"]').innerHTML = pjson.title
-            document.querySelector('[postviewercontroller="author_url"]').innerHTML = pjson.author.name
-            document.querySelector('[postviewercontroller="author_url"]').href = "/u/${pjson.author.name}/"
-            document.querySelector('[postviewercontroller="author_icon_url"]').href = "/u/${pjson.author.name}/"
-            document.querySelector('[postviewercontroller="author_icon_image"]').src = pjson.author.icon
-            document.querySelector('[postviewercontroller="post_time"]').innerHTML = timeSince(new Date(pjson.unix_time * 1000)) + ' ago'
-            document.querySelector('[postviewercontroller="posttop"]');
-            buildmedia(pjson)
-            //document.querySelector('[postviewercontroller="post_content"]').innerHTML = splide_data + editmod;
-            document.querySelector('[postviewercontroller="dropdown"]').innerHTML = `
-            <button id="pop" class="dropbtn icon icon-3dot" style="cursor: pointer;"></button>
-            <div id="myDropdown" class="dropdown-content">
-                <button class="kU8ebCMnbXfjCWfqn0WPb"> <i class="icon icon-report _1GQDWqbF-wkYWbrpmOvjqJ" style="/*color:#ff8d00*/"></i><span class="_6_44iTtZoeY6_XChKt5b0">Report</span></button>
-                <button class="kU8ebCMnbXfjCWfqn0WPb" id="edit_post"> <i class="icon icon-edit _1GQDWqbF-wkYWbrpmOvjqJ" style="/*color:#ff8d00*/"></i><span class="_6_44iTtZoeY6_XChKt5b0">Edit</span></button>
-                <button class="kU8ebCMnbXfjCWfqn0WPb" id="delete_post"> <i class="icon icon-trash _1GQDWqbF-wkYWbrpmOvjqJ" style="/*color:#ff8d00*/"></i><span class="_6_44iTtZoeY6_XChKt5b0">Delete</span></button>
-            </div>
-            `
-            document.querySelector('#output').innerHTML = '';
-            //comments(post_id)
-            if (userdata.isloggedin == true) {
-                /*
-                var comment_loa = `
-                <img alt="${pjson.self_username} avatar" class="CommentsPageTools__userIcon " src="${pjson.self_icon}">
-                <button class="CommentsPageTools__reply" id="load-commenter">Leave a comment</button>`
-                document.getElementById('frm-comment').style.display = 'none'
-                document.querySelector('.CommentsPageTools__comment').insertAdjacentHTML('afterbegin',comment_loa)
-                document.getElementById('load-commenter').addEventListener('click',function() {
-                    if (document.getElementById('frm-comment').style.display === 'flex') {
-                        document.getElementById('frm-comment').style.display = 'none'
-                    } else {
-                        document.getElementById('frm-comment').style.display = 'flex'
-                    }
-                })
-                */
-            }else{
-                document.getElementById('frm-comment').style.display = 'none'
-                data4 = `
-                <li>
-                <a style=" text-decoration: none !important; cursor: pointer;color:black" href="/?login=true">
-                <div class="comment-row" id="comment-0" style="border-left-style:dashed;">							
-                    <div class="comment-info" style="display: flex; align-items: center;"><span class="posted-by" style="display:flex;color:red">System </span> <span style="margin-left:4px;margin-right:4px;display:flex;">·</span>  <span style="margin-left: 4px; margin-right: 4px; display: flex; color: red; font-weight: 700;">Admin</span> <span style="margin-left:4px;margin-right:4px;display:flex;">·</span> <span class="posted-at" style="display:flex;color: black;">Now</span><span class="icon icon-3dot _3DVrpDrMM9NLT6TlsTUMxC" style="display: flex;margin-left: auto;"></span></div>
-                    <div class="dropdown-content" style="display: none; position: absolute; background-color: #f1f1f1; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1;right:0;">
-                    </div>
-                    <div class="comment-text">Login to Leave a Comment.</div>
-                    <div><a class="btn-reply">&nbsp;</a></div>
-                </div>
-                </a>
-                </li>
-                `
-                document.querySelector('#output > .outer-comment').insertAdjacentHTML('afterbegin',data4)
-            }
-            if (pjson.self.auth === true) {
-                if (geturlparam('edit')) {
-                    window.history.pushState(pjson.title + ' - NRRINC', pjson.title + ' - NRRINC', `/?p=${pjson.post_id}&edit=1`);
-                    build_edit(pjson)
-                }
-                document.getElementById("edit_post").addEventListener('click', function () {
-                    build_edit(pjson)
-                })
-                document.getElementById("delete_post").addEventListener("click", function (e) {
-                    confirmnotify("Are you sure you want to delete this post?", function (f) {
-                        if (f) {
-                            if (pjson.video) {
-                                var q = new XMLHttpRequest();
-                                var candle = new XMLHttpRequest();
-                                const lighter = `https://tc-1.nrrinc.net/run/?pri=${userdata.private_key}&pub=${userdata.public_key}&gc=1&code=${pjson.video.auth.removalcode}&pid=${pjson.post_id}`
-                                candle.open('GET',lighter)
-                                candle.onreadystatechange = function () {
-                                    if (this.readyState == 4 && this.status == 200) {
-                                        q.open("GET", '/api/v1/?k=editpost&pid=' + pjson.post_id + '&do=delete')
-                                        q.onreadystatechange = function () {
-                                            if (this.readyState == 4 && this.status == 200) {
-                                                var a = JSON.parse(this.responseText)
-                                                notify(a.message, "#3c763d", "#dff0d8", "#d6e9c6", 10000)
-                                            }
-                                        }
-                                        q.send();
-                                    }
-                                }
-                                candle.send()
-                            }else{
-                                var q = new XMLHttpRequest();
-                                q.open("GET", '/api/v1/?k=editpost&pid=' + pjson.post_id + '&do=delete')
-                                q.onreadystatechange = function () {
-                                    if (this.readyState == 4 && this.status == 200) {
-                                        var a = JSON.parse(this.responseText)
-                                        notify(a.message, "#3c763d", "#dff0d8", "#d6e9c6", 10000)
-                                    }
-                                }
-                                q.send();
-                            }
-                        }
-                    })
-                })
-            } else {
-                if (document.getElementById("delete_post")) {
-                    document.getElementById("delete_post").remove()
-                }
-                if (document.getElementById("edit_post")) {
-                    document.getElementById("edit_post").remove()
-                }
-            }
-            document.getElementById('pop').addEventListener('click', function (e) {
-                document.getElementById("myDropdown").classList.toggle("show")
-            })
-            document.querySelector('.vmshare').addEventListener('click', async function () {
-                let platform = navigator?.userAgentData?.platform || navigator?.platform || ''
-                        const shareData = {
-                            title: `${pjson.title} - NRRINC.NET`,
-                            text: `${pjson.author.name} is talking about ${pjson.title} on NRRINC.NET`,
-                            url: `https://nrrinc.net?p=${pjson.post_id}&ref=s&rp=${platform}`
-                        }
-                        await navigator.share(shareData)
-                        window.evt('share',{
-                            postid:pjson.post_id,
-                            time:Date.now(),
-                            type:1
-                        })
-            })
-            //loading comments
-            
-            //end
-            postviewer.style.display = "flex";
-            document.querySelector('[data-postalert]').style.width = (document.querySelector(`[load-post-id] > header`).offsetWidth + 8) + "px"
-        }
-    }
-    function buildmedia(data) {
-        const base = document.querySelector('[postviewercontroller="post_content"]');
-        base.innerHTML = null;
-        let meta = data.metadata;
-        if (data.video) {
-            //add loading for video
-        } else if(data.image) {
-            if (data.image.length >=2) {
-                base.insertAdjacentHTML('beforeend','<div class="splide" id="splidetracker"><div class="splide__track"><ul class="splide__list" postviewercontroller="slider"></ul></div></div>')
-                data.image.forEach(function(i,ii) {
-                    document.querySelector('[postviewercontroller="slider"]').insertAdjacentHTML('beforeend', `<li style="margin: 12px 0;" class="splide__slide sp-aw"><img class="img-fluid rounded sp-image" style="max-height: 512px;cursor:zoom-in;" src="${i}" alt"image"></li>`)
-                })
-                //now load splide
-                try {
-                    setTimeout(() => {
-                        new Splide('.splide', {
-                            autoHeight: true,
-                            trimSpace: false,
-                            keyboard: false,
-                            perPage: 1,
-                        }).mount();
-                    }, 0);
-                } catch (error) {
-                    sliding.onload = function () {
-                        new Splide('.splide', {
-                            autoHeight: true,
-                            trimSpace: false,
-                            keyboard: false,
-                            perPage: 1,
-                        }).mount();
-                    }
-                }
-            } else {
-                data.image.forEach(function(i,ii) {
-                    base.insertAdjacentHTML('beforeend', `<li style="margin: 12px 0;" class="sp-aw"><img class="img-fluid rounded sp-image" style="max-height: 512px;cursor:zoom-in;" src="${i}" alt"image"></li>`)
-                })
-            }
-            const imglist = document.querySelectorAll('.img-fluid.rounded.sp-image')
-            for (let i = 0; i < imglist.length; i++) {
-                imglist[i].addEventListener('click',function(e) {
-                    if (e.target.style.maxHeight == '2048px') {
-                        e.target.style.maxHeight = '512px'
-                        e.target.style.cursor = "zoom-in"
-                    } else {
-                        e.target.style.maxHeight = '2048px'
-                        e.target.style.cursor = "zoom-out"
-                    }
-                })
-                
-            }
-        }
-        base.insertAdjacentHTML('beforeend',`
-        <div class="mb-5" style=" min-width: 100%;overflow-wrap: break-word;overflow:hidden;padding-top:0px;padding-left: 16px;padding-right: 16px;" postcontent>
-            <style>
-            #post_body_1 > p{margin-bottom:2px;}
-            #post_body_1{color: var(--text);margin-bottom:8px;margin-top:8px;}
-            [postviewercontroller="post_title"]{color: var(--text);}
-            [postviewercontroller="author_url"]{color: var(--text);}
-            </style>
-                <div id="post_body_1">${data.post_body}</div>
-        </div>`)
-    }
-    function buildmenu(data) {
-        
-    }
-    function buildcomments(data) {
-
-    }
-})(window,document)
+})(window, document)
+//life is hard, but God is good.
