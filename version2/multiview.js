@@ -1,23 +1,27 @@
 //tmp stuff
-function timeSince(params) {
-    return params
+window.evt = function (params) {
+
+};
+//[END] tmp stuff
+function timeSince(date) {
+    var seconds = Math.floor((new Date() - date) / 1000);
+    var interval = seconds / 31536000;
+    if (interval > 2) {return Math.floor(interval) + " years";} else if (interval > 1) {return Math.floor(interval) + " year";}
+    interval = seconds / 2592000;
+    if (interval > 2) {return Math.floor(interval) + " months";} else if (interval > 1) {return Math.floor(interval) + " month";}
+    interval = seconds / 86400;
+    if (interval > 2) {return Math.floor(interval) + " days";} else if (interval > 1) {return Math.floor(interval) + " day";}
+    interval = seconds / 3600;
+    if (interval > 2) {return Math.floor(interval) + " hours";} else if (interval > 1) {return Math.floor(interval) + " hour";}
+    interval = seconds / 60;
+    if (interval > 2) {return Math.floor(interval) + " minutes";} else if (interval > 1) {return Math.floor(interval) + " minute";}
+    return Math.floor(seconds) + " seconds";
 }
-function timeConverter(params) {
-    return params
-}
-function vmlike(params) {
-    console.log('like')
-}
-//[END]tmp stuff
 (function () {
     window.showpost = showpost;
-    //window.showpost = showpost;
     let userdata; //all user data.
     const h = location.protocol + '//' + location.host + location.pathname;
     const t = document.title
-    //let post_id = '4iRZzfm-sp-pics-2-occ';
-    //let post_id = '5WLNBDG-sp-pics-1-occ';
-    let post_id = '3bYo0A0-testing';
     const cssstyle = `
     .sp-aw { text-align: center !important; list-style: none; } @media all and (min-width:940px) { [load-post-id]{ width: 937px!important; } } @media all and (min-width:729px) and (max-width:939px){ [load-post-id]{ width: 640px; } } @media all and (max-width:559px) { [load-post-id]{ min-width: 100% ; max-width: 100% ; width: 100% ; } 
     ._CmxRiim30CrxSPL{ min-width: 100% ; max-width: 100% ; width: 100% ; } } .fs1{ max-width: 96vw; } #splidelist{padding-left:0rem !important} /*._CmxRiim30CrxSPL{margin-top: 60px;}*/ 
@@ -97,6 +101,7 @@ function vmlike(params) {
     }
     if (window.localStorage.getItem('sDY')) {
         //do note, this is only a SIMPLE auth, no real auth is happening here, its just for templating and stuff. try n be stupid... it wont work
+        //update: this stupid thing works half the time.... WHY
         if (JSON.parse(window.localStorage.getItem('sDY')).expire >= (Date.now())) {
             window.localStorage.removeItem('sDY')
             httpRequest('/api/v1/?k=userdata&user=self', 'GET', function (e) {
@@ -144,11 +149,6 @@ function vmlike(params) {
             createscript.loaded.add(script_url);
         }
     }
-    //let sliding = document.createElement('script');
-    //sliding.setAttribute('src', '/api/v1/cdn/splide.min.js');
-    //sliding.setAttribute('id', "splidejsid")
-    //document.body.appendChild(sliding);
-    //document.body.insertAdjacentHTML('beforeend', '<link rel="stylesheet" href="/api/v1/cdn/splide.min.css" type="text/css"/ id="splidecss">');
     document.addEventListener('DOMContentLoaded', async function () {
         createscript.loaded = new Set();
         await createscript(['/api/v1/cdn/splide.min.js', '/api/v1/cdn/splide.min.css', '/api/v1/cdn/plyr.css', '/api/v1/cdn/hls.js', '/api/v1/cdn/plyr.js',]);
@@ -172,14 +172,9 @@ function vmlike(params) {
                 }
             }
         })
-        //postviewer.insertAdjacentHTML('afterbegin', css);
-        //START fix of checktarg
         if (geturlparam('p')) {
             postjson.open('GET', '/api/v1/?k=loadpid&pid=' + geturlparam('p') + '&pagetype=trending&currenttime=' + (Math.floor(Date.now() / 1000)), true);
             postjson.send();
-        }else{
-            //postjson.open('GET', '/api/v1/?k=loadpid&pid=' + post_id + '&pagetype=trending&currenttime=' + (Math.floor(Date.now() / 1000)), true);
-            //postjson.send();
         }
         document.querySelector('#post_viewer2').addEventListener('click', function (e) {
             if (e.target.getAttribute('id') == 'post_viewer2' || e.target.classList.contains('_CmxRiim30CrxSPL')) {
@@ -220,7 +215,6 @@ function vmlike(params) {
         if (this.readyState == 4 && this.status == 200) {
             document.body.style.overflowY = "hidden"
             postviewer.style.left = '50%'
-            //blur.style.cssText = '-webkit-filter: blur(8px); -moz-filter: blur(8px); -o-filter: blur(8px); -ms-filter: blur(8px); filter: blur(8px);'
             postviewer.setAttribute('postviewer', 'active')
             var pjson = JSON.parse(this.responseText)[0];
             if (userdata.isloggedin === true) {
@@ -238,25 +232,19 @@ function vmlike(params) {
                     type: 1
                 })
             }
-            //END fix of checktarg
-            //window.history.pushState(pjson.title + ' - NRRINC', pjson.title + ' - NRRINC', `/?p=${pjson.post_id}`);
-            //override because dont feel like enabling beta on every single testing device. sorry, but lazy.
-            if (pjson.metadata) {
-                var metadata = JSON.parse(pjson.metadata)
-            }
-            //disablehrefs()
             postviewer.style.display = "none";
             document.querySelector('[load-post-id]').setAttribute('load-post-id', pjson.post_id)
             document.querySelector('[postviewercontroller="post_title"]').innerHTML = pjson.title
             document.querySelector('[postviewercontroller="author_url"]').innerHTML = pjson.author.name
-            document.querySelector('[postviewercontroller="author_url"]').href = "/u/${pjson.author.name}/"
-            document.querySelector('[postviewercontroller="author_icon_url"]').href = "/u/${pjson.author.name}/"
+            document.querySelector('[postviewercontroller="author_url"]').href = `/u/${pjson.author.name}`
+            document.querySelector('[postviewercontroller="author_icon_url"]').href = `/u/${pjson.author.name}`
             document.querySelector('[postviewercontroller="author_icon_image"]').src = pjson.author.icon
-            document.querySelector('[postviewercontroller="post_time"]').innerHTML = timeSince(new Date(pjson.unix_time * 1000)) + ' ago'
+            document.querySelector('[postviewercontroller="post_time"]').innerHTML = '<span class="_3LS4zudUBagjFS7HjWJYxo _37gsGHa8DMRAxBmQS-Ppg8 _3V4xlrklKBP2Hg51ejjjvz" role="presentation" style="color: var(--text);">•</span>'+timeSince(new Date(pjson.unix_time * 1000)) + ' ago'
             document.querySelector('[postviewercontroller="posttop"]');
             buildmedia(pjson)
             buildmenu(pjson)
             buildcomments(pjson)
+            //document.querySelector('#output').innerHTML = ''; <== THIS WAS DELETEING ALL MY COMMENTS. WHY DID I EVER DO THIS? WASTED DAYS ON IT. F****ING DAMNIT. *fudging. 
             if (!userdata.isloggedin) {
                 document.getElementById('frm-comment').style.display = 'none'
                 data4 = `
@@ -272,11 +260,7 @@ function vmlike(params) {
                 </a>
                 </li>
                 `
-                //document.querySelector('#output > .outer-comment').insertAdjacentHTML('afterbegin',data4)
             }
-            //loading comments
-
-            //end
             postviewer.style.display = "flex";
             window.history.pushState(pjson.title + ' - NRRINC', pjson.title + ' - NRRINC', `/?p=${pjson.post_id}`);
             document.title = pjson.title + '- NRRINC';
@@ -303,7 +287,6 @@ function vmlike(params) {
                         });
                     }
                 }
-                //const source = m3u8;
                 const video = document.querySelector('#player');
                 const defaultOptions = {};
                 if (!Hls.isSupported()) {
@@ -345,7 +328,7 @@ function vmlike(params) {
                             <div id="post_body_1">${data.post_body}</div>
                     </div>`)
                 }
-            }, 5);
+            }, 0);
 
         } else if (data.image) {
             if (data.image.length >= 2) {
@@ -353,7 +336,6 @@ function vmlike(params) {
                 data.image.forEach(function (i, ii) {
                     document.querySelector('[postviewercontroller="slider"]').insertAdjacentHTML('beforeend', `<li style="margin: 12px 0;" class="splide__slide sp-aw"><img class="img-fluid rounded sp-image" style="max-height: 512px;cursor:zoom-in;" src="${i}" alt"image"></li>`)
                 })
-                //now load splide
                 setTimeout(() => {
                     new Splide('.splide', {
                         autoHeight: true,
@@ -361,7 +343,7 @@ function vmlike(params) {
                         keyboard: false,
                         perPage: 1,
                     }).mount();
-                }, 5);
+                }, 0);
             } else {
                 data.image.forEach(function (i, ii) {
                     base.insertAdjacentHTML('beforeend', `<li style="margin: 12px 0;" class="sp-aw"><img class="img-fluid rounded sp-image" style="max-height: 512px;cursor:zoom-in;" src="${i}" alt"image"></li>`)
@@ -371,9 +353,11 @@ function vmlike(params) {
             for (let i = 0; i < imglist.length; i++) {
                 imglist[i].addEventListener('click', function (e) {
                     if (e.target.style.maxHeight == '2048px') {
+                        e.target.style.width = ''
                         e.target.style.maxHeight = '512px'
                         e.target.style.cursor = "zoom-in"
                     } else {
+                        e.target.style.width = '100%'
                         e.target.style.maxHeight = '2048px'
                         e.target.style.cursor = "zoom-out"
                     }
@@ -425,14 +409,7 @@ function vmlike(params) {
                         </div>
                     </div>
                 </div>
-                <div class="dropdown" postviewercontroller="dropdown">
-                    <button id="pop" class="dropbtn icon icon-3dot" style="cursor: pointer;"></button>
-                    <div id="myDropdown" class="dropdown-content">
-                        <button class="kU8ebCMnbXfjCWfqn0WPb"> <i class="icon icon-report _1GQDWqbF-wkYWbrpmOvjqJ" style="/*color:#ff8d00*/"></i><span class="_6_44iTtZoeY6_XChKt5b0">Report</span></button>
-                        <button class="kU8ebCMnbXfjCWfqn0WPb" id="edit_post"> <i class="icon icon-edit _1GQDWqbF-wkYWbrpmOvjqJ" style="/*color:#ff8d00*/"></i><span class="_6_44iTtZoeY6_XChKt5b0">Edit</span></button>
-                        <button class="kU8ebCMnbXfjCWfqn0WPb" id="delete_post"> <i class="icon icon-trash _1GQDWqbF-wkYWbrpmOvjqJ" style="/*color:#ff8d00*/"></i><span class="_6_44iTtZoeY6_XChKt5b0">Delete</span></button>
-                    </div>
-            </div>
+                <div class="dropdown" postviewercontroller="dropdown"></div>
             </div>
         </div>`
         if (data.like.liked === true) {
@@ -487,13 +464,17 @@ function vmlike(params) {
         })
         document.querySelector('[postviewercontroller="dropdown"]').innerHTML = `
         <button id="pop" class="dropbtn icon icon-3dot" style="cursor: pointer;"></button>
-        <div id="myDropdown" class="dropdown-content">
-            <button class="kU8ebCMnbXfjCWfqn0WPb"> <i class="icon icon-report _1GQDWqbF-wkYWbrpmOvjqJ" style="/*color:#ff8d00*/"></i><span class="_6_44iTtZoeY6_XChKt5b0">Report</span></button>
-            <button class="kU8ebCMnbXfjCWfqn0WPb" id="edit_post"> <i class="icon icon-edit _1GQDWqbF-wkYWbrpmOvjqJ" style="/*color:#ff8d00*/"></i><span class="_6_44iTtZoeY6_XChKt5b0">Edit</span></button>
-            <button class="kU8ebCMnbXfjCWfqn0WPb" id="delete_post"> <i class="icon icon-trash _1GQDWqbF-wkYWbrpmOvjqJ" style="/*color:#ff8d00*/"></i><span class="_6_44iTtZoeY6_XChKt5b0">Delete</span></button>
-        </div>
+        <div id="myDropdown" class="dropdown-content"></div>
         `
-        if (data.self.auth == true) {
+        const autbase = document.getElementById('myDropdown');
+        if (data.self.isloggedin) {
+            autbase.insertAdjacentHTML('beforeend',`<button class="kU8ebCMnbXfjCWfqn0WPb" id="reportpst"> <i class="icon icon-report _1GQDWqbF-wkYWbrpmOvjqJ" style="/*color:#ff8d00*/"></i><span class="_6_44iTtZoeY6_XChKt5b0">Report</span></button>`);
+            document.getElementById("reportpst").addEventListener('click', function () {
+                console.log('you reported pid: '+data.post_id)
+            })
+        }
+        if (data.self.auth) {
+            autbase.insertAdjacentHTML('beforeend',` <button class="kU8ebCMnbXfjCWfqn0WPb" id="edit_post"> <i class="icon icon-edit _1GQDWqbF-wkYWbrpmOvjqJ" style="/*color:#ff8d00*/"></i><span class="_6_44iTtZoeY6_XChKt5b0">Edit</span></button> <button class="kU8ebCMnbXfjCWfqn0WPb" id="delete_post"> <i class="icon icon-trash _1GQDWqbF-wkYWbrpmOvjqJ" style="/*color:#ff8d00*/"></i><span class="_6_44iTtZoeY6_XChKt5b0">Delete</span></button>`)
             if (geturlparam('edit')) {
                 window.history.pushState(data.title + ' - NRRINC', data.title + ' - NRRINC', `/?p=${data.post_id}&edit=1`);
                 console.log('edit mode on')
@@ -530,6 +511,9 @@ function vmlike(params) {
         document.getElementById('pop').addEventListener('click', function (e) {
             document.getElementById("myDropdown").classList.toggle("show")
         })
+        if (document.getElementById('myDropdown').innerHTML.length == 0) {
+            document.querySelector('[postviewercontroller="dropdown"]').style.display = 'none'
+        }
         document.querySelector('.vmshare').addEventListener('click', async function () {
             let platform = navigator?.userAgentData?.platform || navigator?.platform || ''
             const shareData = {
@@ -757,8 +741,6 @@ function vmlike(params) {
                                     }
                                 }
                             });
-    
-    
                         }).catch(error => {
                         });
                 }
@@ -806,8 +788,7 @@ function vmlike(params) {
                     fetch("/api/v1/?k=submitcomment&pid=" + data.post_id, {
                         method: 'POST',
                         body: getFormData($form),
-                    })
-                        .then(response => {
+                    }).then(response => {
                             if (response.ok) {
                                 $message.css().add('msg-success');
                                 $message.html(lang.a);
@@ -822,12 +803,10 @@ function vmlike(params) {
                         }).catch(error => {
                             // Handle error
                         });
-    
                     setTimeout(() => {
                         $submit.removeAttribute("disabled");
                         $submit.value = origContent;
                     }, 1000);
-    
                     setTimeout(() => {
                         $message.css().remove('msg-error');
                         $message.css().remove('msg-success');
@@ -892,7 +871,6 @@ function vmlike(params) {
     
                                       return false;
                                   })
-    
                 }
                 const replyOverHandler = e => {
                     if (!e.target.matches('.reply')) return;
