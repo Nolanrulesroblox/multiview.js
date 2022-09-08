@@ -1,7 +1,4 @@
 //tmp stuff
-window.evt = function (params) {
-
-};
 function timeSince(params) {
     return params
 }
@@ -11,15 +8,17 @@ function timeConverter(params) {
 function vmlike(params) {
     console.log('like')
 }
+//[END]tmp stuff
 (function () {
+    window.showpost = showpost;
     //window.showpost = showpost;
     let userdata; //all user data.
-    let h = location.protocol + '//' + location.host + location.pathname;
-    let t = document.title
+    const h = location.protocol + '//' + location.host + location.pathname;
+    const t = document.title
     //let post_id = '4iRZzfm-sp-pics-2-occ';
     //let post_id = '5WLNBDG-sp-pics-1-occ';
     let post_id = '3bYo0A0-testing';
-    let cssstyle = `
+    const cssstyle = `
     .sp-aw { text-align: center !important; list-style: none; } @media all and (min-width:940px) { [load-post-id]{ width: 937px!important; } } @media all and (min-width:729px) and (max-width:939px){ [load-post-id]{ width: 640px; } } @media all and (max-width:559px) { [load-post-id]{ min-width: 100% ; max-width: 100% ; width: 100% ; } 
     ._CmxRiim30CrxSPL{ min-width: 100% ; max-width: 100% ; width: 100% ; } } .fs1{ max-width: 96vw; } #splidelist{padding-left:0rem !important} /*._CmxRiim30CrxSPL{margin-top: 60px;}*/ 
     ._1VP69d9lk-Wk9zokOaylL-TMP {-webkit-filter: blur(8px); -moz-filter: blur(8px); -o-filter: blur(8px); -ms-filter: blur(8px); filter: blur(8px);} #post_viewer2{height: 100%;position: fixed; -webkit-backface-visibility: hidden; backface-visibility: hidden; right: 0; top: 0; width: 100%; z-index: 50; margin-bottom: 60px;display: flex; justify-content: center; position: fixed; left: 50%; transform: translateX(-50%); overflow-y: scroll; overflow-x: hidden;}
@@ -36,9 +35,9 @@ function vmlike(params) {
     #output > ul > li::marker{ content: ""; } .comment-row > *{ font-size: 14px; } .btn-reply{ cursor: pointer; text-decoration: none !important; } .btn-submit:disabled { background: #eee; color: #667; cursor: not-allowed; } #output ul { list-style-type: none; } #frm-comment{ flex-direction: column; display: flex; } #frm-comment .input-row{ display:flex; } @media all and (min-width:600px) { #frm-comment{ margin:8px 40px 24px 48px; } } .comment-row {position: relative; border-bottom: #e0dfdf 1px solid; margin-bottom: 8px; border-top: #e0dfdf 1px solid; padding: 0px 10px 0px 10px; border-right: #e0dfdf 1px solid; display:flex; flex-direction: column; } .comment-active { background-color: hsl(60, 100%, 95%); } .comment-row:target { animation: bg-fadeout 5s ease; } @keyframes bg-fadeout { from {background-color: hsl(60, 100%, 95%);} to {background-color: transparent;} } .outer-comment { margin-top:8px; padding-inline-start: 0; } .outer-comment ul { padding-inline-start: 1rem; }
     .outer-comment > li > div { border-left: 1px solid hsl(220, 100%, 60%); } .outer-comment > li li > div { border-left: 1px solid hsl(40, 100%, 60%); } span.commet-row-label { font-style: italic; } .outer-comment ul{ margin-bottom:0 !important } .posted-by { color: var(--user-at); font-weight: 700; } .comment-text { margin: 0px 0px; display:flex;color:var(--text) } .reply { color: #0043ff; text-decoration: none; display: inline-block; border-radius: 4px; margin-right:8px } .btn-reply { font-size: 14px; text-decoration: none !important; color: #888787 !important; cursor: pointer; font-weight: 900; line-height: 20px; display: flex; } #comment-message { margin-left: 20px; display: inline-block; opacity: 1; } .msg-success {color: hsl(120, 75%, 40%); animation: fadeOut 5s ease;} .msg-error {color: hsl(10, 90%, 50%); animation: fadeOut 5s ease;} @keyframes fadeOut { 0%, 50% {opacity:1;} 100% {opacity:0;} }
     `;
-    var template = `
+    const template = `
     <div dclass="rpBJOHq2PR60pnwJlUyP0" class="_CmxRiim30CrxSPL">
-    <article load-post-id postviewercontroller="posttop" style=" display: inline-flex; margin-top: 60px;">
+    <article load-post-id postviewercontroller="posttop" style=" display: inline-flex; margin-top: 60px;margin-bottom: 30px;">
     <div data-postalert style="justify-content: space-around; margin-left: auto; margin-right: auto; padding-top: 5px; padding-bottom: 5px; margin-bottom: 10px;border-radius: 4px; font-size: 14px;position: fixed;box-shadow: -6px 9px 17px -1px rgb(0 0 0 / 39%);z-index: 997;transition: all .99s ease-out;display: none;">
     <div style="padding-left: 5px; font-size: 14px; padding-right: 5px;"></div>
     </div>
@@ -69,7 +68,7 @@ function vmlike(params) {
                             </div>
                             <div class="_2wFk1qX4e1cxk8Pkw1rAHk"></div>
                             <div class="_3XoW0oYd5806XiOr24gGdb"></div>
-                            <div style="font-weight: 900;color: #c1c1c1;margin-right: 4px;font-size: 16px;cursor: pointer;box-sizing: content-box;width: 2em;height: 1em;padding: .25em 0.25em;color: #000;background: transparent url(&quot;data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e&quot;) center/1em auto no-repeat;border: 0;border-radius: .25rem;opacity: .5;margin-left: auto;" onclick="showpost()"></div>
+                            <div postviewercontroller="closebtn" style="font-weight: 900;color: #c1c1c1;margin-right: 4px;font-size: 16px;cursor: pointer;box-sizing: content-box;width: 2em;height: 1em;padding: .25em 0.25em;color: #000;background: transparent url(&quot;data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e&quot;) center/1em auto no-repeat;border: 0;border-radius: .25rem;opacity: .5;margin-left: auto;"></div>
                             
                         </div>
                         </div>
@@ -175,36 +174,47 @@ function vmlike(params) {
         })
         //postviewer.insertAdjacentHTML('afterbegin', css);
         //START fix of checktarg
-        postviewer.addEventListener('click', (event) => {
-            if (event.target.getAttribute('postviewer') == 'active') {
-                showpost()
-
-            }
-        });
         if (geturlparam('p')) {
-            showpost('loader', geturlparam('p'))
+            postjson.open('GET', '/api/v1/?k=loadpid&pid=' + geturlparam('p') + '&pagetype=trending&currenttime=' + (Math.floor(Date.now() / 1000)), true);
+            postjson.send();
+        }else{
+            //postjson.open('GET', '/api/v1/?k=loadpid&pid=' + post_id + '&pagetype=trending&currenttime=' + (Math.floor(Date.now() / 1000)), true);
+            //postjson.send();
         }
-        postjson.open('GET', '/api/v1/?k=loadpid&pid=' + post_id + '&pagetype=trending&currenttime=' + (Math.floor(Date.now() / 1000)), true);
-        postjson.send();
-        document.getElementById('post_viewer2').addEventListener('click', function (e) {
-            if (e.target.getAttribute('id') == 'post_viewer2') {
-                document.body.style.overflowY = ""
+        document.querySelector('#post_viewer2').addEventListener('click', function (e) {
+            if (e.target.getAttribute('id') == 'post_viewer2' || e.target.classList.contains('_CmxRiim30CrxSPL')) {
                 if (postviewer.getAttribute('postviewer') == 'active') {
+                    document.body.style.overflowY = ""
                     for (let index = 0; index < document.querySelectorAll('._CmxRiim30CrxSPL').length; index++) {
                         const f = document.querySelectorAll('._CmxRiim30CrxSPL')[index];
-                        //f.remove()
                     }
                     document.querySelector('[postviewercontroller="post_content"]').innerHTML = ''
-                    //blur.style.cssText = ''
-                    //postviewer.removeEventListener("click", clear_menus)
-                    //disablehrefs()
                     window.history.pushState(t, t, h);
                     postviewer.style.left = '99999px'
                     postviewer.setAttribute('postviewer', 'inactive')
+                    document.querySelector('[postviewercontroller="post_content"]').innerHTML = null;
                 }
             }
         })
+        document.querySelector('[postviewercontroller="closebtn"]').addEventListener('click',function(e) {
+            if (postviewer.getAttribute('postviewer') == 'active') {
+                document.body.style.overflowY = ""
+                for (let index = 0; index < document.querySelectorAll('._CmxRiim30CrxSPL').length; index++) {
+                    const f = document.querySelectorAll('._CmxRiim30CrxSPL')[index];
+                }
+                document.querySelector('[postviewercontroller="post_content"]').innerHTML = ''
+                window.history.pushState(t, t, h);
+                postviewer.style.left = '99999px'
+                postviewer.setAttribute('postviewer', 'inactive')
+                document.querySelector('[postviewercontroller="post_content"]').innerHTML = null;
+            }
+        })
     })
+    function showpost(e,post_id) {
+        e.preventDefault()
+        postjson.open('GET', '/api/v1/?k=loadpid&pid=' + post_id + '&pagetype=trending&currenttime=' + (Math.floor(Date.now() / 1000)), true);
+        postjson.send();
+    }
     const postjson = new XMLHttpRequest();
     postjson.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
@@ -247,25 +257,7 @@ function vmlike(params) {
             buildmedia(pjson)
             buildmenu(pjson)
             buildcomments(pjson)
-            //document.querySelector('[postviewercontroller="post_content"]').innerHTML = splide_data + editmod;
-            document.querySelector('#output').innerHTML = '';
-            //comments(post_id)
-            if (userdata.isloggedin == 'e') {
-                /*
-                var comment_loa = `
-                <img alt="${pjson.self_username} avatar" class="CommentsPageTools__userIcon " src="${pjson.self_icon}">
-                <button class="CommentsPageTools__reply" id="load-commenter">Leave a comment</button>`
-                document.getElementById('frm-comment').style.display = 'none'
-                document.querySelector('.CommentsPageTools__comment').insertAdjacentHTML('afterbegin',comment_loa)
-                document.getElementById('load-commenter').addEventListener('click',function() {
-                    if (document.getElementById('frm-comment').style.display === 'flex') {
-                        document.getElementById('frm-comment').style.display = 'none'
-                    } else {
-                        document.getElementById('frm-comment').style.display = 'flex'
-                    }
-                })
-                */
-            } else {
+            if (!userdata.isloggedin) {
                 document.getElementById('frm-comment').style.display = 'none'
                 data4 = `
                 <li>
@@ -286,6 +278,8 @@ function vmlike(params) {
 
             //end
             postviewer.style.display = "flex";
+            window.history.pushState(pjson.title + ' - NRRINC', pjson.title + ' - NRRINC', `/?p=${pjson.post_id}`);
+            document.title = pjson.title + '- NRRINC';
             document.querySelector('[data-postalert]').style.width = (document.querySelector(`[load-post-id] > header`).offsetWidth + 8) + "px"
         }
     }
@@ -451,8 +445,9 @@ function vmlike(params) {
         document.querySelector(`[elike-id='${data.post_id}']`).addEventListener("click", function like(e) {
             var post_id = this.getAttribute("like-id");
             var clicked_btn = this;
+            let action = null;
             if (clicked_btn.getAttribute("data-like") === 'like') {
-                action = 'like';
+               action = 'like';
             } else if (clicked_btn.getAttribute("data-like") === 'unlike') {
                 action = 'unlike';
             } else {
@@ -509,34 +504,24 @@ function vmlike(params) {
             document.getElementById("delete_post").addEventListener("click", function (e) {
                 confirmnotify("Are you sure you want to delete this post?", function (f) {
                     if (f) {
-                        if (pjson.video) {
-                            var q = new XMLHttpRequest();
-                            var candle = new XMLHttpRequest();
-                            const lighter = `https://tc-1.nrrinc.net/run/?pri=${userdata.private_key}&pub=${userdata.public_key}&gc=1&code=${data.video.auth.removalcode}&pid=${data.post_id}`
-                            candle.open('GET', lighter)
-                            candle.onreadystatechange = function () {
+                        if (data.video) {
+                            httpRequest(`https://tc-1.nrrinc.net/run/?pri=${userdata.private_key}&pub=${userdata.public_key}&gc=1&code=${data.video.auth.removalcode}&pid=${data.post_id}`,'GET',function(e) {
                                 if (this.readyState == 4 && this.status == 200) {
-                                    q.open("GET", '/api/v1/?k=editpost&pid=' + pjson.post_id + '&do=delete')
-                                    q.onreadystatechange = function () {
+                                    httpRequest('/api/v1/?k=editpost&pid=' + data.post_id + '&do=delete','GET',function(e) {
                                         if (this.readyState == 4 && this.status == 200) {
                                             var a = JSON.parse(this.responseText)
                                             notify(a.message, "#3c763d", "#dff0d8", "#d6e9c6", 10000)
-                                        }
-                                    }
-                                    q.send();
+                                        }       
+                                    })
                                 }
-                            }
-                            candle.send()
+                            });
                         } else {
-                            var q = new XMLHttpRequest();
-                            q.open("GET", '/api/v1/?k=editpost&pid=' + pjson.post_id + '&do=delete')
-                            q.onreadystatechange = function () {
+                            httpRequest('/api/v1/?k=editpost&pid=' + data.post_id + '&do=delete','GET',function(e) {
                                 if (this.readyState == 4 && this.status == 200) {
                                     var a = JSON.parse(this.responseText)
                                     notify(a.message, "#3c763d", "#dff0d8", "#d6e9c6", 10000)
                                 }
-                            }
-                            q.send();
+                            })
                         }
                     }
                 })
@@ -564,7 +549,7 @@ function vmlike(params) {
         const base = document.querySelector('[postviewercontroller="post_comments"]');
         base.innerHTML = null;
         let markup = `<div>
-        <div class="col-md-12" style="background-color: var(--post-background); border-radius:  0px 0px 25px 25px;padding-bottom: 2%;">
+        <div class="col-md-12" style="background-color: var(--post-background); border-radius:  0px 0px 25px 25px;">
         <div class="col-md-12">
         <div class="minid2">
             <div class="comment-form-container">
@@ -594,6 +579,337 @@ function vmlike(params) {
         </div>
         </div>`;
         base.innerHTML = markup;
+        setTimeout(() => {
+            let end = 0;
+            var started = 1;
+            let cc = 0;
+            const el = selector => {
+                let self = {};
+                self.selector = selector;
+                self.element = document.querySelector(self.selector);
+                self.new = attr => { self.element = document.createElement(self.selector); if (attr) { for (var key in attr) { if (attr.hasOwnProperty(key)) { self.element.setAttribute(key, attr[key]); } } } return self; }
+                self.node = () => { return self.element; }
+                self.all = () => { return document.querySelectorAll(self.selector); }
+                self.css = () => { return self.node().classList; }
+                self.html = content => { if (content === null) return self.element; self.element.innerHTML = content; return self; }
+                self.append = element => { element.appendChild(self.element); return self; }
+                self.connecter = id => {return self.element.setAttribute('comment',id)}
+                return self;
+            };
+            const lang = {
+            'r': 'Reply',
+            's': 'Sending…',
+            'a': 'Comment was submitted!',
+            'e': 'Error while adding comment. Try again in a few seconds',
+            'cnd_r':'Report Comment',
+            'cnd_ht':'Collapse thread',
+            'cnd_sh':'Expand thread',
+            };
+            const $form = el('#frm-comment').node();
+            const $output = el('#output').node();
+            const $message = el('#comment-message');
+            const $submit = el('.btn-submit').node();
+            const $list = el('ul').new({ 'class': 'outer-comment' }).append($output);
+            function formatDatetime(datetime) {
+                return datetime.replace(/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/, '$3. $2. $1 $4:$5');
+            }
+            function buildcnd(commentid, auth, hasparent, access) {
+                const id = commentid;
+                const home = document.querySelector(`[comment-nav-id-drop='${id}']`);
+                const del = `<div interact del-id="${id}">Delete</div>`;
+                const hide = `<div interact hide-id="${id}">Collapse thread</div>`;
+                const report = `<div interact report-id="${id}">Report comment</div>`;
+                if (auth === true) {
+                    home.insertAdjacentHTML('beforeend', del)
+                    home.insertAdjacentHTML('beforeend', report)
+                    var delquery = document.querySelector(`[del-id='${id}']`);
+                    var repquery = document.querySelector(`[report-id='${id}']`);
+                    delquery.addEventListener('click', function () {
+                        confirmnotify('Are you sure you want to delete this comment?', function (f) {
+                            if (f) {
+                                httpRequest('/api/v1/?k=editpost&do=delete_com&cid=' + id, 'GET', function (e) {
+                                    if (this.readyState == 4 && this.status == 200) {
+                                        var b = document.querySelector(`[del-id='${id}']`);
+                                        b.parentElement.parentElement.querySelector('.comment-info > .posted-by').innerHTML = "<i>deleted</i>"
+                                        b.parentElement.parentElement.querySelector('.comment-text').innerHTML = "<i>deleted</i>"
+                                        notify('Comment Deleted', "#3c763d", "#dff0d8", "#d6e9c6", 4000)
+                                    }
+                                })
+                            }
+                        })
+                    })
+                }
+                if (hasparent === '0') {
+                    home.insertAdjacentHTML('beforeend', hide)
+                    var hidequery = document.querySelector(`[hide-id='${id}']`);
+                    hidequery.addEventListener('click', function (e) {
+                        if (home.parentElement.parentElement.querySelector('ul').style.display === 'none') {
+                            home.parentElement.parentElement.querySelector('ul').style.display = 'block'
+                            hidequery.innerText = "Collapse thread"
+                            document.querySelector("#comment-"+id+" a.btn-reply").innerText = "Reply"
+                            document.querySelector('[comment="'+id+'"]').querySelector('.comment-text').parentElement.style.cssText = ""
+                            document.querySelector('[comment="'+id+'"]').querySelector('.btn-reply').style.cssText = ""
+                        } else {
+                            document.querySelector('[comment="'+id+'"]').querySelector('.comment-text').parentElement.style.flexDirection = 'column'
+                            document.querySelector('[comment="'+id+'"]').querySelector('.comment-text').parentElement.style.display = 'flex'
+                            document.querySelector('[comment="'+id+'"]').querySelector('.comment-text').parentElement.style.marginRight = 'auto'
+                            document.querySelector('[comment="'+id+'"]').querySelector('.comment-text').parentElement.style.justifyContent = 'flex-end'
+                            document.querySelector('[comment="'+id+'"]').querySelector('.btn-reply').style.marginRight = '8px'
+                            home.parentElement.parentElement.querySelector('ul').style.display = 'none'
+                            hidequery.innerText = "Expand thread"
+                            document.querySelector("#comment-"+id+" a.btn-reply").innerText = "Reply ("+(document.querySelector("#comment-"+id).parentElement.querySelectorAll('.comment-row').length - 1)+" hidden)"
+                        }
+                    })
+                }
+                document.querySelector(`[comment-nav-id='${id}']`).addEventListener("click", function (e) {
+                    document.querySelector(`[comment-nav-id-drop='${id}']`).style.display = "inline-block";
+                    this.parentElement.style.position = "relative";
+                })
+            }
+                function replaceTemplate(id, name, date, text, parent, parentName = "", isOP,icon) {
+                    let del = (text === '<i>deleted</i>') ? 'deleted=true' : ''
+                    let top = (parent == 0) ? 'top="true"' : ''
+                    let OPa = (isOP === true) ? ` <span style="margin-left:4px;margin-right:4px;display:flex;color:var(--user-at);">OP</span> <span style="margin-left:4px;margin-right:4px;display:flex;color:var(--text);">&middot;</span> ` : ''
+                    let reply = (parent > 0) ? `<a href="#comment-${parent}" style="color:var(--user-at);" class="reply" data-id="${parent}">@${parentName}</a> ` : "";
+                    let template = `<div class='comment-row' id="comment-${id}" ${del} ${top}>							
+                                        <div class='comment-info' style="display: flex; align-items: center;"><div><img src="${icon}" style=" height: 26px; border-radius: 20px; margin-right: 6px; "></div><span class='posted-by' style="display:flex;">${name}</span> <span style="margin-left:4px;margin-right:4px;display:flex;color:var(--atext);">&middot;</span> ${OPa}<span class='posted-at' style="display:flex;color:var(--text);">${formatDatetime(date)}</span><span class="icon icon-3dot _3DVrpDrMM9NLT6TlsTUMxC" style="display: flex;margin-left: auto;" comment-nav-id="${id}"></span></div>
+                                        <div comment-nav-id-drop="${id}" class="dropdown-content" style="display: none; position: absolute; background-color: #f1f1f1; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1;right:0;">
+                                        
+                                        </div>
+                                        <div>
+                                        <div class='comment-text'>${reply}${text}</div>
+                                        <div><a class='btn-reply' data-id="${id}">${lang.r}</a></div>
+                                        </div>
+                                    </div>`;
+                    return template;
+                }
+                function newComment(item, data) {
+                    let template = replaceTemplate(item.id, item.name, item.date, item.comment, item.parent_id, '', item.isOP,item.user_icon);
+                    const $item = el("li").new().html(template).append($list.node());
+                    $item.connecter(item.id)
+                    const $reply = el('ul').new().append($item.node());
+                    listReplies(item, data, $reply);
+                    buildcnd(item.id, item.auth, item.parent_id, item)
+                }
+                if (document.getElementById('cmtloader')) {
+                    document.getElementById('cmtloader').remove()
+                }
+                document.getElementById("output").insertAdjacentHTML('afterend','<button class="submit_com" id="cmtloader">Load more Comments</button>')
+                document.getElementById('cmtloader').addEventListener('click',listComment)
+                listComment();
+                function listComment() {
+                    if (end === 1) {
+                        return;
+                    }
+                    started = 0;
+                    fetch('/api/v1/?k=postcomments&pid=' + data.post_id+ "&nav="+cc)
+                        .then(response => {
+                            response.json().then(data => {
+                                data.forEach(comment => {
+                                    if (!document.querySelector('#comment-'+comment.id)) {
+                                        if (comment.parent_id == 0) {
+                                            newComment(comment, data);
+                                        }
+                                        if (!document.querySelector('#comment-'+comment.id)) {
+                                            try {
+                                                let template = replaceTemplate(comment.id, comment.name, comment.date, comment.comment, comment.parent_id, '', comment.isOP,comment.user_icon);
+                                                var a = document.querySelector('#comment-'+comment.parent_id+'').parentElement.querySelector('ul')
+                                                const $item = el("li").new().html(template).append(a);
+                                                $item.connecter(comment.id)
+                                                const $reply = el('ul').new().append($item.node());
+                                                listReplies(comment, data, $reply);
+                                                buildcnd(comment.id, comment.auth, comment.parent_id, comment)
+                                            } catch (error) {
+                                                //SKIP :D
+                                                //if commment-REPLY is not found, build the comment REPLY. this is only for replies (allows for pagination and half loading (i.e. 'couldnt find child so ill build it my self'))
+                                            }
+                                        }
+                                    }
+                                    if (comment.end === true) {
+                                        end = 1;
+                                        document.getElementById('cmtloader').style.display = 'none'
+                                        document.getElementById('cmtloader').setAttribute('disabled',true)
+                                    }
+                                });
+                                if (data.length < 49) {
+                                    end = 1;
+                                    document.getElementById('cmtloader').style.display = 'none'
+                                    document.getElementById('cmtloader').setAttribute('disabled',true)
+                                }
+                                started = 1;
+                                cc++;
+                                document.getElementById("commentloader").style.display = "none"
+                                var cd = document.querySelectorAll('[top="true"]')
+                                for (let index = 0; index < cd.length; index++) {
+                                    const indx = cd[index].parentElement;
+                                    var id = indx.getAttribute('comment')
+                                    var ce = indx.querySelectorAll('.comment-row')
+                                    var cf = indx.querySelectorAll('[deleted="true"]');
+                                    if (ce.length >= 2 && (ce.length - 1) == cf.length) {
+                                        document.querySelector('[comment="'+id+'"]').querySelector('.comment-text').parentElement.style.flexDirection = 'column'
+                                        document.querySelector('[comment="'+id+'"]').querySelector('.comment-text').parentElement.style.display = 'flex'
+                                        document.querySelector('[comment="'+id+'"]').querySelector('.comment-text').parentElement.style.marginRight = 'auto'
+                                        document.querySelector('[comment="'+id+'"]').querySelector('.comment-text').parentElement.style.justifyContent = 'flex-end'
+                                        document.querySelector('[comment="'+id+'"]').querySelector('.btn-reply').style.marginRight = '8px'
+                                        indx.querySelector('[hide-id="'+id+'"]').innerText = "Expand thread"
+                                        indx.querySelector('ul').style.display = 'none'
+                                        document.querySelector("#comment-"+id+" a.btn-reply").innerText = "Reply ("+(document.querySelector("#comment-"+id).parentElement.querySelectorAll('.comment-row').length - 1)+" hidden)"
+                                    }
+                                }
+                            });
+    
+    
+                        }).catch(error => {
+                        });
+                }
+                function listReplies(parent, data, list) {
+                    data.forEach(comment => {
+                        if (parent.id == comment.parent_id) {
+                            let template = replaceTemplate(comment.id, comment.name, comment.date, comment.comment, comment.parent_id, parent.name, comment.isOP,comment.user_icon);
+                            const $item = el("li").new().html(template).append(list.node());
+                            const $reply = el('ul').new().append($item.node());
+                            listReplies(comment, data, $reply);
+                            buildcnd(comment.id, comment.auth, comment.parent_id, comment)
+                        }
+                    });
+                }
+                const getFormData = form => {
+                    let formData = new FormData();
+                    for (var i = 0; i < form.elements.length; i++) {
+                        var field = form.elements[i];
+                        if (!field.name || field.disabled || field.type === 'file' || field.type === 'reset' || field.type === 'submit' || field.type === 'button') continue;
+                        if (field.type === 'select-multiple') {
+                            for (var n = 0; n < field.options.length; n++) {
+                                if (!field.options[n].selected) continue;
+                                formData.append(field.name, field.options[n].value);
+                            }
+                        }
+                        else if ((field.type !== 'checkbox' && field.type !== 'radio') || field.checked) {
+                            formData.append(field.name, field.value);
+                        }
+                    }
+                    return formData;
+                }
+                const submitHandler = e => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    let $comment = el("#comment").node();
+                    let $name = el("#name").node();
+                    if ($comment.value == "") { $comment.focus(); return; }
+                    if ($name.value == "") { $name.focus(); return; }
+                    let origContent = $submit.value;
+                    $submit.setAttribute("disabled", true);
+                    $submit.value = lang.s;
+                    $message.css().remove('msg-success');
+                    $message.css().remove('msg-error');
+                    $message.html("");
+                    fetch("/api/v1/?k=submitcomment&pid=" + data.post_id, {
+                        method: 'POST',
+                        body: getFormData($form),
+                    })
+                        .then(response => {
+                            if (response.ok) {
+                                $message.css().add('msg-success');
+                                $message.html(lang.a);
+                                el("#comment").node().value = "";
+                                el("#commentId").node().value = "";
+                                listComment();
+                            } else {
+                                $message.css().add('msg-error');
+                                $message.html(lang.e);
+                                return false;
+                            }
+                        }).catch(error => {
+                            // Handle error
+                        });
+    
+                    setTimeout(() => {
+                        $submit.removeAttribute("disabled");
+                        $submit.value = origContent;
+                    }, 1000);
+    
+                    setTimeout(() => {
+                        $message.css().remove('msg-error');
+                        $message.css().remove('msg-success');
+                        $message.html("");
+                    }, 5000);
+                }
+                const replyHandler = e => {
+                    if (!e.target.matches('.btn-reply')) return;
+                    e.preventDefault();
+                    let id = e.target.dataset.id;
+                    el('#commentId').node().value = id;
+                   // el("#comment").node().focus();
+                   if (document.getElementById('comment-reply-'+id)) {
+                    document.getElementById('comment-reply-'+id).remove()
+                    return;
+                    }
+                    var replydata = `
+                    <!-- proof of concept -->
+                                <form id="comment-reply-${id}" style="margin: 0; flex-direction: row; align-items: center; display: flex;">
+                                                <div class="input-row" style="width: 100%; height: 36px; margin-bottom: 12px; margin-top: 4px; display: flex;">
+                                                    <input class="nrrinc-btn ghost fatter" type="text" name="comment" id="comment" placeholder="Reply to ${document.querySelector('#comment-'+id+ ' > .comment-info > .posted-by').innerText}" style="height: 36px; border-radius: 5px 0px 0px 5px; display: flex;width:100%;margin-right:0">
+                                                    <button  class="btn-submit nrrinc-btn ghost fatter font-smaller" style="height: 36px; display: flex; margin: 0; border-radius: 0 0.25rem 0.25rem 0;" type="submit" id="addComment_d">Reply</button>
+                                                </div>
+                                                <div class="input-row">
+                                                    <input type="hidden" name="token" value="">
+                                                    <input type="hidden" name="comment_id" id="commentId" value="${id}">
+                                                    <input class="input-field" type="text" name="name" id="name" placeholder="e" hidden="" value="bacon">
+                                                </div>
+                                  </form>
+                                  <!-- proof of concept -->
+                                  `
+                                  document.querySelector('#comment-'+id).parentElement.querySelector('ul').insertAdjacentHTML('afterbegin',replydata)
+                                  document.querySelector('#comment-reply-'+id).addEventListener('submit',function(e) {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    let $comment = document.querySelector('#comment-reply-'+id+'> div > input')
+                                    let $name = el("#name").node();
+                                    if ($comment.value == "") { $comment.focus(); return; }
+                                    if ($name.value == "") { $name.focus(); return; }
+                                    $submit.setAttribute("disabled", true);
+                                    $submit.value = lang.s;
+                                    $message.css().remove('msg-success');
+                                    $message.css().remove('msg-error');
+                                    $message.html("");
+                                    fetch("/api/v1/?k=submitcomment&pid=" + data.post_id, {
+                                        method: 'POST',
+                                        body: getFormData(el('#comment-reply-'+id).node()),
+                                    })
+                                        .then(response => {
+                                            if (response.ok) {
+                                                $message.css().add('msg-success');
+                                                $message.html(lang.a);
+                                                document.location.reload()
+                                            } else {
+                                                $message.css().add('msg-error');
+                                                $message.html(lang.e);
+                                                return false;
+                                            }
+                                        }).catch(error => {
+                                            // Handle error
+                                        });
+    
+                                      return false;
+                                  })
+    
+                }
+                const replyOverHandler = e => {
+                    if (!e.target.matches('.reply')) return;
+                    e.preventDefault();
+                    let parent = e.target.dataset.id;
+                    let parentCSS = el("#comment-" + parent).css();
+                    if (e.type == "mouseover") {
+                        parentCSS.add("comment-active");
+                    } else if (e.type == "mouseout") {
+                        parentCSS.remove("comment-active");
+                    }
+                }
+                $form.addEventListener("submit", submitHandler);
+                $output.addEventListener("click", replyHandler);
+                $output.addEventListener("mouseover", replyOverHandler)
+                $output.addEventListener("mouseout", replyOverHandler)
+        }, 0);
     }
 })(window, document)
 //life is hard, but God is good.
