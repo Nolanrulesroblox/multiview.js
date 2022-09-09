@@ -1,22 +1,3 @@
-//tmp stuff
-window.evt = function (params) {
-
-};
-//[END] tmp stuff
-function timeSince(date) {
-    var seconds = Math.floor((new Date() - date) / 1000);
-    var interval = seconds / 31536000;
-    if (interval > 2) {return Math.floor(interval) + " years";} else if (interval > 1) {return Math.floor(interval) + " year";}
-    interval = seconds / 2592000;
-    if (interval > 2) {return Math.floor(interval) + " months";} else if (interval > 1) {return Math.floor(interval) + " month";}
-    interval = seconds / 86400;
-    if (interval > 2) {return Math.floor(interval) + " days";} else if (interval > 1) {return Math.floor(interval) + " day";}
-    interval = seconds / 3600;
-    if (interval > 2) {return Math.floor(interval) + " hours";} else if (interval > 1) {return Math.floor(interval) + " hour";}
-    interval = seconds / 60;
-    if (interval > 2) {return Math.floor(interval) + " minutes";} else if (interval > 1) {return Math.floor(interval) + " minute";}
-    return Math.floor(seconds) + " seconds";
-}
 (function () {
     window.showpost = showpost;
     let userdata; //all user data.
@@ -60,7 +41,6 @@ function timeSince(date) {
                             <div class="_3AStxql1mQsrZuUIFP9xSg nU4Je7n-eSXStTBAPMYt8">
                                 <div class="_2mHuuvyV9doV3zwbZPtIPG"><a style="color: var(--text)"
                                         class="_3ryJoIoycVkA88fy40qNJc" href="Blogs" >Blogs</a>
-                                    <div id="SubredditInfoTooltip--t3_s95h3k--lightbox--Bible"></div>
                                 </div><span class="_3LS4zudUBagjFS7HjWJYxo _37gsGHa8DMRAxBmQS-Ppg8 _3V4xlrklKBP2Hg51ejjjvz"
                                     role="presentation" style="color: var(--text);">•</span><span class="_2fCzxBE1dlMh4OFc7B3Dun"
                                     style="color: var(--text)">Posted by</span>
@@ -218,14 +198,11 @@ function timeSince(date) {
             postviewer.setAttribute('postviewer', 'active')
             var pjson = JSON.parse(this.responseText)[0];
             if (userdata.isloggedin === true) {
-                var data = {
-                    'post_id': pjson.post_id,
-                    'time': (Date.now() / 1000),
-                    'viewtype': 1
-                }
-                var a = new XMLHttpRequest();
-                a.open('POST', '/api/v1/?k=viewer&mode=h', true);
-                a.send(JSON.stringify(data));
+                window.evt('history', {
+                    postid: pjson.post_id,
+                    time: Date.now(),
+                    type: 1
+                })
                 window.evt('view', {
                     postid: pjson.post_id,
                     time: Date.now(),
@@ -492,7 +469,28 @@ function timeSince(date) {
                                         if (this.readyState == 4 && this.status == 200) {
                                             var a = JSON.parse(this.responseText)
                                             notify(a.message, "#3c763d", "#dff0d8", "#d6e9c6", 10000)
-                                        }       
+                                            window.evt('deletedpost', {
+                                                postid: pjson.post_id,
+                                                time: Date.now(),
+                                                by: userdata.user_id
+                                            })
+                                        }else if (this.readyState == 4 && this.status != 200) {
+                                            window.evt('deletedpost', {
+                                                postid: pjson.post_id,
+                                                time: Date.now(),
+                                                by: userdata.user_id,
+                                                fail:true,
+                                                http: this.status
+                                            })
+                                        }     
+                                    })
+                                }else if (this.readyState == 4 && this.status != 200) {
+                                    window.evt('deletedpost', {
+                                        postid: pjson.post_id,
+                                        time: Date.now(),
+                                        by: userdata.user_id,
+                                        fail:true,
+                                        http: this.status
                                     })
                                 }
                             });
@@ -501,6 +499,19 @@ function timeSince(date) {
                                 if (this.readyState == 4 && this.status == 200) {
                                     var a = JSON.parse(this.responseText)
                                     notify(a.message, "#3c763d", "#dff0d8", "#d6e9c6", 10000)
+                                    window.evt('deletedpost', {
+                                        postid: pjson.post_id,
+                                        time: Date.now(),
+                                        by: userdata.user_id
+                                    })
+                                }else if (this.readyState == 4 && this.status != 200) {
+                                    window.evt('deletedpost', {
+                                        postid: pjson.post_id,
+                                        time: Date.now(),
+                                        by: userdata.user_id,
+                                        fail:true,
+                                        http: this.status
+                                    })
                                 }
                             })
                         }
@@ -525,7 +536,8 @@ function timeSince(date) {
             window.evt('share', {
                 postid: data.post_id,
                 time: Date.now(),
-                type: 1
+                type: 1,
+                u: userdata.user_id
             })
         })
     }
@@ -818,7 +830,6 @@ function timeSince(date) {
                     e.preventDefault();
                     let id = e.target.dataset.id;
                     el('#commentId').node().value = id;
-                   // el("#comment").node().focus();
                    if (document.getElementById('comment-reply-'+id)) {
                     document.getElementById('comment-reply-'+id).remove()
                     return;
@@ -888,6 +899,20 @@ function timeSince(date) {
                 $output.addEventListener("mouseover", replyOverHandler)
                 $output.addEventListener("mouseout", replyOverHandler)
         }, 0);
+    }
+    function timeSince(date) {
+        var seconds = Math.floor((new Date() - date) / 1000);
+        var interval = seconds / 31536000;
+        if (interval > 2) {return Math.floor(interval) + " years";} else if (interval > 1) {return Math.floor(interval) + " year";}
+        interval = seconds / 2592000;
+        if (interval > 2) {return Math.floor(interval) + " months";} else if (interval > 1) {return Math.floor(interval) + " month";}
+        interval = seconds / 86400;
+        if (interval > 2) {return Math.floor(interval) + " days";} else if (interval > 1) {return Math.floor(interval) + " day";}
+        interval = seconds / 3600;
+        if (interval > 2) {return Math.floor(interval) + " hours";} else if (interval > 1) {return Math.floor(interval) + " hour";}
+        interval = seconds / 60;
+        if (interval > 2) {return Math.floor(interval) + " minutes";} else if (interval > 1) {return Math.floor(interval) + " minute";}
+        return Math.floor(seconds) + " seconds";
     }
 })(window, document)
 //life is hard, but God is good.
