@@ -1,3 +1,3 @@
-[submodule "feed.js"]
-	path = feedv2
+[submodule "feed"]
+	path = feed
 	url = https://github.com/Nolanrulesroblox/feed.js.git
