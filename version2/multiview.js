@@ -131,7 +131,7 @@
     }
     document.addEventListener('DOMContentLoaded', async function () {
         createscript.loaded = new Set();
-        await createscript(['/api/v1/cdn/splide.min.js', '/api/v1/cdn/splide.min.css', '/api/v1/cdn/plyr.css', '/api/v1/cdn/hls.js', '/api/v1/cdn/plyr.js',]);
+        await createscript(['/api/v1/cdn/splide.min.js', '/api/v1/cdn/splide.min.css', '/api/v1/cdn/plyr.css', '/api/v1/cdn/hls.js', '/api/v1/cdn/plyr.js','/api/v1/cdn/marked.min.js']);
         document.querySelector('body').insertAdjacentHTML('beforeend', '<div id="post_viewer2" style="background-color: rgba(0, 0, 0, .5) !important;"></div>')
         postviewer = document.getElementById('post_viewer2');
         postviewer.style.left = '99999px'
@@ -360,7 +360,7 @@
                 [postviewercontroller="post_title"]{color: var(--text);}
                 [postviewercontroller="author_url"]{color: var(--text);}
                 </style>
-                    <div id="post_body_1">${data.post_body}</div>
+                    <div id="post_body_1">`+marked.parse(data.post_body) + `</div>
             </div>`)
         }
     }
