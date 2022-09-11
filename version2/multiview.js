@@ -169,6 +169,7 @@
                     postviewer.setAttribute('postviewer', 'inactive')
                     document.querySelector('[postviewercontroller="post_content"]').innerHTML = null;
                 }
+                document.title = t;
             }
         })
         document.querySelector('[postviewercontroller="closebtn"]').addEventListener('click',function(e) {
@@ -182,6 +183,7 @@
                 postviewer.style.left = '99999px'
                 postviewer.setAttribute('postviewer', 'inactive')
                 document.querySelector('[postviewercontroller="post_content"]').innerHTML = null;
+                document.title = t;
             }
         })
     })
