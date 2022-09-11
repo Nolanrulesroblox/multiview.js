@@ -615,14 +615,17 @@
             function buildcnd(commentid, auth, hasparent, access) {
                 const id = commentid;
                 const home = document.querySelector(`[comment-nav-id-drop='${id}']`);
+                const edit = `<div interact edit-id="${id}">Edit</div>`;
                 const del = `<div interact del-id="${id}">Delete</div>`;
                 const hide = `<div interact hide-id="${id}">Collapse thread</div>`;
                 const report = `<div interact report-id="${id}">Report comment</div>`;
                 if (auth === true) {
+                    home.insertAdjacentHTML('beforeend', edit)
                     home.insertAdjacentHTML('beforeend', del)
                     home.insertAdjacentHTML('beforeend', report)
-                    var delquery = document.querySelector(`[del-id='${id}']`);
-                    var repquery = document.querySelector(`[report-id='${id}']`);
+                    const delquery = document.querySelector(`[del-id='${id}']`);
+                    const repquery = document.querySelector(`[report-id='${id}']`);
+                    const editbtn = document.querySelector(`[edit-id='${id}']`);
                     delquery.addEventListener('click', function () {
                         confirmnotify('Are you sure you want to delete this comment?', function (f) {
                             if (f) {
@@ -636,6 +639,18 @@
                                 })
                             }
                         })
+                    })
+                    editbtn.addEventListener('click',function(e) {
+                        const editor = document.querySelector(`[comment-nav-id-drop="${id}"]`).parentElement.querySelector('.comment-text');
+                        if (document.querySelector('[editor="open"]')) {
+                            editor.style.display = '';
+                            document.querySelector('[editor="open"]').remove()
+                            editbtn.innerText = 'Edit'
+                        } else {
+                            editor.style.display = 'none'
+                            editor.insertAdjacentHTML('afterend','<div editor="open"><textarea style=" width: 100%; resize: vertical; ">'+editor.innerText+'</textarea><br><button>submit</button></div>')
+                            editbtn.innerText = 'Undo Edits'
+                        }
                     })
                 }
                 if (hasparent === '0') {
