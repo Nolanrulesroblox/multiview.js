@@ -61,8 +61,8 @@ Goals of V2 of Multiview.js:
 - <s>revise old methods of script loading</s> Done as of <a href="https://git.nrrinc.net/multiview.js/commit/841d941b89015b7c2855c6c5981979f726d0824e">841d94</a> and implemented<a href="https://github.com/Nolanrulesroblox/multiview.js/blob/e475032e4495303e48af76f62d61b7b09b7bc126/version2/multiview.js#L155"> here</a>
 - <s>revise old methods of scripts (aka get rid of checktag)</s>
 - <s>send less data over the internet</s>
-- use less memeory
-- better tracking? (GDPR respecting) <-- front end tracking non GDPR respecting, once data is processed, GDPR is respected
+- <s>use less memeory</s>
+- <s>better tracking</s>? (GDPR respecting) <-- front end tracking non GDPR respecting, once data is processed, GDPR is respected <---- done
 
 
 
