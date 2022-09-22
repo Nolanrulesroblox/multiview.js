@@ -169,8 +169,8 @@
                     postviewer.style.left = '99999px'
                     postviewer.setAttribute('postviewer', 'inactive')
                     document.querySelector('[postviewercontroller="post_content"]').innerHTML = null;
+                    document.title = t;
                 }
-                document.title = t;
             }
         })
         document.querySelector('[postviewercontroller="closebtn"]').addEventListener('click',function(e) {
@@ -467,53 +467,63 @@
                     if (f) {
                         if (data.video) {
                             httpRequest(`https://tc-1.nrrinc.net/run/?pri=${userdata.private_key}&pub=${userdata.public_key}&gc=1&code=${data.video.auth.removalcode}&pid=${data.post_id}`,'GET',function(e) {
-                                if (this.readyState == 4 && this.status == 200) {
+                                if (e.readyState == 4 && e.status == 200) {
                                     httpRequest('/api/v1/?k=editpost&pid=' + data.post_id + '&do=delete','GET',function(e) {
-                                        if (this.readyState == 4 && this.status == 200) {
+                                        if (e.readyState == 4 && e.status == 200) {
                                             var a = JSON.parse(this.responseText)
                                             notify(a.message, "#3c763d", "#dff0d8", "#d6e9c6", 10000)
                                             window.evt('deletedpost', {
-                                                postid: pjson.post_id,
+                                                postid: data.post_id,
                                                 time: Date.now(),
                                                 by: userdata.user_id
                                             })
-                                        }else if (this.readyState == 4 && this.status != 200) {
+                                        }else if (e.readyState == 4 && e.status != 200) {
                                             window.evt('deletedpost', {
-                                                postid: pjson.post_id,
+                                                postid: data.post_id,
                                                 time: Date.now(),
                                                 by: userdata.user_id,
                                                 fail:true,
-                                                http: this.status
+                                                http: e.status
                                             })
                                         }     
                                     })
-                                }else if (this.readyState == 4 && this.status != 200) {
+                                }else if (e.readyState == 4 && e.status != 200) {
                                     window.evt('deletedpost', {
-                                        postid: pjson.post_id,
+                                        postid: data.post_id,
                                         time: Date.now(),
                                         by: userdata.user_id,
                                         fail:true,
-                                        http: this.status
+                                        http: e.status
                                     })
                                 }
                             });
                         } else {
                             httpRequest('/api/v1/?k=editpost&pid=' + data.post_id + '&do=delete','GET',function(e) {
-                                if (this.readyState == 4 && this.status == 200) {
-                                    var a = JSON.parse(this.responseText)
+                                if (e.readyState == 4 && e.status == 200) {
+                                    var a = JSON.parse(e.responseText)
                                     notify(a.message, "#3c763d", "#dff0d8", "#d6e9c6", 10000)
                                     window.evt('deletedpost', {
-                                        postid: pjson.post_id,
+                                        postid: data.post_id,
                                         time: Date.now(),
                                         by: userdata.user_id
                                     })
-                                }else if (this.readyState == 4 && this.status != 200) {
+                                    document.body.style.overflowY = ""
+                                    for (let index = 0; index < document.querySelectorAll('._CmxRiim30CrxSPL').length; index++) {
+                                        const f = document.querySelectorAll('._CmxRiim30CrxSPL')[index];
+                                    }
+                                    document.querySelector('[postviewercontroller="post_content"]').innerHTML = ''
+                                    window.history.pushState(t, t, h);
+                                    postviewer.style.left = '99999px'
+                                    postviewer.setAttribute('postviewer', 'inactive')
+                                    document.querySelector('[postviewercontroller="post_content"]').innerHTML = null;
+                                    document.title = t;
+                                }else if (e.readyState == 4 && e.status != 200) {
                                     window.evt('deletedpost', {
-                                        postid: pjson.post_id,
+                                        postid: data.post_id,
                                         time: Date.now(),
                                         by: userdata.user_id,
                                         fail:true,
-                                        http: this.status
+                                        http: e.status
                                     })
                                 }
                             })
