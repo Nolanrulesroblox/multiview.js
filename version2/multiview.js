@@ -1,6 +1,6 @@
 (function () {
     window.showpost = showpost;
-    let userdata; //all user data.
+    var userdata = []; //all user data.
     const h = location.protocol + '//' + location.host + location.pathname;
     const t = document.title
     const cssstyle = `
@@ -18,7 +18,7 @@
     .dropdown-content { display: none; position: absolute; background-color: #f1f1f1; min-width: 160px; overflow: auto; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1; } .dropdown-content a { color: black; padding: 12px 16px; text-decoration: none; display: block; } .show {display: block;} #myDropdown{ right: 0; } .dropdown-content div[interact] { color: black; padding: 12px 16px; text-decoration: none; display: block; cursor:pointer; } .CommentsPageTools__comment { -ms-flex-align: center; align-items: center; display: -ms-flexbox; display: flex; -ms-flex-flow: row nowrap; flex-flow: row nowrap; padding-top: 8px; width: 100% } 
     .CommentsPageTools__userIcon { overflow: hidden; text-indent: 100%; white-space: nowrap; border-radius: 50%; height: 24px; margin-right: 8px; width: 24px } .CommentsPageTools__reply { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; border: 1px solid transparent; border-radius: 15px; box-sizing: border-box; -ms-flex: 1; flex: 1; font-size: 14px; height: 30px; line-height: 17px; padding: 0 8px; text-align: left } .submit_com{ font-size: 12px; font-weight: 700; letter-spacing: unset; line-height: 16px; white-space: pre; word-break: keep-all; padding:0.375rem 0.75rem; margin: 4px 8px; -ms-flex-order: 2; order: 2; text-transform: unset; min-height: 24px; min-width: 24px; float: right; color: #fff; background-color: #007bff; border-color: #007bff; border:1px solid transparent; border-radius:0.25rem; transition:color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; }
     #output > ul > li::marker{ content: ""; } .comment-row > *{ font-size: 14px; } .btn-reply{ cursor: pointer; text-decoration: none !important; } .btn-submit:disabled { background: #eee; color: #667; cursor: not-allowed; } #output ul { list-style-type: none; } #frm-comment{ flex-direction: column; display: flex; } #frm-comment .input-row{ display:flex; } @media all and (min-width:600px) { #frm-comment{ margin:8px 40px 24px 48px; } } .comment-row {position: relative; border-bottom: #e0dfdf 1px solid; margin-bottom: 8px; border-top: #e0dfdf 1px solid; padding: 0px 10px 0px 10px; border-right: #e0dfdf 1px solid; display:flex; flex-direction: column; } .comment-active { background-color: hsl(60, 100%, 95%); } .comment-row:target { animation: bg-fadeout 5s ease; } @keyframes bg-fadeout { from {background-color: hsl(60, 100%, 95%);} to {background-color: transparent;} } .outer-comment { margin-top:8px; padding-inline-start: 0; } .outer-comment ul { padding-inline-start: 1rem; }
-    .outer-comment > li > div { border-left: 1px solid hsl(220, 100%, 60%); } .outer-comment > li li > div { border-left: 1px solid hsl(40, 100%, 60%); } span.commet-row-label { font-style: italic; } .outer-comment ul{ margin-bottom:0 !important } .posted-by { color: var(--user-at); font-weight: 700; } .comment-text { margin: 0px 0px; display:flex;color:var(--text) } .reply { color: #0043ff; text-decoration: none; display: inline-block; border-radius: 4px; margin-right:8px } .btn-reply { font-size: 14px; text-decoration: none !important; color: #888787 !important; cursor: pointer; font-weight: 900; line-height: 20px; display: flex; } #comment-message { margin-left: 20px; display: inline-block; opacity: 1; } .msg-success {color: hsl(120, 75%, 40%); animation: fadeOut 5s ease;} .msg-error {color: hsl(10, 90%, 50%); animation: fadeOut 5s ease;} @keyframes fadeOut { 0%, 50% {opacity:1;} 100% {opacity:0;} }
+    .outer-comment > li > div { border-left: 1px solid hsl(220, 100%, 60%); } .outer-comment > li li > div { border-left: 1px solid hsl(40, 100%, 60%); } span.commet-row-label { font-style: italic; } .outer-comment ul{ margin-bottom:0 !important } .posted-by { color: var(--user-at); font-weight: 700;margin-right:4px;margin-left:4px } .comment-text { margin: 0px 0px; display:flex;color:var(--text) } .reply { color: #0043ff; text-decoration: none; display: inline-block; border-radius: 4px; margin-right:8px } .btn-reply { font-size: 14px; text-decoration: none !important; color: #888787 !important; cursor: pointer; font-weight: 900; line-height: 20px; display: flex; } #comment-message { margin-left: 20px; display: inline-block; opacity: 1; } .msg-success {color: hsl(120, 75%, 40%); animation: fadeOut 5s ease;} .msg-error {color: hsl(10, 90%, 50%); animation: fadeOut 5s ease;} @keyframes fadeOut { 0%, 50% {opacity:1;} 100% {opacity:0;} }
     #post_body_1 a{color:var(--user-at);}#post_body_1 hr{border-top: 1px solid var(--text);}#post_body_1 h1,h2,h3,h4,h5,h6{font-weight: 400;margin-bottom: 8px;margin-top: 1.4em;}#post_body_1 h1{font-size: 22px;line-height: 26px;}#post_body_1 h2{font-size: 20px;line-height: 24px;}#post_body_1 h3{font-size: 18px;line-height: 22px;}#post_body_1 h4{font-size: 16px;line-height: 20px;}#post_body_1 h5{font-size: 14px;line-height: 18px;}#post_body_1 h6{font-size: 12px;line-height: 16px;}#post_body_1 pre {background-color: var(--markdowncode);}#post_body_1 code {background-color: var(--markdowncode);}#post_body_1 tbody, tfoot, thead, tr, th, td{margin: 0;padding: 0;border: 0;font-size: 100%;font: inherit;vertical-align: baseline;}#post_body_1 table{border-collapse: collapse;border-spacing: 0;}#post_body_1 tr{border: 1px solid var(--text);color: var(--text);padding: 4px 8px;  }#post_body_1 th{border: 1px solid var(--text);color: var(--text);padding: 4px 8px;  }#post_body_1 td{border: 1px solid var(--text);color: var(--text);padding: 4px 8px;  }#post_body_1 blockquote {margin-left:8px;}
     `;
     const template = `
@@ -80,7 +80,6 @@
         if (!results[2]) return '';
         return decodeURIComponent(results[2].replace(/\+/g, ' '));
     }
-    userdata = getUserdata()
     async function createscript(script_urls) {
         let re = /(?:\.([^.]+))?$/;
         function load(script_url) {
@@ -112,6 +111,7 @@
     document.addEventListener('DOMContentLoaded', async function () {
         createscript.loaded = new Set();
         await createscript(['/api/v1/cdn/splide.min.js', '/api/v1/cdn/splide.min.css', '/api/v1/cdn/plyr.css', '/api/v1/cdn/hls.js', '/api/v1/cdn/plyr.js','/api/v1/cdn/marked.min.js']);
+        userdata = await window.getUserdata()
         document.querySelector('body').insertAdjacentHTML('beforeend', '<div id="post_viewer2" style="background-color: rgba(0, 0, 0, .5) !important;"></div>')
         postviewer = document.getElementById('post_viewer2');
         postviewer.style.left = '99999px'
@@ -204,7 +204,7 @@
             buildmenu(pjson)
             buildcomments(pjson)
             //document.querySelector('#output').innerHTML = ''; <== THIS WAS DELETEING ALL MY COMMENTS. WHY DID I EVER DO THIS? WASTED DAYS ON IT. F****ING DAMNIT. *fudging. 
-            if (!userdata.isloggedin) {
+            if (userdata.isloggedin == false) {
                 document.getElementById('frm-comment').style.display = 'none'
                 data4 = `
                 <li>
@@ -219,6 +219,9 @@
                 </a>
                 </li>
                 `
+                setTimeout(() => {
+                    document.querySelector('.outer-comment').insertAdjacentHTML('afterbegin',data4) 
+                }, 500);
             }
             postviewer.style.display = "flex";
             window.history.pushState(pjson.title + ' - NRRINC', pjson.title + ' - NRRINC', `/?p=${pjson.post_id}`);
