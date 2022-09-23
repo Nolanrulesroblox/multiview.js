@@ -80,28 +80,7 @@
         if (!results[2]) return '';
         return decodeURIComponent(results[2].replace(/\+/g, ' '));
     }
-    if (window.localStorage.getItem('sDY')) {
-        //do note, this is only a SIMPLE auth, no real auth is happening here, its just for templating and stuff. try n be stupid... it wont work
-        //update: this stupid thing works half the time.... WHY
-        if (JSON.parse(window.localStorage.getItem('sDY')).expire >= (Date.now())) {
-            window.localStorage.removeItem('sDY')
-            httpRequest('/api/v1/?k=userdata&user=self', 'GET', function (e) {
-                q = e.responseText
-                userdata = JSON.parse(q)
-                userdata['expire'] = Date.now();
-                window.localStorage.setItem('sDY', JSON.stringify(userdata))
-            })
-        } else {
-            userdata = JSON.parse(window.localStorage.getItem('sDY'))
-        }
-    } else {
-        httpRequest('/api/v1/?k=userdata&user=self', 'GET', function (e) {
-            q = e.responseText
-            userdata = JSON.parse(q)
-            userdata['expire'] = Date.now() + 1000 * 60 * 60 * 4;
-            window.localStorage.setItem('sDY', JSON.stringify(userdata))
-        })
-    }
+    userdata = getUserdata()
     async function createscript(script_urls) {
         let re = /(?:\.([^.]+))?$/;
         function load(script_url) {
