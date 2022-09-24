@@ -429,25 +429,22 @@
         })
         document.querySelector('[postviewercontroller="dropdown"]').innerHTML = `
         <button id="pop" class="dropbtn icon icon-3dot" style="cursor: pointer;"></button>
-        <div id="myDropdown" class="dropdown-content"></div>
+        <div id="myDropdown" class="dropdown-content" dropdownid="${data.post_id}"></div>
         `
         const autbase = document.getElementById('myDropdown');
         if (data.self.isloggedin) {
-            autbase.insertAdjacentHTML('beforeend',`<button class="kU8ebCMnbXfjCWfqn0WPb" id="reportpst"> <i class="icon icon-report _1GQDWqbF-wkYWbrpmOvjqJ" style="/*color:#ff8d00*/"></i><span class="_6_44iTtZoeY6_XChKt5b0">Report</span></button>`);
-            document.getElementById("reportpst").addEventListener('click', function () {
-                console.log('you reported pid: '+data.post_id)
-            })
+            autbase.insertAdjacentHTML('beforeend',`<button class="kU8ebCMnbXfjCWfqn0WPb" id="reportpst" navaction="px1"> <i class="icon icon-report _1GQDWqbF-wkYWbrpmOvjqJ" style="/*color:#ff8d00*/"  navaction="px1"></i><span class="_6_44iTtZoeY6_XChKt5b0"  navaction="px1">Report</span></button>`);
         }
         if (data.self.auth) {
-            autbase.insertAdjacentHTML('beforeend',` <button class="kU8ebCMnbXfjCWfqn0WPb" id="edit_post"> <i class="icon icon-edit _1GQDWqbF-wkYWbrpmOvjqJ" style="/*color:#ff8d00*/"></i><span class="_6_44iTtZoeY6_XChKt5b0">Edit</span></button> <button class="kU8ebCMnbXfjCWfqn0WPb" id="delete_post"> <i class="icon icon-trash _1GQDWqbF-wkYWbrpmOvjqJ" style="/*color:#ff8d00*/"></i><span class="_6_44iTtZoeY6_XChKt5b0">Delete</span></button>`)
+            autbase.insertAdjacentHTML('beforeend',` <button class="kU8ebCMnbXfjCWfqn0WPb" id="edit_post" navaction="px2"> <i class="icon icon-edit _1GQDWqbF-wkYWbrpmOvjqJ" style="/*color:#ff8d00*/" navaction="px2"></i><span class="_6_44iTtZoeY6_XChKt5b0" navaction="px2">Edit</span></button> <button class="kU8ebCMnbXfjCWfqn0WPb" id="delete_post" navaction="px3"> <i class="icon icon-trash _1GQDWqbF-wkYWbrpmOvjqJ" style="/*color:#ff8d00*/" navaction="px3"></i><span class="_6_44iTtZoeY6_XChKt5b0" navaction="px3">Delete</span></button>`)
             if (geturlparam('edit')) {
                 window.history.pushState(data.title + ' - NRRINC', data.title + ' - NRRINC', `/?p=${data.post_id}&edit=1`);
                 console.log('edit mode on')
             }
-            document.getElementById("edit_post").addEventListener('click', function () {
-                console.log('edit mode on')
-            })
-            document.getElementById("delete_post").addEventListener("click", function (e) {
+        }
+        document.querySelector('[dropdownid="'+data.post_id+'"]').addEventListener('click',function(e) {
+            switch (e.target.getAttribute('navaction')) {
+                case 'px3':
                 confirmnotify("Are you sure you want to delete this post?", function (f) {
                     if (f) {
                         if (data.video) {
@@ -515,8 +512,17 @@
                         }
                     }
                 })
-            })
-        }
+                break;
+                case 'px2':
+                    console.log('edit mode on')
+                    break;
+                case 'px1':
+                    console.log('you reported pid: '+data.post_id)
+                    break;
+                default:
+                    break;
+            }
+        })
         document.getElementById('pop').addEventListener('click', function (e) {
             document.getElementById("myDropdown").classList.toggle("show")
         })
@@ -624,7 +630,7 @@
                     delquery.addEventListener('click', function () {
                         confirmnotify('Are you sure you want to delete this comment?', function (f) {
                             if (f) {
-                                httpRequest('/api/v1/?k=editpost&do=delete_com&cid=' + id, 'GET', function (e) {
+                                httpRequest('/api/v1/comments?action=delete&cid=' + id, 'GET', function (e) {
                                     if (this.readyState == 4 && this.status == 200) {
                                         var b = document.querySelector(`[del-id='${id}']`);
                                         b.parentElement.parentElement.querySelector('.comment-info > .posted-by').innerHTML = "<i>deleted</i>"
@@ -637,7 +643,6 @@
                     })
                     editbtn.addEventListener('click',function(e) {
                         const editor = document.querySelector(`[comment-nav-id-drop="${id}"]`).parentElement.querySelector('.comment-text');
-                        console.log(editor.innerText)
                         const editorbasee = document.querySelector(`[comment-nav-id-drop="${id}"]`).parentElement;
                         if (document.querySelector('[editor="open"]')) {
                             editor.style.display = '';
