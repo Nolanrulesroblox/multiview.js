@@ -112,6 +112,9 @@
         createscript.loaded = new Set();
         await createscript(['/api/v1/cdn/splide.min.js', '/api/v1/cdn/splide.min.css', '/api/v1/cdn/plyr.css', '/api/v1/cdn/hls.js', '/api/v1/cdn/plyr.js','/api/v1/cdn/marked.min.js']);
         userdata = await window.getUserdata()
+        window.addEventListener('newuserdata',function() {
+            userdata = window.getUserdata()
+        })
         document.querySelector('body').insertAdjacentHTML('beforeend', '<div id="post_viewer2" style="background-color: rgba(0, 0, 0, .5) !important;"></div>')
         postviewer = document.getElementById('post_viewer2');
         postviewer.style.left = '99999px'
@@ -634,14 +637,29 @@
                     })
                     editbtn.addEventListener('click',function(e) {
                         const editor = document.querySelector(`[comment-nav-id-drop="${id}"]`).parentElement.querySelector('.comment-text');
+                        console.log(editor.innerText)
+                        const editorbasee = document.querySelector(`[comment-nav-id-drop="${id}"]`).parentElement;
                         if (document.querySelector('[editor="open"]')) {
                             editor.style.display = '';
                             document.querySelector('[editor="open"]').remove()
                             editbtn.innerText = 'Edit'
                         } else {
                             editor.style.display = 'none'
-                            editor.insertAdjacentHTML('afterend','<div editor="open"><textarea style=" width: 100%; resize: vertical; ">'+editor.innerText+'</textarea><br><button>submit</button></div>')
+                            editor.insertAdjacentHTML('afterend','<div editor="open"><textarea style=" width: 100%; resize: vertical; " id="editor_submitarea">'+editor.innerText+'</textarea><br><button id="editor_submitbtn">submit</button></div>')
                             editbtn.innerText = 'Undo Edits'
+                            setTimeout(() => {
+                                editorbasee.querySelector('#editor_submitbtn').addEventListener('click',function() {
+                                    const editorsavedata = editorbasee.querySelector('#editor_submitarea').value;
+                                    var b = new FormData();
+                                    b.append('comment',editorsavedata)
+                                    httpRequest('/api/v1/comments?action=update&cid='+id,'POST',function() {
+                                        editor.style.display = '';
+                                        document.querySelector('[editor="open"]').remove()
+                                        editbtn.innerText = 'Edit'
+                                        editor.innerText = editorsavedata
+                                    },b)
+                                })
+                            }, 200);
                         }
                     })
                 }
