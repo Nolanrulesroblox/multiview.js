@@ -616,32 +616,31 @@
             function buildcnd(commentid, auth, hasparent, access) {
                 const id = commentid;
                 const home = document.querySelector(`[comment-nav-id-drop='${id}']`);
-                const edit = `<div interact edit-id="${id}">Edit</div>`;
-                const del = `<div interact del-id="${id}">Delete</div>`;
-                const hide = `<div interact hide-id="${id}">Collapse thread</div>`;
-                const report = `<div interact report-id="${id}">Report comment</div>`;
-                if (auth === true) {
-                    home.insertAdjacentHTML('beforeend', edit)
-                    home.insertAdjacentHTML('beforeend', del)
+                const edit = `<div interact edit-id="${id}"     cnc="px2">Edit</div>`;
+                const del = `<div interact del-id="${id}"       cnc="px3">Delete</div>`;
+                const hide = `<div interact hide-id="${id}"     cnc="px4">Collapse thread</div>`;
+                const report = `<div interact report-id="${id}" cnc="px1">Report comment</div>`;
+                if (userdata.isloggedin) {
                     home.insertAdjacentHTML('beforeend', report)
-                    const delquery = document.querySelector(`[del-id='${id}']`);
-                    const repquery = document.querySelector(`[report-id='${id}']`);
-                    const editbtn = document.querySelector(`[edit-id='${id}']`);
-                    delquery.addEventListener('click', function () {
-                        confirmnotify('Are you sure you want to delete this comment?', function (f) {
-                            if (f) {
-                                httpRequest('/api/v1/comments?action=delete&cid=' + id, 'GET', function (e) {
-                                    if (this.readyState == 4 && this.status == 200) {
-                                        var b = document.querySelector(`[del-id='${id}']`);
-                                        b.parentElement.parentElement.querySelector('.comment-info > .posted-by').innerHTML = "<i>deleted</i>"
-                                        b.parentElement.parentElement.querySelector('.comment-text').innerHTML = "<i>deleted</i>"
-                                        notify('Comment Deleted', "#3c763d", "#dff0d8", "#d6e9c6", 4000)
-                                    }
-                                })
-                            }
-                        })
-                    })
-                    editbtn.addEventListener('click',function(e) {
+                    if (auth === true) {
+                        home.insertAdjacentHTML('beforeend', edit)
+                        home.insertAdjacentHTML('beforeend', del)
+                    }
+                }
+                if (hasparent === '0') {
+                    home.insertAdjacentHTML('beforeend', hide)
+                }
+                document.querySelector(`[comment-nav-id='${id}']`).addEventListener("click", function (e) {
+                    document.querySelector(`[comment-nav-id-drop='${id}']`).style.display = "inline-block";
+                    this.parentElement.style.position = "relative";
+                })
+                home.addEventListener('click',function(e) {
+                    switch (e.target.getAttribute('cnc')) {
+                        case 'px1':
+                            console.log('report')
+                            break;
+                        case 'px2':
+                        const editbtn = document.querySelector(`[edit-id='${id}']`);
                         const editor = document.querySelector(`[comment-nav-id-drop="${id}"]`).parentElement.querySelector('.comment-text');
                         const editorbasee = document.querySelector(`[comment-nav-id-drop="${id}"]`).parentElement;
                         if (document.querySelector('[editor="open"]')) {
@@ -666,33 +665,39 @@
                                 })
                             }, 200);
                         }
-                    })
-                }
-                if (hasparent === '0') {
-                    home.insertAdjacentHTML('beforeend', hide)
-                    var hidequery = document.querySelector(`[hide-id='${id}']`);
-                    hidequery.addEventListener('click', function (e) {
-                        if (home.parentElement.parentElement.querySelector('ul').style.display === 'none') {
-                            home.parentElement.parentElement.querySelector('ul').style.display = 'block'
-                            hidequery.innerText = "Collapse thread"
-                            document.querySelector("#comment-"+id+" a.btn-reply").innerText = "Reply"
-                            document.querySelector('[comment="'+id+'"]').querySelector('.comment-text').parentElement.style.cssText = ""
-                            document.querySelector('[comment="'+id+'"]').querySelector('.btn-reply').style.cssText = ""
-                        } else {
-                            document.querySelector('[comment="'+id+'"]').querySelector('.comment-text').parentElement.style.flexDirection = 'column'
-                            document.querySelector('[comment="'+id+'"]').querySelector('.comment-text').parentElement.style.display = 'flex'
-                            document.querySelector('[comment="'+id+'"]').querySelector('.comment-text').parentElement.style.marginRight = 'auto'
-                            document.querySelector('[comment="'+id+'"]').querySelector('.comment-text').parentElement.style.justifyContent = 'flex-end'
-                            document.querySelector('[comment="'+id+'"]').querySelector('.btn-reply').style.marginRight = '8px'
-                            home.parentElement.parentElement.querySelector('ul').style.display = 'none'
-                            hidequery.innerText = "Expand thread"
-                            document.querySelector("#comment-"+id+" a.btn-reply").innerText = "Reply ("+(document.querySelector("#comment-"+id).parentElement.querySelectorAll('.comment-row').length - 1)+" hidden)"
-                        }
-                    })
-                }
-                document.querySelector(`[comment-nav-id='${id}']`).addEventListener("click", function (e) {
-                    document.querySelector(`[comment-nav-id-drop='${id}']`).style.display = "inline-block";
-                    this.parentElement.style.position = "relative";
+                            break;
+                        case 'px3':
+                            confirmnotify('Are you sure you want to delete this comment?', function (f) {
+                                if (f) {
+                                    httpRequest('/api/v1/comments?action=delete&cid=' + id, 'GET', function (e) {
+                                        if (this.readyState == 4 && this.status == 200) {
+                                            var b = document.querySelector(`[del-id='${id}']`);
+                                            b.parentElement.parentElement.querySelector('.comment-info > .posted-by').innerHTML = "<i>deleted</i>"
+                                            b.parentElement.parentElement.querySelector('.comment-text').innerHTML = "<i>deleted</i>"
+                                            notify('Comment Deleted', "#3c763d", "#dff0d8", "#d6e9c6", 4000)
+                                        }
+                                    })
+                                }
+                            })
+                            break;
+                        case 'px4':
+                            if (home.parentElement.parentElement.querySelector('ul').style.display === 'none') {
+                                home.parentElement.parentElement.querySelector('ul').style.display = 'block'
+                                document.querySelector(`[hide-id='${id}']`).innerText = "Collapse thread"
+                                document.querySelector("#comment-"+id+" a.btn-reply").innerText = "Reply"
+                                document.querySelector('[comment="'+id+'"]').querySelector('.comment-text').parentElement.style.cssText = ""
+                                document.querySelector('[comment="'+id+'"]').querySelector('.btn-reply').style.cssText = ""
+                            } else {
+                                document.querySelector('[comment="'+id+'"]').querySelector('.comment-text').parentElement.style.cssText = "flex-direction: column; display: flex; margin-right: auto; justify-content: flex-end;"
+                                document.querySelector('[comment="'+id+'"]').querySelector('.btn-reply').style.marginRight = '8px'
+                                home.parentElement.parentElement.querySelector('ul').style.display = 'none'
+                                document.querySelector(`[hide-id='${id}']`).innerText = "Expand thread"
+                                document.querySelector("#comment-"+id+" a.btn-reply").innerText = "Reply ("+(document.querySelector("#comment-"+id).parentElement.querySelectorAll('.comment-row').length - 1)+" hidden)"
+                            }
+                            break;
+                        default:
+                            break;
+                    }
                 })
             }
                 function replaceTemplate(id, name, date, text, parent, parentName = "", isOP,icon) {
