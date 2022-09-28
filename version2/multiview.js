@@ -110,7 +110,7 @@
     }
     document.addEventListener('DOMContentLoaded', async function () {
         createscript.loaded = new Set();
-        await createscript(['/api/v1/cdn/splide.min.js', '/api/v1/cdn/splide.min.css', '/api/v1/cdn/plyr.css', '/api/v1/cdn/hls.js', '/api/v1/cdn/plyr.js','/api/v1/cdn/marked.min.js']);
+        await createscript(['/api/v1/cdn/splide.min.js', '/api/v1/cdn/splide.min.css', '/api/v1/cdn/plyr.css', '/api/v1/cdn/hls.js', '/api/v1/cdn/plyr.js','/api/v1/cdn/marked.min.js','https://cdn.quilljs.com/1.3.6/quill.snow.css','https://cdn.quilljs.com/1.3.6/quill.js']);
         userdata = await window.getUserdata()
         window.addEventListener('newuserdata',function() {
             userdata = window.getUserdata()
@@ -437,10 +437,6 @@
         }
         if (data.self.auth) {
             autbase.insertAdjacentHTML('beforeend',` <button class="kU8ebCMnbXfjCWfqn0WPb" id="edit_post" navaction="px2"> <i class="icon icon-edit _1GQDWqbF-wkYWbrpmOvjqJ" style="/*color:#ff8d00*/" navaction="px2"></i><span class="_6_44iTtZoeY6_XChKt5b0" navaction="px2">Edit</span></button> <button class="kU8ebCMnbXfjCWfqn0WPb" id="delete_post" navaction="px3"> <i class="icon icon-trash _1GQDWqbF-wkYWbrpmOvjqJ" style="/*color:#ff8d00*/" navaction="px3"></i><span class="_6_44iTtZoeY6_XChKt5b0" navaction="px3">Delete</span></button>`)
-            if (geturlparam('edit')) {
-                window.history.pushState(data.title + ' - NRRINC', data.title + ' - NRRINC', `/?p=${data.post_id}&edit=1`);
-                console.log('edit mode on')
-            }
         }
         document.querySelector('[dropdownid="'+data.post_id+'"]').addEventListener('click',function(e) {
             switch (e.target.getAttribute('navaction')) {
@@ -515,6 +511,46 @@
                 break;
                 case 'px2':
                     console.log('edit mode on')
+                    document.querySelector('[postviewercontroller="post_content"]').style.cssText = 'display: flex; flex-direction: column;'
+                    editor('setup',document.querySelector('[postviewercontroller="post_content"]'),data.post_body)
+                    document.querySelector('[postviewercontroller="post_content"]').insertAdjacentHTML('beforeend','<div style="margin-left: auto;"><button cancel=""  class="nrrinc-btn dan fatter closer">Cancel</button><button submit="" class="nrrinc-btn pri fatter closer">Edit</button></div>')
+                    const btn = document.querySelector('[submit]');
+                    const cancelbtn = document.querySelector('[cancel]');
+                    setTimeout(() => {
+                        document.querySelector('#post_body_1').children[0].addEventListener('keydown',function() {
+                            editor('verify',btn)
+                        })
+                        document.querySelector('[markdownedtior="textarea"]').addEventListener('keydown',function() {
+                            editor('verify',btn)
+                        })
+                        document.querySelector('#post_body_1').children[0].addEventListener('keyup',function() {
+                            editor('verify',btn)
+                        })
+                        document.querySelector('[markdownedtior="textarea"]').addEventListener('keyup',function() {
+                            editor('verify',btn)
+                        })
+                    }, 5);
+                    btn.addEventListener('click',function(e) {
+                        e.preventDefault()
+                        if (editor('verify',btn)) {
+                            console.log(editor('save'))
+                            let form = new FormData();
+                            form.append('mode',editor('save').mode)
+                            form.append('body',editor('save').data)
+                            httpRequest(`/api/v1/editpost?pid=${data.post_id}&do=edit`,'POST',function(e) {
+                                if ((e.readyState == 4 && e.status == 200) || (e.readyState == 4 && e.status == 201) | (e.readyState == 4 && e.status == 202)) {
+                                    notify("Post has been updated", "#3c763d", "#dff0d8", "#d6e9c6", 10000)
+                                    data.post_body = editor('save').data
+                                    buildmedia(data)
+                                }
+                            },form)
+                        }
+                    })
+                    cancelbtn.addEventListener('click',function(e) {
+                        e.preventDefault()
+                        buildmedia(data)
+                        window.history.pushState(data.title + ' - NRRINC', data.title + ' - NRRINC', h+`?p=${data.post_id}`);
+                    })
                     break;
                 case 'px1':
                     console.log('you reported pid: '+data.post_id)
