@@ -533,6 +533,7 @@
                     const btn = document.querySelector('[submit]');
                     const cancelbtn = document.querySelector('[cancel]');
                     setTimeout(() => {
+                        editor('verify',btn)
                         document.querySelector('#post_body_1').children[0].addEventListener('keydown',function() {
                             editor('verify',btn)
                         })
@@ -555,7 +556,7 @@
                             form.append('body',editor('save').data)
                             httpRequest(`/api/v1/editpost?pid=${data.post_id}&do=edit`,'POST',function(e) {
                                 if ((e.readyState == 4 && e.status == 200) || (e.readyState == 4 && e.status == 201) | (e.readyState == 4 && e.status == 202)) {
-                                    notify("Post has been updated", "#3c763d", "#dff0d8", "#d6e9c6", 10000)
+                                    notify("Post has been updated", "#3c763d", "#dff0d8", "#d6e9c6", 3500)
                                     data.post_body = editor('save').data
                                     buildmedia(data)
                                 }
