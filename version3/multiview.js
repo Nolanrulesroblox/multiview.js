@@ -4,10 +4,10 @@
     const h = location.protocol + '//' + location.host + location.pathname;
     const t = document.title
     const cssstyle = `
-    .sp-aw { text-align: center !important; list-style: none; } @media all and (min-width:940px) { [load-post-id]{ width: 937px!important; } } @media all and (min-width:729px) and (max-width:939px){ [load-post-id]{ width: 640px; } } @media all and (max-width:559px) { [load-post-id]{ min-width: 100% ; max-width: 100% ; width: 100% ; } 
-    ._CmxRiim30CrxSPL{ min-width: 100% ; max-width: 100% ; width: 100% ; } } .fs1{ max-width: 96vw; } #splidelist{padding-left:0rem !important} /*._CmxRiim30CrxSPL{margin-top: 60px;}*/ 
+    .sp-aw { text-align: center !important; list-style: none; } @media all and (min-width:940px) { ._CmxRiim30CrxSPL{ width: 937px!important; } } @media all and (min-width:729px) and (max-width:939px){ ._CmxRiim30CrxSPL{ width: 640px !important; } } @media all and (max-width:559px) { ._CmxRiim30CrxSPL{ min-width: 100% ; max-width: 100% ; width: 100% ; } 
+    /*._CmxRiim30CrxSPL{ min-width: 100% ; max-width: 100% ; width: 100% ; }*/ } .fs1{ max-width: 96vw; } #splidelist{padding-left:0rem !important} /*._CmxRiim30CrxSPL{margin-top: 60px;}*/ 
     ._1VP69d9lk-Wk9zokOaylL-TMP {-webkit-filter: blur(8px); -moz-filter: blur(8px); -o-filter: blur(8px); -ms-filter: blur(8px); filter: blur(8px);} #post_viewer2{height: 100%;position: fixed; -webkit-backface-visibility: hidden; backface-visibility: hidden; right: 0; top: 0; width: 100%; z-index: 50; margin-bottom: 60px;display: flex; justify-content: center; position: fixed; left: 50%; transform: translateX(-50%); overflow-y: scroll; overflow-x: hidden;}
-    [load-post-id]{display: flex;width:100vw;/*background-color: #fff;*/background-color: var(--post-background); border: 1px solid rgba(0, 0, 0, 0.125); border-radius: 0.25rem; padding: 0.5rem 0.25rem; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); flex-direction: column;} .fs1>p {font-size: 14px;line-height: 21px;margin-bottom: 0 !important;} .cZPZhMe-UCZ8htPodMyJ5 {-ms-flex-align: center;align-items: center;display: -ms-flexbox;display: flex;-ms-flex-wrap: wrap;flex-wrap: wrap;-ms-flex: 1 1 auto;flex: 1 1 auto;overflow: hidden;}
+    [load-post-id]{display: flex;width:100%;background-color: var(--post-background); border: 1px solid rgba(0, 0, 0, 0.125); border-radius: 0.25rem; padding: 0.5rem 0.25rem; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); flex-direction: column;} .fs1>p {font-size: 14px;line-height: 21px;margin-bottom: 0 !important;} .cZPZhMe-UCZ8htPodMyJ5 {-ms-flex-align: center;align-items: center;display: -ms-flexbox;display: flex;-ms-flex-wrap: wrap;flex-wrap: wrap;-ms-flex: 1 1 auto;flex: 1 1 auto;overflow: hidden;}
     ._2mHuuvyV9doV3zwbZPtIPG {display: inline-block;-ms-flex: 0 0 auto;flex: 0 0 auto} ._3LS4zudUBagjFS7HjWJYxo {color: var(--newCommunityTheme-metaText);font-size: 6px;line-height: 20px;margin: 0 4px;vertical-align: middle;} .icon {font-size: 20px;font-weight: 400;height: 20px;line-height: 20px;vertical-align: middle;width: 20px;font-style: normal;} ._2pFdCpgBihIaYh9DSMWBIu {height: 24px;}
     ._2pFdCpgBihIaYh9DSMWBIu.uMPgOFYlCc5uvpa2Lbteu {border-radius: 2px;} ._2pFdCpgBihIaYh9DSMWBIu.uMPgOFYlCc5uvpa2Lbteu:focus,._2pFdCpgBihIaYh9DSMWBIu.uMPgOFYlCc5uvpa2Lbteu:hover {outline: none;} ._10K5i7NW6qcm-UoCtpB3aK {-ms-flex-align: center;align-items: center;display: -ms-flexbox;display: flex;-ms-flex-direction: row;flex-direction: row;text-align: left;width: 100%;} .pthKOcceozMuXLYrLlbL1 {margin-right: 6px;}
     .icon:before {-webkit-font-smoothing: antialiased;-moz-osx-font-smoothing: grayscale;font-family: 'fontello';} .icon-award:before {content: "\\e85d";} .icon-edit:before {content: "\\e835";} .icon-comment:before {content: "\\e83a";color: #878A8C;} .icon-save:before {content: "\\e869";} .icon-share:before {content: "\\e855";} .icon-3dot:before {content: "\\e80f";} .icon-trash:before { content: '\\e845'; }
@@ -20,9 +20,11 @@
     #output > ul > li::marker{ content: ""; } .comment-row > *{ font-size: 14px; } .btn-reply{ cursor: pointer; text-decoration: none !important; } .btn-submit:disabled { background: #eee; color: #667; cursor: not-allowed; } #output ul { list-style-type: none; } #frm-comment{ flex-direction: column; display: flex; } #frm-comment .input-row{ display:flex; } @media all and (min-width:600px) { #frm-comment{ margin:8px 40px 24px 48px; } } .comment-row {position: relative; border-bottom: #e0dfdf 1px solid; margin-bottom: 8px; border-top: #e0dfdf 1px solid; padding: 0px 10px 0px 10px; border-right: #e0dfdf 1px solid; display:flex; flex-direction: column; } .comment-active { background-color: hsl(60, 100%, 95%); } .comment-row:target { animation: bg-fadeout 5s ease; } @keyframes bg-fadeout { from {background-color: hsl(60, 100%, 95%);} to {background-color: transparent;} } .outer-comment { margin-top:8px; padding-inline-start: 0; } .outer-comment ul { padding-inline-start: 1rem; }
     .outer-comment > li > div { border-left: 1px solid hsl(220, 100%, 60%); } .outer-comment > li li > div { border-left: 1px solid hsl(40, 100%, 60%); } span.commet-row-label { font-style: italic; } .outer-comment ul{ margin-bottom:0 !important } .posted-by { color: var(--user-at); font-weight: 700;margin-right:4px;margin-left:4px } .comment-text { margin: 0px 0px; display:flex;color:var(--text) } .reply { color: #0043ff; text-decoration: none; display: inline-block; border-radius: 4px; margin-right:8px } .btn-reply { font-size: 14px; text-decoration: none !important; color: #888787 !important; cursor: pointer; font-weight: 900; line-height: 20px; display: flex; } #comment-message { margin-left: 20px; display: inline-block; opacity: 1; } .msg-success {color: hsl(120, 75%, 40%); animation: fadeOut 5s ease;} .msg-error {color: hsl(10, 90%, 50%); animation: fadeOut 5s ease;} @keyframes fadeOut { 0%, 50% {opacity:1;} 100% {opacity:0;} }
     #post_body_1 a{color:var(--user-at);}#post_body_1 hr{border-top: 1px solid var(--text);}#post_body_1 h1,h2,h3,h4,h5,h6{font-weight: 400;margin-bottom: 8px;margin-top: 1.4em;}#post_body_1 h1{font-size: 22px;line-height: 26px;}#post_body_1 h2{font-size: 20px;line-height: 24px;}#post_body_1 h3{font-size: 18px;line-height: 22px;}#post_body_1 h4{font-size: 16px;line-height: 20px;}#post_body_1 h5{font-size: 14px;line-height: 18px;}#post_body_1 h6{font-size: 12px;line-height: 16px;}#post_body_1 pre {background-color: var(--markdowncode);}#post_body_1 code {background-color: var(--markdowncode);}#post_body_1 tbody, tfoot, thead, tr, th, td{margin: 0;padding: 0;border: 0;font-size: 100%;font: inherit;vertical-align: baseline;}#post_body_1 table{border-collapse: collapse;border-spacing: 0;}#post_body_1 tr{border: 1px solid var(--text);color: var(--text);padding: 4px 8px;  }#post_body_1 th{border: 1px solid var(--text);color: var(--text);padding: 4px 8px;  }#post_body_1 td{border: 1px solid var(--text);color: var(--text);padding: 4px 8px;  }#post_body_1 blockquote {margin-left:8px;}
+    ._CmxRiim30CrxSPL{ width: 100%;display:flex}
     `;
     const template = `
     <div dclass="rpBJOHq2PR60pnwJlUyP0" class="_CmxRiim30CrxSPL">
+    <div style="width:100%" postviewercontroller="left">
     <article load-post-id postviewercontroller="posttop" style=" display: inline-flex; margin-top: 60px;margin-bottom: 30px;">
     <div data-postalert style="justify-content: space-around; margin-left: auto; margin-right: auto; padding-top: 5px; padding-bottom: 5px; margin-bottom: 10px;border-radius: 4px; font-size: 14px;position: fixed;box-shadow: -6px 9px 17px -1px rgb(0 0 0 / 39%);z-index: 997;transition: all .99s ease-out;display: none;">
     <div style="padding-left: 5px; font-size: 14px; padding-right: 5px;"></div>
@@ -65,10 +67,22 @@
         <div postviewercontroller="post_content">
         </div>
         <div class="interactive_0" postviewercontroller="menu" style="margin-left: 8px;margin-right: 8px;margin-top:8px;">
-
         </div>
         <div id="cvh" style="margin-top: 4px;" postviewercontroller="post_comments"></div>
     </article>
+    </div>
+    <div style="
+    width: 46%;
+    margin-left: 22px;
+    margin-top: 60px;
+    background-color: red;
+    display:none;
+    " postviewercontroller="right">
+        <div>
+        <div></div>
+        <div></div>
+        <div></div>
+        </div>
     </div>
     `;
     document.head.insertAdjacentHTML('beforeend', `<style>${cssstyle}</style>`);
@@ -140,7 +154,7 @@
             postjson.send();
         }
         document.querySelector('#post_viewer2').addEventListener('click', function (e) {
-            if (e.target.getAttribute('id') == 'post_viewer2' || e.target.classList.contains('_CmxRiim30CrxSPL')) {
+            if (e.target.getAttribute('id') == 'post_viewer2' || e.target.classList.contains('_CmxRiim30CrxSPL') || e.target.getAttribute('postviewercontroller') == 'left') {
                 if (postviewer.getAttribute('postviewer') == 'active') {
                     document.body.style.overflowY = ""
                     for (let index = 0; index < document.querySelectorAll('._CmxRiim30CrxSPL').length; index++) {
@@ -155,6 +169,9 @@
                 }
             }
         })
+        if (geturlparam('beta')) {
+            document.querySelector('[postviewercontroller="right"]').style.display = 'block'
+        }
         document.querySelector('[postviewercontroller="closebtn"]').addEventListener('click',function(e) {
             if (postviewer.getAttribute('postviewer') == 'active') {
                 document.body.style.overflowY = ""
@@ -564,56 +581,56 @@
                     f.classList.add('wide')
                     //f.classList.add('nrrinc-modal-inner')
                     f.innerHTML = `
-                    <form action="#">
-   <div class="">
-      Submit a Report
-   </div>
-   <fieldset>
-      <p><span>Thanks for looking out for yourself and your fellow users by reporting things that break the rules. Let us know what's happening, and we'll look into it.</span>&nbsp;</p>
-      <div class="cR6KACDFv5FmLxCEFk1_l">
-                    <div report="sitewide">
-                        <div class=""><input name="categoryOrRule" type="checkbox" id="community" value="community"><label for="community" class="_3kEv5z1lDKGV8PQ5ijp4Uh">Breaks {WHO}'s rules</label></div>
-                        <div class=""><input name="categoryOrRule" type="radio" id="HARASSMENT" value="HARASSMENT"><label for="HARASSMENT" class="" >Harassment</label></div>
-                        <div class=""><input name="categoryOrRule" type="radio" id="VIOLENCE" value="VIOLENCE"><label for="VIOLENCE" class="" >Threatening violence</label></div>
-                        <div class=""><input name="categoryOrRule" type="radio" id="HATE_CONTENT" value="HATE_CONTENT"><label for="HATE_CONTENT" class="" >Hate</label></div>
-                        <div class=""><input name="categoryOrRule" type="radio" id="EWWW" value="EWWW"><label for="EWWW" class="" >EWWW</label></div>
-                        <div class=""><input name="categoryOrRule" type="radio" id="PII" value="PII"><label for="PII" class="" >Sharing personal information</label></div>
-                        <div class=""><input name="categoryOrRule" type="radio" id="INVOLUNTARY_PORN" value="INVOLUNTARY_PORN"><label for="INVOLUNTARY_PORN" class="" >Non-consensual intimate media</label></div>
-                        <div class=""><input name="categoryOrRule" type="radio" id="PROHIBITED_SALES" value="PROHIBITED_SALES"><label for="PROHIBITED_SALES" class="" >Prohibited transaction</label></div>
-                        <div class=""><input name="categoryOrRule" type="radio" id="IMPERSONATION" value="IMPERSONATION"><label for="IMPERSONATION" class="" >Impersonation</label></div>
-                        <div class=""><input name="categoryOrRule" type="radio" id="COPYRIGHT" value="COPYRIGHT"><label for="COPYRIGHT" class="" >Copyright violation</label></div>
-                        <div class=""><input name="categoryOrRule" type="radio" id="TRADEMARK" value="TRADEMARK"><label for="TRADEMARK" class="" >Trademark violation</label></div>
-                        <div class=""><input name="categoryOrRule" type="radio" id="SELF_HARM" value="SELF_HARM"><label for="SELF_HARM" class="" >Self-harm or suicide</label></div>
-                        <div class=""><input name="categoryOrRule" type="radio" id="SPAM" value="SPAM"><label for="SPAM" class="" >Spam</label></div>
-                        <div class=""><input name="categoryOrRule" type="radio" id="MISINFORMATION" value="MISINFORMATION"><label for="MISINFORMATION" class="" >Misinformation</label></div>
-                    </div>
-                    <div report="communitywide">
-                        <div class=""><input name="categoryOrRule" type="checkbox" id="community" value="community"><label for="community" class="_3kEv5z1lDKGV8PQ5ijp4Uh">Breaks {WHO}'s rules</label></div>
-                        <div class=""><input name="categoryOrRule" type="radio" id="rule1" value="rule1"><label for="rule1" class="" >rule1</label></div>
-                        <div class=""><input name="categoryOrRule" type="radio" id="rule2" value="rule2"><label for="rule2" class="" >rule2</label></div>
-                        <div class=""><input name="categoryOrRule" type="radio" id="rule3" value="rule3"><label for="rule3" class="" >rule3</label></div>
-                        <div class=""><input name="categoryOrRule" type="radio" id="rule4" value="rule4"><label for="rule4" class="" >rule4</label></div>
-                        <div class=""><input name="categoryOrRule" type="radio" id="rule5" value="rule5"><label for="rule5" class="" >rule5</label></div>
-                        <div class=""><input name="categoryOrRule" type="radio" id="rule6" value="rule6"><label for="rule6" class="" >rule6</label></div>
-                        <div class=""><input name="categoryOrRule" type="radio" id="rule7" value="rule7"><label for="rule7" class="" >rule7</label></div>
-                        <div class=""><input name="categoryOrRule" type="radio" id="rule8" value="rule8"><label for="rule8" class="" >rule8</label></div>
-                        <div class=""><input name="categoryOrRule" type="radio" id="rule9" value="rule9"><label for="rule9" class="" >rule9</label></div>
-                        <div class=""><input name="categoryOrRule" type="radio" id="rule10" value="rule10"><label for="rule10" class="" >rule10</label></div>
-                        <div class=""><input name="categoryOrRule" type="radio" id="rule11" value="rule11"><label for="rule11" class="" >rule11</label></div>
-                        <div class=""><input name="categoryOrRule" type="radio" id="rule12" value="rule12"><label for="rule12" class="" >rule12</label></div>
-                        <div class=""><input name="categoryOrRule" type="radio" id="rule13" value="rule13"><label for="rule13" class="" >rule13</label></div>
-                    </div>
-      </div>
-      <footer class="_2_z81mDBy-DsDJ6t2Y8xZR">
-         <div class="_1Wjy7XxPhNhcsFZWDSlvGI">
-            <h4>Breaks {WHO}'s rules</h4>
-            <p>Posts, comments, or behavior that breaks {WHO} community rules.</p>
-         </div>
-         <button type="button" class="_1lDGFVGU9k2mi-4kjU95Rp">Submit</button>
-      </footer>
-   </fieldset>
-</form>
-`
+                        <form action="#">
+                        <div class="">
+                            Submit a Report
+                        </div>
+                        <fieldset>
+                            <p><span>Thanks for looking out for yourself and your fellow users by reporting things that break the rules. Let us know what's happening, and we'll look into it.</span>&nbsp;</p>
+                            <div class="cR6KACDFv5FmLxCEFk1_l">
+                                            <div report="sitewide">
+                                                <div class=""><input name="categoryOrRule" type="checkbox" id="community" value="community"><label for="community" class="_3kEv5z1lDKGV8PQ5ijp4Uh">Breaks {WHO}'s rules</label></div>
+                                                <div class=""><input name="categoryOrRule" type="radio" id="HARASSMENT" value="HARASSMENT"><label for="HARASSMENT" class="" >Harassment</label></div>
+                                                <div class=""><input name="categoryOrRule" type="radio" id="VIOLENCE" value="VIOLENCE"><label for="VIOLENCE" class="" >Threatening violence</label></div>
+                                                <div class=""><input name="categoryOrRule" type="radio" id="HATE_CONTENT" value="HATE_CONTENT"><label for="HATE_CONTENT" class="" >Hate</label></div>
+                                                <div class=""><input name="categoryOrRule" type="radio" id="EWWW" value="EWWW"><label for="EWWW" class="" >EWWW</label></div>
+                                                <div class=""><input name="categoryOrRule" type="radio" id="PII" value="PII"><label for="PII" class="" >Sharing personal information</label></div>
+                                                <div class=""><input name="categoryOrRule" type="radio" id="INVOLUNTARY_PORN" value="INVOLUNTARY_PORN"><label for="INVOLUNTARY_PORN" class="" >Non-consensual intimate media</label></div>
+                                                <div class=""><input name="categoryOrRule" type="radio" id="PROHIBITED_SALES" value="PROHIBITED_SALES"><label for="PROHIBITED_SALES" class="" >Prohibited transaction</label></div>
+                                                <div class=""><input name="categoryOrRule" type="radio" id="IMPERSONATION" value="IMPERSONATION"><label for="IMPERSONATION" class="" >Impersonation</label></div>
+                                                <div class=""><input name="categoryOrRule" type="radio" id="COPYRIGHT" value="COPYRIGHT"><label for="COPYRIGHT" class="" >Copyright violation</label></div>
+                                                <div class=""><input name="categoryOrRule" type="radio" id="TRADEMARK" value="TRADEMARK"><label for="TRADEMARK" class="" >Trademark violation</label></div>
+                                                <div class=""><input name="categoryOrRule" type="radio" id="SELF_HARM" value="SELF_HARM"><label for="SELF_HARM" class="" >Self-harm or suicide</label></div>
+                                                <div class=""><input name="categoryOrRule" type="radio" id="SPAM" value="SPAM"><label for="SPAM" class="" >Spam</label></div>
+                                                <div class=""><input name="categoryOrRule" type="radio" id="MISINFORMATION" value="MISINFORMATION"><label for="MISINFORMATION" class="" >Misinformation</label></div>
+                                            </div>
+                                            <div report="communitywide">
+                                                <div class=""><input name="categoryOrRule" type="checkbox" id="community" value="community"><label for="community" class="_3kEv5z1lDKGV8PQ5ijp4Uh">Breaks {WHO}'s rules</label></div>
+                                                <div class=""><input name="categoryOrRule" type="radio" id="rule1" value="rule1"><label for="rule1" class="" >rule1</label></div>
+                                                <div class=""><input name="categoryOrRule" type="radio" id="rule2" value="rule2"><label for="rule2" class="" >rule2</label></div>
+                                                <div class=""><input name="categoryOrRule" type="radio" id="rule3" value="rule3"><label for="rule3" class="" >rule3</label></div>
+                                                <div class=""><input name="categoryOrRule" type="radio" id="rule4" value="rule4"><label for="rule4" class="" >rule4</label></div>
+                                                <div class=""><input name="categoryOrRule" type="radio" id="rule5" value="rule5"><label for="rule5" class="" >rule5</label></div>
+                                                <div class=""><input name="categoryOrRule" type="radio" id="rule6" value="rule6"><label for="rule6" class="" >rule6</label></div>
+                                                <div class=""><input name="categoryOrRule" type="radio" id="rule7" value="rule7"><label for="rule7" class="" >rule7</label></div>
+                                                <div class=""><input name="categoryOrRule" type="radio" id="rule8" value="rule8"><label for="rule8" class="" >rule8</label></div>
+                                                <div class=""><input name="categoryOrRule" type="radio" id="rule9" value="rule9"><label for="rule9" class="" >rule9</label></div>
+                                                <div class=""><input name="categoryOrRule" type="radio" id="rule10" value="rule10"><label for="rule10" class="" >rule10</label></div>
+                                                <div class=""><input name="categoryOrRule" type="radio" id="rule11" value="rule11"><label for="rule11" class="" >rule11</label></div>
+                                                <div class=""><input name="categoryOrRule" type="radio" id="rule12" value="rule12"><label for="rule12" class="" >rule12</label></div>
+                                                <div class=""><input name="categoryOrRule" type="radio" id="rule13" value="rule13"><label for="rule13" class="" >rule13</label></div>
+                                            </div>
+                            </div>
+                            <footer class="_2_z81mDBy-DsDJ6t2Y8xZR">
+                                <div class="_1Wjy7XxPhNhcsFZWDSlvGI">
+                                    <h4>Breaks {WHO}'s rules</h4>
+                                    <p>Posts, comments, or behavior that breaks {WHO} community rules.</p>
+                                </div>
+                                <button type="button" class="_1lDGFVGU9k2mi-4kjU95Rp">Submit</button>
+                            </footer>
+                        </fieldset>
+                        </form>
+                    `
                     document.body.insertAdjacentElement('beforeend',f)
                     document.querySelector('[nrrinc-modal]').addEventListener('click',nrrincmodal.open('[nrrinc-modal]'))
                     const base = document.querySelector('[nrrinc-modal]');
