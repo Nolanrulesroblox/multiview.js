@@ -576,66 +576,69 @@
                     })
                     break;
                 case 'px1':
-                    const f = document.createElement('div')
-                    f.setAttribute('nrrinc-modal',true)
-                    f.classList.add('nrrinc-modal-window')
-                    f.classList.add('wide')
-                    //f.classList.add('nrrinc-modal-inner')
-                    f.innerHTML = `
-                        <form action="#">
-                        <div class="">
-                            Submit a Report
+                    const nrrincwindow = document.createElement('div')
+                    nrrincwindow.setAttribute('nrrinc-modal',true)
+                    nrrincwindow.classList.add('nrrinc-modal-window')
+                    nrrincwindow.classList.add('wide')
+                    const nrrincbody = document.createElement('div')
+                    nrrincbody.classList.add('nrrinc-modal-inner')
+                    nrrincbody.innerHTML = `<form action="#">
+                    <fieldset>
+                        <p><span>Thanks for looking out for yourself and your fellow users by reporting things that break the rules. Let us know what's happening, and we'll look into it.</span>&nbsp;</p>
+                        <div class="cR6KACDFv5FmLxCEFk1_l">
+                                        <div report="sitewide">
+                                            <div class=""><input name="categoryOrRule" type="radio" id="community" value="community"><label for="community" class="_3kEv5z1lDKGV8PQ5ijp4Uh">Breaks {WHO}'s rules</label></div>
+                                            <div class=""><input name="categoryOrRule" type="radio" id="HARASSMENT" value="HARASSMENT"><label for="HARASSMENT" class="" >Harassment</label></div>
+                                            <div class=""><input name="categoryOrRule" type="radio" id="VIOLENCE" value="VIOLENCE"><label for="VIOLENCE" class="" >Threatening violence</label></div>
+                                            <div class=""><input name="categoryOrRule" type="radio" id="HATE_CONTENT" value="HATE_CONTENT"><label for="HATE_CONTENT" class="" >Hate</label></div>
+                                            <div class=""><input name="categoryOrRule" type="radio" id="EWWW" value="EWWW"><label for="EWWW" class="" >EWWW</label></div>
+                                            <div class=""><input name="categoryOrRule" type="radio" id="PII" value="PII"><label for="PII" class="" >Sharing personal information</label></div>
+                                            <div class=""><input name="categoryOrRule" type="radio" id="INVOLUNTARY_PORN" value="INVOLUNTARY_PORN"><label for="INVOLUNTARY_PORN" class="" >Non-consensual intimate media</label></div>
+                                            <div class=""><input name="categoryOrRule" type="radio" id="PROHIBITED_SALES" value="PROHIBITED_SALES"><label for="PROHIBITED_SALES" class="" >Prohibited transaction</label></div>
+                                            <div class=""><input name="categoryOrRule" type="radio" id="IMPERSONATION" value="IMPERSONATION"><label for="IMPERSONATION" class="" >Impersonation</label></div>
+                                            <div class=""><input name="categoryOrRule" type="radio" id="COPYRIGHT" value="COPYRIGHT"><label for="COPYRIGHT" class="" >Copyright violation</label></div>
+                                            <div class=""><input name="categoryOrRule" type="radio" id="TRADEMARK" value="TRADEMARK"><label for="TRADEMARK" class="" >Trademark violation</label></div>
+                                            <div class=""><input name="categoryOrRule" type="radio" id="SELF_HARM" value="SELF_HARM"><label for="SELF_HARM" class="" >Self-harm or suicide</label></div>
+                                            <div class=""><input name="categoryOrRule" type="radio" id="SPAM" value="SPAM"><label for="SPAM" class="" >Spam</label></div>
+                                            <div class=""><input name="categoryOrRule" type="radio" id="MISINFORMATION" value="MISINFORMATION"><label for="MISINFORMATION" class="" >Misinformation</label></div>
+                                        </div>
+                                        <div report="communitywide">
+                                            <div class=""><input name="categoryOrRule" type="radio" id="rule1" value="rule1"><label for="rule1" class="" >rule1</label></div>
+                                            <div class=""><input name="categoryOrRule" type="radio" id="rule2" value="rule2"><label for="rule2" class="" >rule2</label></div>
+                                            <div class=""><input name="categoryOrRule" type="radio" id="rule3" value="rule3"><label for="rule3" class="" >rule3</label></div>
+                                            <div class=""><input name="categoryOrRule" type="radio" id="rule4" value="rule4"><label for="rule4" class="" >rule4</label></div>
+                                            <div class=""><input name="categoryOrRule" type="radio" id="rule5" value="rule5"><label for="rule5" class="" >rule5</label></div>
+                                            <div class=""><input name="categoryOrRule" type="radio" id="rule6" value="rule6"><label for="rule6" class="" >rule6</label></div>
+                                            <div class=""><input name="categoryOrRule" type="radio" id="rule7" value="rule7"><label for="rule7" class="" >rule7</label></div>
+                                            <div class=""><input name="categoryOrRule" type="radio" id="rule8" value="rule8"><label for="rule8" class="" >rule8</label></div>
+                                            <div class=""><input name="categoryOrRule" type="radio" id="rule9" value="rule9"><label for="rule9" class="" >rule9</label></div>
+                                            <div class=""><input name="categoryOrRule" type="radio" id="rule10" value="rule10"><label for="rule10" class="" >rule10</label></div>
+                                            <div class=""><input name="categoryOrRule" type="radio" id="rule11" value="rule11"><label for="rule11" class="" >rule11</label></div>
+                                            <div class=""><input name="categoryOrRule" type="radio" id="rule12" value="rule12"><label for="rule12" class="" >rule12</label></div>
+                                            <div class=""><input name="categoryOrRule" type="radio" id="rule13" value="rule13"><label for="rule13" class="" >rule13</label></div>
+                                        </div>
                         </div>
-                        <fieldset>
-                            <p><span>Thanks for looking out for yourself and your fellow users by reporting things that break the rules. Let us know what's happening, and we'll look into it.</span>&nbsp;</p>
-                            <div class="cR6KACDFv5FmLxCEFk1_l">
-                                            <div report="sitewide">
-                                                <div class=""><input name="categoryOrRule" type="checkbox" id="community" value="community"><label for="community" class="_3kEv5z1lDKGV8PQ5ijp4Uh">Breaks {WHO}'s rules</label></div>
-                                                <div class=""><input name="categoryOrRule" type="radio" id="HARASSMENT" value="HARASSMENT"><label for="HARASSMENT" class="" >Harassment</label></div>
-                                                <div class=""><input name="categoryOrRule" type="radio" id="VIOLENCE" value="VIOLENCE"><label for="VIOLENCE" class="" >Threatening violence</label></div>
-                                                <div class=""><input name="categoryOrRule" type="radio" id="HATE_CONTENT" value="HATE_CONTENT"><label for="HATE_CONTENT" class="" >Hate</label></div>
-                                                <div class=""><input name="categoryOrRule" type="radio" id="EWWW" value="EWWW"><label for="EWWW" class="" >EWWW</label></div>
-                                                <div class=""><input name="categoryOrRule" type="radio" id="PII" value="PII"><label for="PII" class="" >Sharing personal information</label></div>
-                                                <div class=""><input name="categoryOrRule" type="radio" id="INVOLUNTARY_PORN" value="INVOLUNTARY_PORN"><label for="INVOLUNTARY_PORN" class="" >Non-consensual intimate media</label></div>
-                                                <div class=""><input name="categoryOrRule" type="radio" id="PROHIBITED_SALES" value="PROHIBITED_SALES"><label for="PROHIBITED_SALES" class="" >Prohibited transaction</label></div>
-                                                <div class=""><input name="categoryOrRule" type="radio" id="IMPERSONATION" value="IMPERSONATION"><label for="IMPERSONATION" class="" >Impersonation</label></div>
-                                                <div class=""><input name="categoryOrRule" type="radio" id="COPYRIGHT" value="COPYRIGHT"><label for="COPYRIGHT" class="" >Copyright violation</label></div>
-                                                <div class=""><input name="categoryOrRule" type="radio" id="TRADEMARK" value="TRADEMARK"><label for="TRADEMARK" class="" >Trademark violation</label></div>
-                                                <div class=""><input name="categoryOrRule" type="radio" id="SELF_HARM" value="SELF_HARM"><label for="SELF_HARM" class="" >Self-harm or suicide</label></div>
-                                                <div class=""><input name="categoryOrRule" type="radio" id="SPAM" value="SPAM"><label for="SPAM" class="" >Spam</label></div>
-                                                <div class=""><input name="categoryOrRule" type="radio" id="MISINFORMATION" value="MISINFORMATION"><label for="MISINFORMATION" class="" >Misinformation</label></div>
-                                            </div>
-                                            <div report="communitywide">
-                                                <div class=""><input name="categoryOrRule" type="checkbox" id="community" value="community"><label for="community" class="_3kEv5z1lDKGV8PQ5ijp4Uh">Breaks {WHO}'s rules</label></div>
-                                                <div class=""><input name="categoryOrRule" type="radio" id="rule1" value="rule1"><label for="rule1" class="" >rule1</label></div>
-                                                <div class=""><input name="categoryOrRule" type="radio" id="rule2" value="rule2"><label for="rule2" class="" >rule2</label></div>
-                                                <div class=""><input name="categoryOrRule" type="radio" id="rule3" value="rule3"><label for="rule3" class="" >rule3</label></div>
-                                                <div class=""><input name="categoryOrRule" type="radio" id="rule4" value="rule4"><label for="rule4" class="" >rule4</label></div>
-                                                <div class=""><input name="categoryOrRule" type="radio" id="rule5" value="rule5"><label for="rule5" class="" >rule5</label></div>
-                                                <div class=""><input name="categoryOrRule" type="radio" id="rule6" value="rule6"><label for="rule6" class="" >rule6</label></div>
-                                                <div class=""><input name="categoryOrRule" type="radio" id="rule7" value="rule7"><label for="rule7" class="" >rule7</label></div>
-                                                <div class=""><input name="categoryOrRule" type="radio" id="rule8" value="rule8"><label for="rule8" class="" >rule8</label></div>
-                                                <div class=""><input name="categoryOrRule" type="radio" id="rule9" value="rule9"><label for="rule9" class="" >rule9</label></div>
-                                                <div class=""><input name="categoryOrRule" type="radio" id="rule10" value="rule10"><label for="rule10" class="" >rule10</label></div>
-                                                <div class=""><input name="categoryOrRule" type="radio" id="rule11" value="rule11"><label for="rule11" class="" >rule11</label></div>
-                                                <div class=""><input name="categoryOrRule" type="radio" id="rule12" value="rule12"><label for="rule12" class="" >rule12</label></div>
-                                                <div class=""><input name="categoryOrRule" type="radio" id="rule13" value="rule13"><label for="rule13" class="" >rule13</label></div>
-                                            </div>
+                        <footer class="_2_z81mDBy-DsDJ6t2Y8xZR">
+                            <div class="_1Wjy7XxPhNhcsFZWDSlvGI">
+                                <h4>Breaks {WHO}'s rules</h4>
+                                <p>Posts, comments, or behavior that breaks {WHO} community rules.</p>
                             </div>
-                            <footer class="_2_z81mDBy-DsDJ6t2Y8xZR">
-                                <div class="_1Wjy7XxPhNhcsFZWDSlvGI">
-                                    <h4>Breaks {WHO}'s rules</h4>
-                                    <p>Posts, comments, or behavior that breaks {WHO} community rules.</p>
-                                </div>
+                            <div style=" display: flex; justify-content: end; ">
+                                <button type="button" class="_1lDGFVGU9k2mi" style=" margin-right: 8px; ">Close</button>
                                 <button type="button" class="_1lDGFVGU9k2mi-4kjU95Rp">Submit</button>
-                            </footer>
-                        </fieldset>
-                        </form>
-                    `
-                    document.body.insertAdjacentElement('beforeend',f)
+                            </div>
+                        </footer>
+                    </fieldset>
+                    </form>`
+                    const nrrincheader = document.createElement('div')
+                    nrrincheader.classList.add('nrrinc-modal-title')
+                    nrrincheader.innerHTML = ' Submit a Report'
+                    nrrincwindow.appendChild(nrrincheader)
+                    nrrincwindow.appendChild(nrrincbody)
+                    document.body.insertAdjacentElement('beforeend',nrrincwindow)
                     document.querySelector('[nrrinc-modal]').addEventListener('click',nrrincmodal.open('[nrrinc-modal]'))
                     const base = document.querySelector('[nrrinc-modal]');
-                    const radios = base.querySelectorAll('[report="sitewide"] input[type="radio"]')
+                    const radios = base.querySelectorAll('[report="sitewide"] input[type="radio"]:not(#community)')
                     const status = document.querySelector('.cR6KACDFv5FmLxCEFk1_l')
                     document.querySelector('[report="communitywide"]').style.display = 'none'
                     base.querySelector('#community').addEventListener('change', (event) => {
@@ -667,6 +670,11 @@
                         }else{
                             notify('Thanks for the report.', "#3c763d", "#dff0d8", "#d6e9c6", 3000)
                             nrrincmodal.close()
+                            var formdata = new FormData()
+                            formdata.append('type','post')
+                            formdata.append('id',data.post_id)
+                            formdata.append('reason','data')
+                            httpRequest('/api/v1/report','POST',function(e) {},formdata)
                         }
                     })
                     console.log('you reported pid: '+data.post_id)
