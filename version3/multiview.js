@@ -244,7 +244,7 @@
                 }, 500);
             }
             postviewer.style.display = "flex";
-            window.history.pushState(pjson.title + ' - NRRINC', pjson.title + ' - NRRINC', `/?p=${pjson.post_id}`);
+            window.history.pushState(pjson.title + ' - NRRINC', pjson.title + ' - NRRINC', h+`?p=${pjson.post_id}`);
             document.title = pjson.title + '- NRRINC';
             document.querySelector('[data-postalert]').style.width = (document.querySelector(`[load-post-id] > header`).offsetWidth + 8) + "px"
         }
